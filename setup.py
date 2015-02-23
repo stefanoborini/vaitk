@@ -32,31 +32,26 @@ with codecs.open('DESCRIPTION.rst', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name = "vai",
-    version = find_version("vai", "__init__.py"),
+    name = "vaitk",
+    version = find_version("vaitk", "__init__.py"),
     author = "Stefano Borini",
     author_email = "stefano.borini@gmail.com",
-    description = "VAI is a console-based IDE similar to VIM",
+    description = "VaiTk is a terminal-based graphical toolkit, similar to Qt",
     license = "BSD",
-    keywords = "editor",
-    url="https://github.com/stefanoborini/vai",
+    keywords = "library",
+    url="https://github.com/stefanoborini/vaitk",
     packages=find_packages(exclude=["contrib", "docs", "tests*"]),
     long_description=long_description,
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "Topic :: Text Editors",
         "License :: OSI Approved :: BSD License",
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3.4',
     ],
     test_suite = 'nose.collector',
-    install_requires = ['pygments==2.0.1', "pylint==1.3.0", 'pyflakes==0.8.1', 'yapsy==1.10.423'],
-    entry_points={
-        'console_scripts': [
-            'vai_exec=vai:main',
-        ],
-    },
-    scripts=['bin/vai'],
+    install_requires=[],
+    entry_points={},
+    scripts=[],
     zip_safe=False,
 )
 

@@ -1,6 +1,8 @@
 import os
 import curses
 
+__version__ = "1.7"
+
 class FocusPolicy:
     NoFocus = 0
     StrongFocus = 11
