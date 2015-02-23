@@ -173,6 +173,9 @@ class VApplication(core.VCoreApplication):
     def palette(self):
         return self._palette
 
+    def graphicElements(self):
+        return VGraphicElements.UNICODE
+
     def rootWidget(self):
         try:
             return self._root_widget
