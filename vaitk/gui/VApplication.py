@@ -79,7 +79,6 @@ class _KeyEventThread(threading.Thread):
         pass
 
 class VApplication(core.VCoreApplication):
-    debug=True
     def __init__(self, argv, screen=None):
         from . import VWidget
         super().__init__(argv)
