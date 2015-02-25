@@ -1,4 +1,5 @@
 from .. import FocusPolicy
+from .. import KeyModifier, Key
 from .. import core
 from . import events
 from .VPalette import VPalette
@@ -245,27 +246,30 @@ class VApplication(core.VCoreApplication):
     def _processSingleKeyEvent(self, key_event):
         self.logger.info("Key event %d %x" % (key_event.key(), key_event.modifiers()))
 
-        if not self.focusWidget():
-            self.logger.info("Key event ignored. No widget has focus.")
-            return
-
         key_event.setAccepted(False)
-        for widget in self.focusWidget().traverseToRoot():
-            self.logger.info("KeyEvent attempting delivery to "+str(widget))
-            stop_event = False
-            for event_filter in reversed(widget.installedEventFilters()):
-                stop_event = stop_event | event_filter.eventFilter(key_event)
-                if key_event.isAccepted():
-                    self.logger.info("KeyEvent accepted by filter "+str(event_filter))
-                    return
 
-            if not stop_event:
-                self.logger.info("KeyEvent not stopped. Sending to widget "+str(widget))
-                widget.keyEvent(key_event)
+        focus_widget = self.focusWidget()
+        if focus_widget:
+            for widget in focus_widget.traverseToRoot():
+                self.logger.info("KeyEvent attempting delivery to "+str(widget))
+                stop_event = False
+                for event_filter in reversed(widget.installedEventFilters()):
+                    stop_event = stop_event | event_filter.eventFilter(key_event)
+                    if key_event.isAccepted():
+                        self.logger.info("KeyEvent accepted by filter "+str(event_filter))
+                        return
 
-                if key_event.isAccepted():
-                    self.logger.info("KeyEvent accepted by "+str(widget))
-                    return
+                if not stop_event:
+                    self.logger.info("KeyEvent not stopped. Sending to widget "+str(widget))
+                    widget.keyEvent(key_event)
+
+                    if key_event.isAccepted():
+                        self.logger.info("KeyEvent accepted by "+str(widget))
+                        return
+
+        # If all fails, deliver it to the application itself.
+        self.eventFilter(key_event)
+
 
     def _processRemainingEvents(self):
         previous_data = None
@@ -297,6 +301,11 @@ class VApplication(core.VCoreApplication):
             #x, y = self._screen.size()
             #curses.resizeterm(y, x)
             #self.renderWidgets()
+
+
+    def eventFilter(self, event):
+        if event.key() == Key.Key_C and event.modifiers() & KeyModifier.ControlModifier:
+            self.exit()
 
     def _sendPaintEvents(self):
         for w in self.rootWidget().depthFirstFullTree():
