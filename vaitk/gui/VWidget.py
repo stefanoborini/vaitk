@@ -28,16 +28,27 @@ class VWidget(core.VObject):
         self._active = True
         self._focus_policy = FocusPolicy.NoFocus
         self._needs_update = False
+        self._minimum_size = (0,0)
 
-    def keyEvent(self, event):
-        pass
+        # True for dialogs and other widgets that hover, grabbing the focus
+        self._is_window = False
 
-    def setFocus(self):
+    def setFocus(self, reason=None):
+        """
+        Gives focus to this widget.
+        Arguments:
+            reason: The reason behind the focus change
+        """
         VApplication.vApp.setFocusWidget(self)
 
     def hasFocus(self):
+        """
+        Returns:
+            True if the widget has focus, otherwise False
+        """
         return (self is VApplication.vApp.focusWidget())
 
+    # State change
     def move(self, pos):
         """
         Sets the size to the specified amount.
@@ -67,6 +78,88 @@ class VWidget(core.VObject):
 
         self.setGeometry(self.pos()+size)
 
+    def setGeometry(self, rect):
+        old_geometry = self._geometry
+
+        min_size = self.minimumSize()
+        self._geometry = (rect[Index.RECT_X],
+                          rect[Index.RECT_Y],
+                          max(min_size[Index.SIZE_WIDTH], rect[Index.RECT_WIDTH]),
+                          max(min_size[Index.SIZE_HEIGHT], rect[Index.RECT_HEIGHT])
+                         )
+
+        if self.isVisible():
+            deliver_routine = VApplication.vApp.sendEvent
+        else:
+            deliver_routine = VApplication.vApp.postEvent
+
+        if  (old_geometry[Index.RECT_X], old_geometry[Index.RECT_Y])  \
+            != (self._geometry[Index.RECT_X], self._geometry[Index.RECT_Y]):
+
+            deliver_routine(self, events.VMoveEvent())
+
+        if (old_geometry[Index.RECT_WIDTH], old_geometry[Index.RECT_WIDTH]) \
+            != (self._geometry[Index.RECT_HEIGHT], self._geometry[Index.RECT_HEIGHT]):
+
+            deliver_routine(self, events.VResizeEvent())
+
+    def show(self):
+        """
+        Makes the widget visible. Equivalent to self.setVisible(True)
+        """
+        self.setVisible(True)
+
+    def hide(self):
+        """
+        Makes the widget hidden. Equivalent to self.setVisible(False)
+        """
+        self.setVisible(False)
+
+    def lower(self):
+        pass
+
+    def raise_(self):
+        pass
+
+    def close(self):
+        pass
+
+    def setVisible(self, visible):
+        """
+        Changes the visibility of the widget. If setVisible(True) is called on a visible widget, nothing
+        happens. The same for the hidden case.
+        A ShowEvent (HideEvent) is sent before (resp. after) the visibility change is performed on screen.
+
+        Arguments:
+            visible: True to set the widget to visible. False to hide it.
+
+        """
+        self.logger.info("Setting explicit visibility for %s : %s" % (str(self), str(visible)))
+        visible_before = self.isVisible()
+        self._visible_explicit = visible
+
+        if visible and not visible_before:
+            VApplication.vApp.postEvent(self,events.VShowEvent())
+        elif not visible and visible_before:
+            VApplication.vApp.postEvent(self,events.VHideEvent())
+
+        for w in self.children():
+            w.setVisibleImplicit(visible)
+
+    def setVisibleImplicit(self, visible):
+        # XXX private?
+        self.logger.info("Setting implicit visibility for %s : %s" % (str(self), str(visible)))
+        self._visible_implicit = visible
+
+        if visible:
+            VApplication.vApp.postEvent(self,events.VShowEvent())
+        else:
+            VApplication.vApp.postEvent(self,events.VHideEvent())
+
+        for w in self.children():
+            w.setVisibleImplicit(visible)
+
+    # Query methods
     def size(self):
         """
         Returns:
@@ -141,72 +234,28 @@ class VWidget(core.VObject):
         geometry = self.geometry()
         return geometry[Index.RECT_Y]
 
-    def show(self):
-        self.setVisible(True)
-
-    def hide(self):
-        self.setVisible(False)
-
-    def setVisible(self, visible):
-        self.logger.info("Setting explicit visibility for %s : %s" % (str(self), str(visible)))
-        visible_before = self.isVisible()
-        self._visible_explicit = visible
-
-        if visible and not visible_before:
-            VApplication.vApp.postEvent(self,events.VShowEvent())
-        elif not visible and visible_before:
-            VApplication.vApp.postEvent(self,events.VHideEvent())
-
-        for w in self.children():
-            w.setVisibleImplicit(visible)
-
-    def setVisibleImplicit(self, visible):
-        self.logger.info("Setting implicit visibility for %s : %s" % (str(self), str(visible)))
-        self._visible_implicit = visible
-
-        if visible:
-            VApplication.vApp.postEvent(self,events.VShowEvent())
-        else:
-            VApplication.vApp.postEvent(self,events.VHideEvent())
-
-        for w in self.children():
-            w.setVisibleImplicit(visible)
-
     def isVisible(self):
+        """
+        Returns:
+            True if the widget is visible. False if hidden.
+            Note that a widget is considered visible even if fully covered by an overlapping widget.
+        """
         return self._visible_explicit if self._visible_explicit is not None else self._visible_implicit
 
+    def isVisibleTo(self, ancestor):
+        pass
+
     def minimumSize(self):
-        return (0,0)
+        """
+        Returns:
+            a 2-tuple (width, height) with the minimum allowed size of the widget
+        """
+        return self._minimum_size
 
     def addLayout(self, layout):
         self._layout = layout
         self._layout.setParent(self)
 
-    def setGeometry(self, rect):
-
-        old_geometry = self._geometry
-
-        min_size = self.minimumSize()
-        self._geometry = (rect[Index.RECT_X],
-                          rect[Index.RECT_Y],
-                          max(min_size[Index.SIZE_WIDTH], rect[Index.RECT_WIDTH]),
-                          max(min_size[Index.SIZE_HEIGHT], rect[Index.RECT_HEIGHT])
-                         )
-
-        if self.isVisible():
-            deliver_routine = VApplication.vApp.sendEvent
-        else:
-            deliver_routine = VApplication.vApp.postEvent
-
-        if  (old_geometry[Index.RECT_X], old_geometry[Index.RECT_Y])  \
-            != (self._geometry[Index.RECT_X], self._geometry[Index.RECT_Y]):
-
-            deliver_routine(self, events.VMoveEvent())
-
-        if (old_geometry[Index.RECT_WIDTH], old_geometry[Index.RECT_WIDTH]) \
-            != (self._geometry[Index.RECT_HEIGHT], self._geometry[Index.RECT_HEIGHT]):
-
-            deliver_routine(self, events.VResizeEvent())
 
     def mapToGlobal(self, pos):
         """
@@ -228,14 +277,29 @@ class VWidget(core.VObject):
                  parent_corner[Index.Y] + top_left[Index.Y] + pos[Index.Y]
                  )
 
+#    def QPoint  mapFrom ( QWidget * parent, const QPoint & pos ) const
+#    def QPoint  mapFromGlobal ( const QPoint & pos ) const
+#    def QPoint  mapFromParent ( const QPoint & pos ) const
+#    def QPoint  mapTo ( QWidget * parent, const QPoint & pos ) const
+#    def QPoint  mapToGlobal ( const QPoint & pos ) const
+#    def QPoint  mapToParent ( const QPoint & pos ) const
+
     def screenArea(self):
         abs_pos_topleft = self.mapToGlobal((0,0))
 
         return VScreenArea( VApplication.vApp.screen(),
                             abs_pos_topleft + self.size()
                           )
-
+    # Events
     def event(self, event):
+        """
+        Generic event method. Gets called for all events, and dispatches to a
+        more specific event handler.
+
+        Arguments:
+            event: the event.
+        """
+
         self.logger.info("Event %s. Receiver %s" % (str(event), str(self)))
 
         if isinstance(event, events.VPaintEvent):
@@ -301,6 +365,12 @@ class VWidget(core.VObject):
 
         return True
 
+    def keyEvent(self, event):
+        """
+        Handle VKeyEvents.
+        """
+        pass
+
     def paintEvent(self, event):
         painter = VPainter(self)
         #if self._layout is not None:
@@ -311,8 +381,6 @@ class VWidget(core.VObject):
         string = ' '*size[Index.SIZE_WIDTH]
         for i in range(0, size[Index.SIZE_HEIGHT]):
             painter.drawText( (0, i), string)
-    def needsUpdate(self):
-        return self._needs_update
 
     def focusInEvent(self, event):
         self.logger.info("FocusIn event")
@@ -338,8 +406,19 @@ class VWidget(core.VObject):
     def focusPolicy(self):
         return self._focus_policy
 
+    def needsUpdate(self):
+        return self._needs_update
+
     def isEnabled(self):
+        """
+        Returns:
+            True if the widget is enabled. False otherwise.
+        """
+        # XXX Check if an enabled widget is not sent focus events, and how focus is reassigned when a widget is made enabled False
         return self._enabled
+
+    def isEnabledTo(self, ancestor):
+        pass
 
     def isActive(self):
         return self._active
@@ -348,9 +427,21 @@ class VWidget(core.VObject):
         self._active = active
 
     def setEnabled(self, enabled):
+        """
+        Enables or disables a widget.
+
+        Arguments:
+            enabled: True to enable the widget. False to disable.
+        """
         self._enabled = enabled
 
     def palette(self):
+        """
+        Returns:
+            the widget palette. If no palette has been set, a copy of the
+            application palette will be installed the first time this method is
+            called, and then returned.
+        """
         if self._palette is None:
             self._palette = VApplication.vApp.palette().copy()
 
@@ -376,8 +467,22 @@ class VWidget(core.VObject):
                 color_group = VPalette.ColorGroup.Disabled
         return self.colors(color_group)
 
+    def backgroundRole(self):
+        pass
+
+    def foregroundRole(self):
+        pass
+
+    def setForegroundRole(self, role):
+        pass
+
+    def setBackgroundRole(self, role):
+        pass
+
     def update(self):
         self._needs_update = True
+
+    # Sizes
 
     def contentsRect(self):
         # XXX Check because I think we also have to subtract border and padding
@@ -392,38 +497,105 @@ class VWidget(core.VObject):
         # XXX not sure about the definition of margins for qt
         return (0,0,0,0)
 
+    def childrenRect(self):
+        pass
+
+    def frameGeometry(self):
+        pass
+
+    def normalGeometry(self):
+        pass
+
+    def baseSize(self):
+        pass
+
+    def frameSize(self):
+        pass
+
+    def maximumSize(self):
+        pass
+
+    def maximumWidth(self):
+        pass
+
+    def maximumHeight(self):
+        pass
+
+    def minimumHeight(self):
+        pass
+
+    def minimumWidth(self):
+        pass
+
+    def minimumSizeHint(self):
+        pass
+
+    def sizeHint(self):
+        pass
+
+    def heightForWidth(self):
+        pass
+
+    def setBaseSize(self, size):
+        pass
+
+    def setContentsMargins(self, margins):
+        pass
+
+    def setMaximumHeight(self, maxh):
+        pass
+
+    def setMaximumSize(self, max_size):
+        pass
+
+    def setMaximumWidth(self, maxw):
+        pass
+
+    def setMinimumHeight(self, minh):
+        self._minimum_size = (self._minimum_size[Index.SIZE_WIDTH], minh)
+
+    def setMinimumWidth(self, minw):
+        self._minimum_size = (minw, self._minimum_size[Index.SIZE_HEIGHT])
+
+    def setMinimumSize(self, min_size):
+        self._minimum_size = min_size
+
+    def setFixedHeight(self, height):
+        pass
+
+    def setFixedWidth(self, width):
+        pass
+
+    def setFixedSize(self, size):
+        pass
+
+#    QRegion childrenRegion () const
+
+#    void    setSizePolicy ( QSizePolicy )
+#    void    setSizePolicy ( QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical )
+#    QSizePolicy sizePolicy () const
 
 #    def accessibleName(self):
-
 
 # QByteArray  saveGeometry () const
     def fontInfo(self):
         pass
+#    void    setFont ( const QFont & )
+#    const QFont &   font () const
 
 #    def layout ()
+
+
 #    def actions ()
+#    void    removeAction ( QAction * action )
+#    void    addAction ( QAction * action )
+#    void    addActions ( QList<QAction *> actions )
+#    void    insertAction ( QAction * before, QAction * action )
+#    void    insertActions ( QAction * before, QList<QAction *> actions )
+
 #    def locale ()
-#    def QMargins contentsMargins ():
-#    def QPalette::ColorRole backgroundRole () const
-#    def QPalette::ColorRole foregroundRole () const
-#    def QPoint  mapFrom ( QWidget * parent, const QPoint & pos ) const
-#    def QPoint  mapFromGlobal ( const QPoint & pos ) const
-#    def QPoint  mapFromParent ( const QPoint & pos ) const
-#    def QPoint  mapTo ( QWidget * parent, const QPoint & pos ) const
-#    def QPoint  mapToGlobal ( const QPoint & pos ) const
-#    def QPoint  mapToParent ( const QPoint & pos ) const
-#    QRect   childrenRect () const
-#    QRect   contentsRect () const
-#    QRect   frameGeometry () const
-#    QRect   normalGeometry () const
-#    QRegion childrenRegion () const
 #    QRegion mask () const
 #    QRegion visibleRegion () const
-#    QSize   baseSize () const
-#    QSize   frameSize () const
-#    QSize   maximumSize () const
-#    QSize   minimumSize () const
-#    QSizePolicy sizePolicy () const
 #    QString windowRole () const
 #    QString windowTitle () const
 #    QWidget *   childAt ( const QPoint & p ) const
@@ -437,7 +609,6 @@ class VWidget(core.VObject):
 #    QWidget *   window () const
 #    QWindowSurface *    windowSurface () const (preliminary)
 #    Qt::ContextMenuPolicy   contextMenuPolicy () const
-#    Qt::FocusPolicy focusPolicy () const
 #    Qt::InputMethodHints    inputMethodHints () const
 #    Qt::LayoutDirection layoutDirection () const
 #    Qt::WindowFlags windowFlags () const
@@ -445,52 +616,24 @@ class VWidget(core.VObject):
 #    Qt::WindowStates    windowState () const
 #    Qt::WindowType  windowType () const
 #    bool    autoFillBackground () const
-#    bool    close ()
 #    bool    hasEditFocus () const
-#    bool    hasFocus () const
 #    bool    isActiveWindow () const
 #    bool    isAncestorOf ( const QWidget * child ) const
-#    bool    isEnabled () const
-#    bool    isEnabledTo ( QWidget * ancestor ) const
 #    bool    isFullScreen () const
-#    bool    isHidden () const
 #    bool    isMaximized () const
 #    bool    isMinimized () const
 #    bool    isModal () const
-#    bool    isVisible () const
-#    bool    isVisibleTo ( QWidget * ancestor ) const
 #    bool    isWindow () const
 #    bool    isWindowModified () const
 #    bool    restoreGeometry ( const QByteArray & geometry )
 #    bool    testAttribute ( Qt::WidgetAttribute attribute ) const
 #    bool    updatesEnabled () const
-#    const QFont &   font () const
-#    const QPalette &    palette () const
-#    int maximumHeight () const
-#    int maximumWidth () const
-#    int minimumHeight () const
-#    int minimumWidth () const
-#    qreal   windowOpacity () const
-#    virtual QSize   minimumSizeHint () const
-#    virtual QSize   sizeHint () const
-#    virtual QVariant    inputMethodQuery ( Qt::InputMethodQuery query ) const
-#    virtual int heightForWidth ( int w ) const
-#    virtual void    setVisible ( bool visible )
 #    void    activateWindow ()
-#    void    addAction ( QAction * action )
-#    void    addActions ( QList<QAction *> actions )
 #    void    adjustSize ()
 #    void    clearFocus ()
 #    void    clearMask ()
 #    void    ensurePolished () const
-#    void    getContentsMargins ( int * left, int * top, int * right, int * bottom ) const
-#    void    hide ()
-#    void    insertAction ( QAction * before, QAction * action )
-#    void    insertActions ( QAction * before, QList<QAction *> actions )
-#    void    lower ()
 #    void    overrideWindowFlags ( Qt::WindowFlags flags )
-#    void    raise ()
-#    void    removeAction ( QAction * action )
 #    void    render ( QPaintDevice * target, const QPoint & targetOffset = QPoint(), const QRegion & sourceRegion = QRegion(), RenderFlags renderFlags = RenderFlags( DrawWindowBackground | DrawChildren ) )
 #    void    render ( QPainter * painter, const QPoint & targetOffset = QPoint(), const QRegion & sourceRegion = QRegion(), RenderFlags renderFlags = RenderFlags( DrawWindowBackground | DrawChildren ) )
 #    void    repaint ( const QRect & rect )
@@ -504,28 +647,9 @@ class VWidget(core.VObject):
 #    void    setAccessibleName ( const QString & name )
 #    void    setAttribute ( Qt::WidgetAttribute attribute, bool on = true )
 #    void    setAutoFillBackground ( bool enabled )
-#    void    setBackgroundRole ( QPalette::ColorRole role )
-#    void    setBaseSize ( const QSize & )
-#    void    setBaseSize ( int basew, int baseh )
-#    void    setContentsMargins ( const QMargins & margins )
-#    void    setContentsMargins ( int left, int top, int right, int bottom )
 #    void    setContextMenuPolicy ( Qt::ContextMenuPolicy policy )
-#    void    setDisabled ( bool disable )
 #    void    setEditFocus ( bool enable )
-#    void    setEnabled ( bool )
-#    void    setFixedHeight ( int h )
-#    void    setFixedSize ( const QSize & s )
-#    void    setFixedSize ( int w, int h )
-#    void    setFixedWidth ( int w )
-#    void    setFocus ( Qt::FocusReason reason )
-#    void    setFocus ()
-#    void    setFocusPolicy ( Qt::FocusPolicy policy )
 #    void    setFocusProxy ( QWidget * w )
-#    void    setFont ( const QFont & )
-#    void    setForegroundRole ( QPalette::ColorRole role )
-#    void    setGeometry ( const QRect & )
-#    void    setGeometry ( int x, int y, int w, int h )
-#    void    setHidden ( bool hidden )
 #    void    setInputContext ( QInputContext * context )
 #    void    setInputMethodHints ( Qt::InputMethodHints hints )
 #    void    setLayout ( QLayout * layout )
@@ -533,21 +657,11 @@ class VWidget(core.VObject):
 #    void    setLocale ( const QLocale & locale )
 #    void    setMask ( const QBitmap & bitmap )
 #    void    setMask ( const QRegion & region )
-#    void    setMaximumHeight ( int maxh )
-#    void    setMaximumSize ( const QSize & )
-#    void    setMaximumSize ( int maxw, int maxh )
-#    void    setMaximumWidth ( int maxw )
-#    void    setMinimumHeight ( int minh )
-#    void    setMinimumSize ( const QSize & )
-#    void    setMinimumSize ( int minw, int minh )
-#    void    setMinimumWidth ( int minw )
 #    void    setPalette ( const QPalette & )
 #    void    setParent ( QWidget * parent )
 #    void    setParent ( QWidget * parent, Qt::WindowFlags f )
 #    void    setShortcutAutoRepeat ( int id, bool enable = true )
 #    void    setShortcutEnabled ( int id, bool enable = true )
-#    void    setSizePolicy ( QSizePolicy )
-#    void    setSizePolicy ( QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical )
 #    void    setUpdatesEnabled ( bool enable )
 #    void    setWindowFilePath ( const QString & filePath )
 #    void    setWindowFlags ( Qt::WindowFlags type )
@@ -558,7 +672,6 @@ class VWidget(core.VObject):
 #    void    setWindowState ( Qt::WindowStates windowState )
 #    void    setWindowSurface ( QWindowSurface * surface ) (preliminary)
 #    void    setWindowTitle ( const QString & )
-#    void    show ()
 #    void    showFullScreen ()
 #    void    showMaximized ()
 #    void    showMinimized ()
