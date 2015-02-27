@@ -116,6 +116,9 @@ class VApplication(core.VCoreApplication):
         self.focusChanged = core.VSignal(self)
 
     def exec_(self):
+        """
+        Starts the event loop.
+        """
         self._root_widget.show()
         self.processEvents(True)
         self._key_event_thread.start()
@@ -140,7 +143,7 @@ class VApplication(core.VCoreApplication):
 
     def postEvent(self, receiver, event):
         """
-        Add an event to the event queue, to be delivered to receiver.
+        Add an event to the event queue, to be delivered at a later time to receiver.
 
         Arguments:
             receiver: the intended receiver of the event
@@ -167,6 +170,14 @@ class VApplication(core.VCoreApplication):
         return self._focus_widget
 
     def setFocusWidget(self, widget):
+        """
+        Gives focus to the specified widget.
+        Focused widgets are the one that will receive Key events.
+
+        Arguments:
+            widget: the widget to set as focused
+        """
+
         if self._focus_widget is widget:
             return
 
@@ -186,11 +197,19 @@ class VApplication(core.VCoreApplication):
             VApplication.vApp.postEvent(self._focus_widget, VFocusEvent(core.VEvent.EventType.FocusIn))
 
     def defaultPalette(self):
+        """
+        Returns:
+            the default palette of the application.
+        """
         palette = VPalette()
         palette.setDefaults()
         return palette
 
     def palette(self):
+        """
+        Returns:
+            the current palette of the application
+        """
         return self._palette
 
     def graphicElements(self):
@@ -228,6 +247,18 @@ class VApplication(core.VCoreApplication):
 
     def notify(self):
         raise NotImplementedError()
+
+    def eventFilter(self, event):
+        """
+        Default event filter that is used when no other event interceptor catches the event.
+        By default, this event filter reacts to Ctrl+C keyevents, quitting the application.
+
+        Arguments:
+            event: the VEvent
+
+        """
+        if event.key() == Key.Key_C and event.modifiers() & KeyModifier.ControlModifier:
+            self.exit()
 
     # Private
 
@@ -318,10 +349,6 @@ class VApplication(core.VCoreApplication):
             #curses.resizeterm(y, x)
             #self.renderWidgets()
 
-
-    def eventFilter(self, event):
-        if event.key() == Key.Key_C and event.modifiers() & KeyModifier.ControlModifier:
-            self.exit()
 
     def _sendPaintEvents(self):
         for w in self.rootWidget().depthFirstFullTree():
