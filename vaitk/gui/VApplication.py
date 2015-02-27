@@ -88,7 +88,12 @@ class VApplication(core.VCoreApplication):
         else:
             self._screen = VScreen()
 
-        # The root widget is the one representing the whole background screen. It it always rendered last
+        # The root widget is the one representing the whole background screen. It it always rendered last.
+        # This may seem weird, but we need to initialize it first to None, _then_ create the root VWidget.
+        # The reason is that VWidget asks for the current root widget if there's no parent, and the
+        # subsequent initialization results in a chicken-egg problem (the root widget is the only widget
+        # having strictly None as parent).
+        self._root_widget = None
         self._root_widget = VWidget()
 
         # The widget that currently has the focus (gets key events)
