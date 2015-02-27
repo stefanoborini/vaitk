@@ -88,14 +88,22 @@ class VApplication(core.VCoreApplication):
         else:
             self._screen = VScreen()
 
+        # The root widget is the one representing the whole background screen. It it always rendered last
         self._root_widget = VWidget()
+
+        # The widget that currently has the focus (gets key events)
         self._focus_widget = None
         self._palette = self.defaultPalette()
+
         self._event_available_flag = threading.Event()
         self._event_queue = queue.Queue()
         self._key_event_queue = queue.Queue()
         self._key_event_thread = _KeyEventThread(self._screen, self._key_event_queue, self._event_available_flag)
+
+        # XXX I am not sure we need the delete later anymore.
         self._delete_later_queue = []
+
+        # Used to terminate the exec loop
         self._exit_flag = False
 
         # Signals.
@@ -126,6 +134,13 @@ class VApplication(core.VCoreApplication):
         self._screen.refresh()
 
     def postEvent(self, receiver, event):
+        """
+        Add an event to the event queue, to be delivered to receiver.
+
+        Arguments:
+            receiver: the intended receiver of the event
+            event: a VEvent object
+        """
         self.logger.info(" <posted " + str(receiver) + " " + str(event))
         self._event_queue.put((receiver, event))
         self._event_available_flag.set()
@@ -177,11 +192,7 @@ class VApplication(core.VCoreApplication):
         return VGraphicElements.UNICODE
 
     def rootWidget(self):
-        try:
-            return self._root_widget
-        except AttributeError:
-            self._root_widget = None
-            return self._root_widget
+        return self._root_widget
 
     def resetScreen(self):
         self._screen.reset()
