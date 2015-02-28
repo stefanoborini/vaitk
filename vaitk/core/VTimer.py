@@ -52,6 +52,8 @@ class VTimer(VObject):
     def stop(self):
         if self._thread:
             self._thread.stop.set()
+
+        # XXX problem here. We could incur in deletion of the secondary thread as it's still running.
         self._thread = None
 
     def isRunning(self):
