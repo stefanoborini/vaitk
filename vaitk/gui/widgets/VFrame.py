@@ -18,31 +18,11 @@ class VFrame(VWidget):
 
         fg, bg = self.colors(color_group)
         w, h = self.size()
-        if self._title:
-
-            #0123456789012
-            #+-| hello |-+
-            dash_length = (w -                  # total width of the dialog
-                           2 -                  # space for the angles
-                           len(self._title) -   # the space for the title itself
-                           2 -                  # the two empty spaces on the sides of the title
-                           2)                   # the vertical bars
-            header = '+' + \
-                     "-"*(dash_length/2) + \
-                     "| " + \
-                     self._title + \
-                     " |" + \
-                     "-"*(dash_length-(dash_length/2)) + \
-                     "+"
-        else:
-            header = '+'+"-"*(w-2)+"+"
-
         painter = VPainter(self)
-        painter.write(0, 0, header, fg, bg)
-
-        for i in range(0, h-2):
-            painter.write(0, i+1, '|'+' '*(len(header)-2)+"|", fg, bg)
-        painter.write(0, h-1, '+'+"-"*(len(header)-2)+"+", fg, bg)
+        painter.fillRect( (0,0,w,h) )
+        if self._title:
+            title_pos = int((w - len(self._title)) / 2)
+            painter.drawText( (0, dash_length), " " + self._title + " ", fg, bg)
 
     def setTitle(self, title):
         self._title = title

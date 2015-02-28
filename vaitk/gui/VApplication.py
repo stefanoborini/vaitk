@@ -5,6 +5,7 @@ from . import events
 from .VPalette import VPalette
 from .VScreen import VScreen
 from .events import VFocusEvent
+from .VGraphicElements import VGraphicElements
 import threading
 import queue
 import logging
@@ -115,6 +116,12 @@ class VApplication(core.VCoreApplication):
         self.lastWindowClosed = core.VSignal(self)
         self.focusChanged = core.VSignal(self)
 
+        # Graphic elements contains characters to draw boxes, buttons, icons, and so on.
+        # We choose ascii as default because in basic ncurses implementation unicode is not
+        # rendered correctly. We stay conservative, and allow overriding if the client code is
+        # confident of the current ncurses implementation.
+        self._default_graphic_elements = VGraphicElements.ASCII
+
     def exec_(self):
         """
         Starts the event loop.
@@ -212,8 +219,12 @@ class VApplication(core.VCoreApplication):
         """
         return self._palette
 
-    def graphicElements(self):
-        return VGraphicElements.UNICODE
+    def defaultGraphicElements(self):
+        return self._default_graphic_elements
+
+    def setDefaultGraphicElements(self, graphic_elements):
+        self._default_graphic_elements = graphic_elements
+
 
     def rootWidget(self):
         return self._root_widget

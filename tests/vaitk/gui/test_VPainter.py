@@ -51,18 +51,19 @@ class TestVPainter(unittest.TestCase):
         w.resize((40,40))
         painter = gui.VPainter(w)
         painter.drawLine((10,10), 5, vaitk.Orientation.Horizontal)
-        self.assertEqual(self.screen.stringAt(10,10,5), "+---+")
+        self.assertEqual(self.screen.stringAt(10,10,5), "-----")
 
     def testDrawLineVertical(self):
         w = gui.VWidget()
         w.resize((40,40))
         painter = gui.VPainter(w)
         painter.drawLine((10,10), 5, vaitk.Orientation.Vertical)
-        self.assertEqual(self.screen.stringAt(10,10,1), "+")
+        print(self.screen)
+        self.assertEqual(self.screen.stringAt(10,10,1), "|")
         self.assertEqual(self.screen.stringAt(10,11,1), "|")
         self.assertEqual(self.screen.stringAt(10,12,1), "|")
         self.assertEqual(self.screen.stringAt(10,13,1), "|")
-        self.assertEqual(self.screen.stringAt(10,14,1), "+")
+        self.assertEqual(self.screen.stringAt(10,14,1), "|")
 
 
     def testFillRect(self):
