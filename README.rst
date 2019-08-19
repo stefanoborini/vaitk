@@ -4,13 +4,13 @@ VaiTk
 .. image:: https://travis-ci.org/stefanoborini/vaitk.svg?branch=master
    :target: https://travis-ci.org/stefanoborini/vaitk
    :alt: Build status
-.. image:: https://pypip.in/download/vaitk/badge.png
+.. image:: https://img.shields.io/pypi/dm/vaitk.svg
    :target: https://pypi.python.org/pypi/vaitk/
    :alt: Downloads
-.. image:: https://pypip.in/py_versions/vaitk/badge.svg
+.. image:: https://img.shields.io/pypi/pyversions/vaitk.svg
    :target: https://pypi.python.org/pypi/vaitk/
    :alt: Supported Python versions
-.. image:: https://pypip.in/version/vaitk/badge.png
+.. image:: https://img.shields.io/pypi/v/vaitk.svg
    :target: https://pypi.python.org/pypi/vaitk/
    :alt: Latest version
 .. image:: https://landscape.io/github/stefanoborini/vaitk/master/landscape.png
