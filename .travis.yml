@@ -1,7 +1,10 @@
 language: python
 python:
-  - "3.4"
+  - "3.7"
 # command to install dependencies
-install: "python3 setup.py install"
-# command to run tests
-script: nosetests
+install: 
+- python3 -m pip install poetry
+- poetry debug:info
+- poetry install
+script: 
+    - poetry run nosetests
