@@ -6,4 +6,5 @@ install:
     - python3 -m pip install poetry
     - poetry install
 # command to run tests
-script: "poetry run nosetests"
+script: 
+    - poetry run nosetests
