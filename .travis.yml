@@ -3,8 +3,8 @@ python:
   - "3.4"
 # command to install dependencies
 install: 
-    - python3 -m pip install poetry
-    - poetry install
-# command to run tests
+- python3 -m pip install poetry
+- poetry debug:info
+- poetry install
 script: 
     - poetry run nosetests
