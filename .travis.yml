@@ -2,6 +2,8 @@ language: python
 python:
   - "3.4"
 # command to install dependencies
-install: "python3 setup.py install"
+install: 
+    - python3 -m pip install poetry
+    - poetry install
 # command to run tests
-script: nosetests
+script: "poetry run nosetests"
