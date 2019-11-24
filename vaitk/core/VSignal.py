@@ -24,5 +24,5 @@ class VSignal(object):
         for slot in self._slots:
             slot(*args, **kwargs)
 
-    def setEnabled(self, enabled):
+    def set_enabled(self, enabled):
         self._enabled = enabled

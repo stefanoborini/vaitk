@@ -11,7 +11,7 @@ class VProgressBar(VWidget):
         self._maximum = 100
         self._value = 0
 
-    def paintEvent(self, event):
+    def paint_event(self, event):
         painter = VPainter(self)
         w, h = self.size()
         fg_color = self.palette().color(VPalette.ColorGroup.Active,
@@ -38,9 +38,9 @@ class VProgressBar(VWidget):
                 bar_text[int(bar_total_length/2)-1+len(percentage_text):]
 
         final_text += '[' + bar_text + ']'
-        painter.drawText((0, 0), final_text, fg_color, bg_color)
+        painter.draw_text((0, 0), final_text, fg_color, bg_color)
 
-    def minimumSize(self):
+    def minimum_size(self):
         if len(self._text) > 0:
             width = len(self._text)+len(" [100%]")
         else:
@@ -48,7 +48,7 @@ class VProgressBar(VWidget):
 
         return (width, 1)
 
-    def setValue(self, value):
+    def set_value(self, value):
         if self._value != value and (self._minimum < value < self._maximum):
             self._value = value
             self.update()
@@ -59,7 +59,7 @@ class VProgressBar(VWidget):
     def maximum(self):
         return self._maximum
 
-    def setMinimum(self, minimum):
+    def set_minimum(self, minimum):
         if self._minimum == minimum:
             return
 
@@ -72,7 +72,7 @@ class VProgressBar(VWidget):
         else:
             self.update()
 
-    def setMaximum(self, maximum):
+    def set_maximum(self, maximum):
         if self._maximum == maximum:
             return
 
@@ -89,7 +89,7 @@ class VProgressBar(VWidget):
         self._value = self._minimum
         self.update()
 
-    def setRange(self, minimum, maximum):
+    def set_range(self, minimum, maximum):
         if self._minimum == minimum and self._maximum == maximum:
             return
 
@@ -104,7 +104,7 @@ class VProgressBar(VWidget):
         else:
             self.update()
 
-    def setText(self, text):
+    def set_text(self, text):
         self._text = text
 
     def text(self):

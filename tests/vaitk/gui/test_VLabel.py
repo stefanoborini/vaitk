@@ -17,18 +17,18 @@ class TestVLabel(unittest.TestCase):
     def testVLabel(self):
         label = gui.VLabel("hello")
         label.show()
-        self.app.processEvents()
-        self.assertEqual(self.screen.stringAt(
+        self.app.process_events()
+        self.assertEqual(self.screen.string_at(
             0, int(self.screen.size()[1]/2), 5), "hello")
 
     @unittest.skip
     def testVLabelChangeString(self):
         label = gui.VLabel("hello")
         label.show()
-        self.app.processEvents()
-        label.setText("world")
-        self.assertEqual(self.screen.stringAt(
+        self.app.process_events()
+        label.set_text("world")
+        self.assertEqual(self.screen.string_at(
             0, int(self.screen.size()[1]/2), 5), "hello")
-        self.app.processEvents()
-        self.assertEqual(self.screen.stringAt(
+        self.app.process_events()
+        self.assertEqual(self.screen.string_at(
             0, int(self.screen.size()[1]/2), 5), "world")

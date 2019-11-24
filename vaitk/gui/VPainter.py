@@ -10,13 +10,13 @@ class VPainter:
 
     def __init__(self, widget):
         self._widget = widget
-        colors = self._widget.currentColors()
+        colors = self._widget.current_colors()
         self._fg_color = colors[Index.FG_COLOR]
         self._bg_color = colors[Index.BG_COLOR]
         self._corner_cap_style = CornerCapStyle.Plus
         self._line_cap_style = LineCapStyle.Plus
         self._line_style = LineStyle.Full
-        self._graphic_elements = VApplication.vApp.defaultGraphicElements()
+        self._graphic_elements = VApplication.vApp.default_graphic_elements()
 
     @property
     def fg_color(self):
@@ -34,13 +34,13 @@ class VPainter:
     def bg_color(self, color):
         self._bg_color = color
 
-    def drawText(self, pos_or_rect, string, align=0):
+    def draw_text(self, pos_or_rect, string, align=0):
         """
         Writes text at a specified position. The behavior of this function
         depends on the pos_or_rect argument.
         """
         if len(pos_or_rect) == 2:
-            self._widget.screenArea().write(
+            self._widget.screen_area().write(
                 pos_or_rect,
                 string,
                 self.fg_color,
@@ -73,20 +73,20 @@ class VPainter:
                (align & Alignment.AlignBottom and
                     h == rect[Index.RECT_HEIGHT]-1):
 
-                self._widget.screenArea().write(
+                self._widget.screen_area().write(
                     (rect[Index.RECT_X],
                      rect[Index.RECT_Y]+h),
                     line_formatted,
                     self.fg_color,
                     self.bg_color)
             else:
-                self._widget.screenArea().write(
+                self._widget.screen_area().write(
                     (rect[Index.RECT_X], rect[Index.RECT_Y]+h),
                     ' '*rect[Index.RECT_WIDTH],
                     self.fg_color,
                     self.bg_color)
 
-    def drawRect(self, rect):
+    def draw_rect(self, rect):
         """
         Draws a rectangle with geometry as specified in the rect parameter.
         The internal part of the rectangle will not be drawn. If you want a
@@ -95,7 +95,7 @@ class VPainter:
         Arguments:
             rect: a 4-tuple containing (x,y,width,height) of the rectangle.
         """
-        screen_area = self._widget.screenArea()
+        screen_area = self._widget.screen_area()
 
         x, y = rect[Index.RECT_X], rect[Index.RECT_Y]
         w, h = rect[Index.RECT_WIDTH], rect[Index.RECT_HEIGHT]
@@ -127,7 +127,7 @@ class VPainter:
                               bottom_border*(w-2) + bottom_right_corner, fg,
                               bg)
 
-    def fillRect(self, rect):
+    def fill_rect(self, rect):
         """
         Draws a filled rectangle with geometry as specified in the rect
         parameter.
@@ -137,7 +137,7 @@ class VPainter:
         Arguments:
             rect: a 4-tuple containing (x,y,width,height) of the rectangle.
         """
-        screen_area = self._widget.screenArea()
+        screen_area = self._widget.screen_area()
 
         x, y = rect[Index.RECT_X], rect[Index.RECT_Y]
         w, h = rect[Index.RECT_WIDTH], rect[Index.RECT_HEIGHT]
@@ -169,7 +169,7 @@ class VPainter:
                               bottom_border*(w-2) + bottom_right_corner, fg,
                               bg)
 
-    def drawLine(self, pos, length, direction):
+    def draw_line(self, pos, length, direction):
         """
         Draws a line starting from a given pos and length, either horizontal
         or vertical.
@@ -181,7 +181,7 @@ class VPainter:
             length: integer containing the length of the line
             direction: either Orientation.Horizontal or Orientation.Vertical
         """
-        screen_area = self._widget.screenArea()
+        screen_area = self._widget.screen_area()
         x, y = pos
         fg, bg = self.fg_color, self.bg_color
         h_line = self._graphic_elements["BOX DRAWINGS LIGHT HORIZONTAL"]
@@ -193,7 +193,7 @@ class VPainter:
             for i in range(0, length):
                 screen_area.write((x, y+i), v_line, fg, bg)
 
-    def eraseRect(self, rect):
+    def erase_rect(self, rect):
         """
         Deletes the contents of a given rect area
 
@@ -201,8 +201,8 @@ class VPainter:
             rect: a 4-tuple containing (x,y,width,height) of the rectangle to
             delete.
         """
-        widget_colors = self._widget.currentColors()
-        screen_area = self._widget.screenArea()
+        widget_colors = self._widget.current_colors()
+        screen_area = self._widget.screen_area()
         top_left = (rect[Index.RECT_X], rect[Index.RECT_Y])
         string = ' '*rect[Index.RECT_WIDTH]
         for h_idx in range(rect[Index.RECT_HEIGHT]):
@@ -215,10 +215,10 @@ class VPainter:
         """
         Deletes the contents of the full area associated to the VPainter.
         """
-        self.eraseRect(self._widget.rect())
+        self.erase_rect(self._widget.rect())
 
     def recolor(self, pos, colors):
         """
         Modifies the color of a given position in the drawable area.
         """
-        self._widget.screenArea().setColors(pos, colors)
+        self._widget.screen_area().set_colors(pos, colors)

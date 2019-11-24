@@ -10,10 +10,10 @@ class TestVRect(unittest.TestCase):
 
     def testVRectIsNull(self):
         r = core.VRect((2, 3), (4, 5))
-        self.assertFalse(r.isNull())
+        self.assertFalse(r.is_null())
 
         r = core.VRect((2, 3), (0, 0))
-        self.assertTrue(r.isNull())
+        self.assertTrue(r.is_null())
 
     def testVRectIntersects(self):
         self.assertTrue(core.VRect((0, 0), (18, 1)).intersects(

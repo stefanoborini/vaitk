@@ -54,7 +54,7 @@ class VScreen(object):
             self.logger.setLevel(self.debug)
         else:
             self.logger.setLevel(logging.CRITICAL+1)
-        VGlobalScreenColor.init(self.numColors())
+        VGlobalScreenColor.init(self.num_colors())
 
     def reset(self):
         self._curses_screen.keypad(0)
@@ -69,14 +69,14 @@ class VScreen(object):
             curses.doupdate()
 
     def rect(self):
-        return self.topLeft() + self.size()
+        return self.top_left() + self.size()
 
     def size(self):
         with self._curses_lock:
             h, w = self._curses_screen.getmaxyx()
         return (w, h)
 
-    def topLeft(self):
+    def top_left(self):
         return (0, 0)
 
     def width(self):
@@ -85,7 +85,7 @@ class VScreen(object):
     def height(self):
         return self.size()[Index.SIZE_HEIGHT]
 
-    def getKeyCode(self):
+    def get_key_code(self):
         # Prevent to hold the GIL
         select.select([sys.stdin], [], [])
 
@@ -125,7 +125,7 @@ class VScreen(object):
         if len(out_string) == 0:
             return
 
-        attr = self.getColorAttributeCode(fg_color, bg_color)
+        attr = self.get_color_attribute_code(fg_color, bg_color)
         if (x+len(out_string) > w):
             self.logger.error(
                 "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
@@ -145,7 +145,7 @@ class VScreen(object):
                 self._curses_screen.addstr(y, x, out_string, attr)
                 self._curses_screen.noutrefresh()
 
-    def setColors(self, pos, colors):
+    def set_colors(self, pos, colors):
         """
         Sets the color attributes for a specific line, starting at pos and
         forward until the colors
@@ -192,18 +192,18 @@ class VScreen(object):
                 fg_color = col[0]
                 bg_color = col[2]
 
-            attr = self.getColorAttributeCode(fg_color, bg_color)
+            attr = self.get_color_attribute_code(fg_color, bg_color)
             with self._curses_lock:
                 self._curses_screen.chgat(y, x+num, 1, attr)
 
-    def numColors(self):
+    def num_colors(self):
         return curses.COLORS
 
-    def getColorAttributeCode(self, fg=None, bg=None):
+    def get_color_attribute_code(self, fg=None, bg=None):
         """Given fg and bg colors, find and return the correct attribute code
         to apply with chgat"""
-        fg_screen = None if fg is None else self._findClosestColor(fg)
-        bg_screen = None if bg is None else self._findClosestColor(bg)
+        fg_screen = None if fg is None else self._find_closest_color(fg)
+        bg_screen = None if bg is None else self._find_closest_color(bg)
 
         if (fg_screen, bg_screen) in self._attr_lookup_cache:
             return self._attr_lookup_cache[(fg_screen, bg_screen)]
@@ -211,7 +211,7 @@ class VScreen(object):
         fg_index = -1 if fg_screen is None else fg_screen.colorIdx()
         bg_index = -1 if bg_screen is None else bg_screen.colorIdx()
 
-        attr = self._getPairAttrFromColors(fg_index, bg_index)
+        attr = self._get_pair_attr_from_colors(fg_index, bg_index)
 
         if fg_screen and fg_screen.attr():
             attr |= fg_screen.attr()
@@ -219,7 +219,7 @@ class VScreen(object):
         self._attr_lookup_cache[(fg_screen, bg_screen)] = attr
         return attr
 
-    def _getPairAttrFromColors(self, fg_index, bg_index):
+    def _get_pair_attr_from_colors(self, fg_index, bg_index):
         t = (fg_index, bg_index)
 
         if t in self._color_pairs:
@@ -236,18 +236,18 @@ class VScreen(object):
         return attr
         # Init color pairs
 
-    def setCursorPos(self, pos):
-        if self.outOfBounds(pos):
+    def set_cursor_pos(self, pos):
+        if self.out_of_bounds(pos):
             self.logger.error(
                 "out of bound in Screen.setCursorPos: %s" % str(pos))
             return
 
         self._cursor_pos = pos
 
-    def cursorPos(self):
+    def cursor_pos(self):
         return self._cursor_pos
 
-    def _findClosestColor(self, color):
+    def _find_closest_color(self, color):
         screen_color = self._color_lookup_cache.get(color.rgb)
         if screen_color is not None:
             return screen_color
@@ -255,14 +255,14 @@ class VScreen(object):
         closest = sorted([(VColor.VColor.distance(color, screen_color),
                            screen_color)
                           for index, screen_color in enumerate(
-            VGlobalScreenColor.allColors())
+            VGlobalScreenColor.all_colors())
         ],
             key=lambda x: x[0]
         )[0]
         self._color_lookup_cache[color.rgb] = closest[1]
         return closest[1]
 
-    def outOfBounds(self, pos):
+    def out_of_bounds(self, pos):
         x, y = pos
         return (x >= self.width() or y >= self.height() or x < 0 or y < 0)
 
@@ -276,10 +276,10 @@ class VScreenColor(object):
     def attr(self):
         return self._attr
 
-    def colorIdx(self):
+    def color_idx(self):
         return self._color_idx
 
-    def equivRgb(self):
+    def equiv_rgb(self):
         return self._equiv_rgb
 
     @property
@@ -596,7 +596,7 @@ class VGlobalScreenColor(object):
             cls.pink = cls.term_210
 
     @classmethod
-    def allColors(cls):
+    def all_colors(cls):
         return [c for c in list(cls.__dict__.values())
                 if isinstance(c, VScreenColor)]
 
@@ -641,13 +641,13 @@ class VScreenArea(object):
                     str(pos), str(self.size()), len(string), string))
             out_string = out_string[:w-rel_x]
 
-        top_left_x, top_left_y = self.topLeft()
+        top_left_x, top_left_y = self.top_left()
         self._screen.write((rel_x+top_left_x, rel_y+top_left_y),
                            out_string,
                            fg_color,
                            bg_color)
 
-    def setColors(self, pos, colors):
+    def set_colors(self, pos, colors):
         rel_x, rel_y = pos
         w, h = self.size()
 
@@ -677,8 +677,8 @@ class VScreenArea(object):
                     str(pos), str(self.size()), len(colors)))
             out_colors = out_colors[:w-rel_x]
 
-        top_left_x, top_left_y = self.topLeft()
-        self._screen.setColors(
+        top_left_x, top_left_y = self.top_left()
+        self._screen.set_colors(
             (rel_x+top_left_x, rel_y+top_left_y), out_colors)
 
     def rect(self):
@@ -687,7 +687,7 @@ class VScreenArea(object):
     def size(self):
         return (self._rect[Index.RECT_WIDTH], self._rect[Index.RECT_HEIGHT])
 
-    def topLeft(self):
+    def top_left(self):
         return (self._rect[Index.RECT_X], self._rect[Index.RECT_Y])
 
     def width(self):
@@ -703,7 +703,7 @@ class VScreenArea(object):
         for y in range(self.height()):
             self.write((0, y), ' '*self.width())
 
-    def outOfBounds(self, pos):
+    def out_of_bounds(self, pos):
         x, y = pos
         return (x >= self.size()[Index.SIZE_WIDTH] or
                 y >= self.size()[Index.SIZE_HEIGHT] or x < 0 or y < 0)

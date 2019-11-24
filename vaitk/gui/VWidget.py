@@ -11,14 +11,14 @@ from . import events
 class VWidget(core.VObject):
     def __init__(self, parent=None):
         if parent is None:
-            parent = VApplication.vApp.rootWidget()
+            parent = VApplication.vApp.root_widget()
 
         super().__init__(parent)
 
         if self.parent() is None:
             self._geometry = (0, 0) + VApplication.vApp.screen().size()
         else:
-            self._geometry = self.parent().contentsRect()
+            self._geometry = self.parent().contents_rect()
 
         self._layout = None
         self._visible_implicit = False
@@ -33,20 +33,20 @@ class VWidget(core.VObject):
         # True for dialogs and other widgets that hover, grabbing the focus
         self._is_window = False
 
-    def setFocus(self, reason=None):
+    def set_focus(self, reason=None):
         """
         Gives focus to this widget.
         Arguments:
             reason: The reason behind the focus change
         """
-        VApplication.vApp.setFocusWidget(self)
+        VApplication.vApp.set_focus_widget(self)
 
-    def hasFocus(self):
+    def has_focus(self):
         """
         Returns:
             True if the widget has focus, otherwise False
         """
-        return (self is VApplication.vApp.focusWidget())
+        return (self is VApplication.vApp.focus_widget())
 
     # State change
     def move(self, pos):
@@ -61,7 +61,7 @@ class VWidget(core.VObject):
         if not isinstance(pos, tuple) or len(pos) != 2:
             raise TypeError("Invalid pos argument")
 
-        self.setGeometry(pos+self.size())
+        self.set_geometry(pos + self.size())
 
     def resize(self, size):
         """
@@ -76,12 +76,12 @@ class VWidget(core.VObject):
         if not isinstance(size, tuple) or len(size) != 2:
             raise TypeError("Invalid size argument")
 
-        self.setGeometry(self.pos()+size)
+        self.set_geometry(self.pos() + size)
 
-    def setGeometry(self, rect):
+    def set_geometry(self, rect):
         old_geometry = self._geometry
 
-        min_size = self.minimumSize()
+        min_size = self.minimum_size()
         self._geometry = (rect[Index.RECT_X],
                           rect[Index.RECT_Y],
                           max(min_size[Index.SIZE_WIDTH],
@@ -90,10 +90,10 @@ class VWidget(core.VObject):
                               rect[Index.RECT_HEIGHT])
                           )
 
-        if self.isVisible():
+        if self.is_visible():
             deliver_routine = VApplication.vApp.sendEvent
         else:
-            deliver_routine = VApplication.vApp.postEvent
+            deliver_routine = VApplication.vApp.post_event
 
         if (old_geometry[Index.RECT_X], old_geometry[Index.RECT_Y])  \
                 != (self._geometry[Index.RECT_X],
@@ -111,13 +111,13 @@ class VWidget(core.VObject):
         """
         Makes the widget visible. Equivalent to self.setVisible(True)
         """
-        self.setVisible(True)
+        self.set_visible(True)
 
     def hide(self):
         """
         Makes the widget hidden. Equivalent to self.setVisible(False)
         """
-        self.setVisible(False)
+        self.set_visible(False)
 
     def lower(self):
         pass
@@ -128,7 +128,7 @@ class VWidget(core.VObject):
     def close(self):
         pass
 
-    def setVisible(self, visible):
+    def set_visible(self, visible):
         """
         Changes the visibility of the widget. If setVisible(True) is called
         on a visible widget, nothing
@@ -142,30 +142,30 @@ class VWidget(core.VObject):
         """
         self.logger.info("Setting explicit visibility for %s : %s" %
                          (str(self), str(visible)))
-        visible_before = self.isVisible()
+        visible_before = self.is_visible()
         self._visible_explicit = visible
 
         if visible and not visible_before:
-            VApplication.vApp.postEvent(self, events.VShowEvent())
+            VApplication.vApp.post_event(self, events.VShowEvent())
         elif not visible and visible_before:
-            VApplication.vApp.postEvent(self, events.VHideEvent())
+            VApplication.vApp.post_event(self, events.VHideEvent())
 
         for w in self.children():
-            w.setVisibleImplicit(visible)
+            w.set_visible_implicit(visible)
 
-    def setVisibleImplicit(self, visible):
+    def set_visible_implicit(self, visible):
         # XXX private?
         self.logger.info("Setting implicit visibility for %s : %s" %
                          (str(self), str(visible)))
         self._visible_implicit = visible
 
         if visible:
-            VApplication.vApp.postEvent(self, events.VShowEvent())
+            VApplication.vApp.post_event(self, events.VShowEvent())
         else:
-            VApplication.vApp.postEvent(self, events.VHideEvent())
+            VApplication.vApp.post_event(self, events.VHideEvent())
 
         for w in self.children():
-            w.setVisibleImplicit(visible)
+            w.set_visible_implicit(visible)
 
     # Query methods
     def size(self):
@@ -183,8 +183,8 @@ class VWidget(core.VObject):
         """
         return (0, 0)+self.size()
 
-    def absoluteRect(self):
-        return self.mapToGlobal((0, 0))+self.size()
+    def absolute_rect(self):
+        return self.map_to_global((0, 0)) + self.size()
 
     def geometry(self):
         """
@@ -243,7 +243,7 @@ class VWidget(core.VObject):
         geometry = self.geometry()
         return geometry[Index.RECT_Y]
 
-    def isVisible(self):
+    def is_visible(self):
         """
         Returns:
             True if the widget is visible. False if hidden.
@@ -253,10 +253,10 @@ class VWidget(core.VObject):
         return (self._visible_explicit if self._visible_explicit is not None
                 else self._visible_implicit)
 
-    def isVisibleTo(self, ancestor):
+    def is_visible_to(self, ancestor):
         pass
 
-    def minimumSize(self):
+    def minimum_size(self):
         """
         Returns:
             a 2-tuple (width, height) with the minimum allowed size of the
@@ -264,11 +264,11 @@ class VWidget(core.VObject):
         """
         return self._minimum_size
 
-    def addLayout(self, layout):
+    def add_layout(self, layout):
         self._layout = layout
-        self._layout.setParent(self)
+        self._layout.set_parent(self)
 
-    def mapToGlobal(self, pos):
+    def map_to_global(self, pos):
         """
         Given a position pos in coordinates relative to this widget, return
         the coordinate
@@ -285,13 +285,13 @@ class VWidget(core.VObject):
             return (pos[Index.X]+top_left[Index.X],
                     pos[Index.Y]+top_left[Index.Y])
 
-        parent_corner = self.parent().mapToGlobal((0, 0))
+        parent_corner = self.parent().map_to_global((0, 0))
         return (parent_corner[Index.X] + top_left[Index.X] + pos[Index.X],
                 parent_corner[Index.Y] + top_left[Index.Y] + pos[Index.Y]
                 )
 
-    def screenArea(self):
-        abs_pos_topleft = self.mapToGlobal((0, 0))
+    def screen_area(self):
+        abs_pos_topleft = self.map_to_global((0, 0))
 
         return VScreenArea(VApplication.vApp.screen(),
                            abs_pos_topleft + self.size()
@@ -310,61 +310,61 @@ class VWidget(core.VObject):
         self.logger.info("Event %s. Receiver %s" % (str(event), str(self)))
 
         if isinstance(event, events.VPaintEvent):
-            if not self.isVisible():
+            if not self.is_visible():
                 return True
-            self.paintEvent(event)
+            self.paint_event(event)
             self._needs_update = False
 
         elif isinstance(event, events.VFocusEvent):
-            if self.isVisible():
+            if self.is_visible():
                 if event.eventType() == core.VEvent.EventType.FocusIn:
-                    self.focusInEvent(event)
+                    self.focus_in_event(event)
             else:
                 if event.eventType() == core.VEvent.EventType.FocusOut:
-                    self.focusOutEvent(event)
+                    self.focus_out_event(event)
 
             self.update()
 
         elif isinstance(event, events.VHideEvent):
-            self.hideEvent(event)
+            self.hide_event(event)
 
             for w in self.depthFirstFullTree():
                 self.logger.info("Widget %s in tree" % str(w))
-                if not w.isVisible():
+                if not w.is_visible():
                     continue
                 self.logger.info("Repainting widget %s" % str(w))
                 w.update()
 
         elif isinstance(event, events.VShowEvent):
-            self.showEvent(event)
+            self.show_event(event)
 
             for w in self.depthFirstFullTree():
                 self.logger.info("Widget %s in tree" % str(w))
-                if not w.isVisible():
+                if not w.is_visible():
                     continue
                 w.update()
 
         elif isinstance(event, events.VMoveEvent):
-            if not self.isVisible():
+            if not self.is_visible():
                 return True
 
-            self.moveEvent(event)
+            self.move_event(event)
 
             for w in self.depthFirstFullTree():
                 self.logger.info("Widget %s in tree" % str(w))
-                if not w.isVisible():
+                if not w.is_visible():
                     continue
                 w.update()
 
         elif isinstance(event, events.VResizeEvent):
-            if not self.isVisible():
+            if not self.is_visible():
                 return True
 
-            self.resizeEvent(event)
+            self.resize_event(event)
 
             for w in self.depthFirstFullTree():
                 self.logger.info("Widget %s in tree" % str(w))
-                if not w.isVisible():
+                if not w.is_visible():
                     continue
                 w.update()
         else:
@@ -372,13 +372,13 @@ class VWidget(core.VObject):
 
         return True
 
-    def keyEvent(self, event):
+    def key_event(self, event):
         """
         Handle VKeyEvents.
         """
         pass
 
-    def paintEvent(self, event):
+    def paint_event(self, event):
         painter = VPainter(self)
         # if self._layout is not None:
         #    self._layout.apply()
@@ -387,36 +387,36 @@ class VWidget(core.VObject):
 
         string = ' '*size[Index.SIZE_WIDTH]
         for i in range(0, size[Index.SIZE_HEIGHT]):
-            painter.drawText((0, i), string)
+            painter.draw_text((0, i), string)
 
-    def focusInEvent(self, event):
+    def focus_in_event(self, event):
         self.logger.info("FocusIn event")
 
-    def focusOutEvent(self, event):
+    def focus_out_event(self, event):
         self.logger.info("FocusOut event")
 
-    def hideEvent(self, event):
+    def hide_event(self, event):
         self.logger.info("Hide event")
 
-    def moveEvent(self, event):
+    def move_event(self, event):
         self.logger.info("Move event")
 
-    def showEvent(self, event):
+    def show_event(self, event):
         self.logger.info("Show event")
 
-    def resizeEvent(self, event):
+    def resize_event(self, event):
         self.logger.info("Resize event")
 
-    def setFocusPolicy(self, policy):
+    def set_focus_policy(self, policy):
         self._focus_policy = policy
 
-    def focusPolicy(self):
+    def focus_policy(self):
         return self._focus_policy
 
-    def needsUpdate(self):
+    def needs_update(self):
         return self._needs_update
 
-    def isEnabled(self):
+    def is_enabled(self):
         """
         Returns:
             True if the widget is enabled. False otherwise.
@@ -425,16 +425,16 @@ class VWidget(core.VObject):
         # focus is reassigned when a widget is made enabled False
         return self._enabled
 
-    def isEnabledTo(self, ancestor):
+    def is_enabled_to(self, ancestor):
         pass
 
-    def isActive(self):
+    def is_active(self):
         return self._active
 
-    def setActive(self, active):
+    def set_active(self, active):
         self._active = active
 
-    def setEnabled(self, enabled):
+    def set_enabled(self, enabled):
         """
         Enables or disables a widget.
 
@@ -455,11 +455,11 @@ class VWidget(core.VObject):
 
         return self._palette
 
-    def setColors(self, fg=None, bg=None):
-        self.palette().setColor(VPalette.ColorGroup.Active,
-                                VPalette.ColorRole.WindowText, fg)
-        self.palette().setColor(VPalette.ColorGroup.Active,
-                                VPalette.ColorRole.Window, bg)
+    def set_colors(self, fg=None, bg=None):
+        self.palette().set_color(VPalette.ColorGroup.Active,
+                                 VPalette.ColorRole.WindowText, fg)
+        self.palette().set_color(VPalette.ColorGroup.Active,
+                                 VPalette.ColorRole.Window, bg)
 
     def colors(self, color_group=VPalette.ColorGroup.Active):
         fg = self.palette().color(color_group, VPalette.ColorRole.WindowText)
@@ -467,26 +467,26 @@ class VWidget(core.VObject):
 
         return (fg, bg)
 
-    def currentColors(self):
-        if self.isActive():
+    def current_colors(self):
+        if self.is_active():
             color_group = VPalette.ColorGroup.Active
         else:
-            if self.isEnabled(self):
+            if self.is_enabled(self):
                 color_group = VPalette.ColorGroup.Inactive
             else:
                 color_group = VPalette.ColorGroup.Disabled
         return self.colors(color_group)
 
-    def backgroundRole(self):
+    def background_role(self):
         pass
 
-    def foregroundRole(self):
+    def foreground_role(self):
         pass
 
-    def setForegroundRole(self, role):
+    def set_foreground_role(self, role):
         pass
 
-    def setBackgroundRole(self, role):
+    def set_background_role(self, role):
         pass
 
     def update(self):
@@ -494,9 +494,9 @@ class VWidget(core.VObject):
 
     # Sizes
 
-    def contentsRect(self):
+    def contents_rect(self):
         # XXX Check because I think we also have to subtract border and padding
-        margins = self.contentsMargins()
+        margins = self.contents_margins()
         return (margins[Index.MARGIN_LEFT],
                 margins[Index.MARGIN_TOP],
                 self.width()-margins[Index.MARGIN_LEFT] -
@@ -505,81 +505,81 @@ class VWidget(core.VObject):
                 margins[Index.MARGIN_BOTTOM]
                 )
 
-    def contentsMargins(self):
+    def contents_margins(self):
         # XXX not sure about the definition of margins for qt
         return (0, 0, 0, 0)
 
-    def childrenRect(self):
+    def children_rect(self):
         pass
 
-    def frameGeometry(self):
+    def frame_geometry(self):
         pass
 
-    def normalGeometry(self):
+    def normal_geometry(self):
         pass
 
-    def baseSize(self):
+    def base_size(self):
         pass
 
-    def frameSize(self):
+    def frame_size(self):
         pass
 
-    def maximumSize(self):
+    def maximum_size(self):
         pass
 
-    def maximumWidth(self):
+    def maximum_width(self):
         pass
 
-    def maximumHeight(self):
+    def maximum_height(self):
         pass
 
-    def minimumHeight(self):
+    def minimum_height(self):
         pass
 
-    def minimumWidth(self):
+    def minimum_width(self):
         pass
 
-    def minimumSizeHint(self):
+    def minimum_size_hint(self):
         pass
 
-    def sizeHint(self):
+    def size_hint(self):
         pass
 
-    def heightForWidth(self):
+    def height_for_width(self):
         pass
 
-    def setBaseSize(self, size):
+    def set_base_size(self, size):
         pass
 
-    def setContentsMargins(self, margins):
+    def set_contents_margins(self, margins):
         pass
 
-    def setMaximumHeight(self, maxh):
+    def set_maximum_height(self, maxh):
         pass
 
-    def setMaximumSize(self, max_size):
+    def set_maximum_size(self, max_size):
         pass
 
-    def setMaximumWidth(self, maxw):
+    def set_maximum_width(self, maxw):
         pass
 
-    def setMinimumHeight(self, minh):
+    def set_minimum_height(self, minh):
         self._minimum_size = (self._minimum_size[Index.SIZE_WIDTH], minh)
 
-    def setMinimumWidth(self, minw):
+    def set_minimum_width(self, minw):
         self._minimum_size = (minw, self._minimum_size[Index.SIZE_HEIGHT])
 
-    def setMinimumSize(self, min_size):
+    def set_minimum_size(self, min_size):
         self._minimum_size = min_size
 
-    def setFixedHeight(self, height):
+    def set_fixed_height(self, height):
         pass
 
-    def setFixedWidth(self, width):
+    def set_fixed_width(self, width):
         pass
 
-    def setFixedSize(self, size):
+    def set_fixed_size(self, size):
         pass
 
-    def fontInfo(self):
+    def font_info(self):
         pass

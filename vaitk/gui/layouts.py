@@ -3,7 +3,7 @@ class VHLayout(object):
         self._widgets = []
         self._parent = None
 
-    def addWidget(self, widget):
+    def add_widget(self, widget):
         self._widgets.append(widget)
 
     def apply(self):
@@ -13,7 +13,7 @@ class VHLayout(object):
             w.move(available_size*i, 0)
             w.resize(available_size, size[1])
 
-    def setParent(self, parent):
+    def set_parent(self, parent):
         self._parent = parent
 
     def parent(self):
@@ -25,7 +25,7 @@ class VVLayout(object):
         self._widgets = []
         self._parent = None
 
-    def addWidget(self, widget):
+    def add_widget(self, widget):
         self._widgets.append(widget)
 
     def apply(self):
@@ -43,7 +43,7 @@ class VVLayout(object):
                 w.resize(size[0], available_size)
                 plot_pos += available_size
 
-    def setParent(self, parent):
+    def set_parent(self, parent):
         self._parent = parent
 
     def parent(self):

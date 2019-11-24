@@ -34,10 +34,10 @@ class VPalette:
     def color(self, color_group, color_role):
         return self._colors[(color_group, color_role)]
 
-    def setColor(self, color_group, color_role, color):
+    def set_color(self, color_group, color_role, color):
         self._colors[(color_group, color_role)] = color
 
-    def setDefaults(self):
+    def set_defaults(self):
         self._colors = {
             (VPalette.ColorGroup.Active, VPalette.ColorRole.WindowText):
                 VColor.VColor(rgb=(170, 170, 170)),

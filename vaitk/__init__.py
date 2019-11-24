@@ -197,7 +197,7 @@ class KeyModifier:
     Mask = 0x3F000000
 
 
-def nativeToVaiKeyCode(native_key_code):
+def native_to_vai_key_code(native_key_code):
     """Transforms the keycode from native (ncurses) to vaitk representation"""
     key_mapper = {
         1: Key.Key_A | KeyModifier.ControlModifier,
@@ -339,7 +339,7 @@ def isKeyCodePrintable(key_code):
     return ((key_code & Key.NonPrintableMask) == 0)
 
 
-def vaiKeyCodeToText(key_code):
+def vai_key_code_to_text(key_code):
     if not isKeyCodePrintable(key_code):
         return ''
 

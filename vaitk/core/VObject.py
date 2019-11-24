@@ -43,7 +43,7 @@ class VObject:
         self._children = []
         self._event_filters = []
         if self._parent is not None:
-            parent.addChild(self)
+            parent.add_child(self)
 
     def parent(self):
         return self._parent
@@ -51,55 +51,55 @@ class VObject:
     def children(self):
         return self._children
 
-    def addChild(self, child):
+    def add_child(self, child):
         self._children.append(child)
 
-    def removeChild(self, child):
+    def remove_child(self, child):
         self._children.remove(child)
 
-    def depthFirstFullTree(self):
-        return self.root().depthFirstSubTree()
+    def depth_first_full_tree(self):
+        return self.root().depth_first_sub_tree()
 
-    def depthFirstSubTree(self):
+    def depth_first_sub_tree(self):
         result = [self]
         for c in self.children():
-            result.extend(c.depthFirstSubTree())
+            result.extend(c.depth_first_sub_tree())
         return result
 
     def root(self):
-        return self.traverseToRoot()[-1]
+        return self.traverse_to_root()[-1]
 
-    def traverseToRoot(self):
+    def traverse_to_root(self):
         result = [self]
         if self.parent() is None:
             return result
-        result.extend(self.parent().traverseToRoot())
+        result.extend(self.parent().traverse_to_root())
         return result
 
-    def depthFirstRightTree(self):
-        depth_first_tree = self.depthFirstFullTree()
+    def depth_first_right_tree(self):
+        depth_first_tree = self.depth_first_full_tree()
         return depth_first_tree[depth_first_tree.index(self)+1:]
 
-    def depthFirstLeftTree(self):
-        depth_first_tree = self.depthFirstFullTree()
+    def depth_first_left_tree(self):
+        depth_first_tree = self.depth_first_full_tree()
         return depth_first_tree[:depth_first_tree.index(self)]
 
-    def installEventFilter(self, event_filter):
+    def install_event_filter(self, event_filter):
         self._event_filters.append(event_filter)
 
-    def eventFilter(self, watched, event):
+    def event_filter(self, watched, event):
         return False
 
-    def installedEventFilters(self):
+    def installed_event_filters(self):
         return self._event_filters
 
     def event(self, event):
         if isinstance(event, VTimerEvent.VTimerEvent):
-            self.timerEvent(event)
+            self.timer_event(event)
             return True
         return False
 
-    def timerEvent(self, event):
+    def timer_event(self, event):
         return True
 
     def __str__(self):

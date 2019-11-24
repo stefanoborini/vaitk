@@ -44,12 +44,12 @@ class VTimer(VObject):
         self._thread.start()
 
     def _timeout(self):
-        VCoreApplication.vApp.postEvent(self, VTimerEvent.VTimerEvent())
+        VCoreApplication.vApp.post_event(self, VTimerEvent.VTimerEvent())
 
-    def setSingleShot(self, single_shot):
+    def set_single_shot(self, single_shot):
         self._single_shot = single_shot
 
-    def setInterval(self, interval):
+    def set_interval(self, interval):
         self._interval = interval
 
     def stop(self):
@@ -60,17 +60,17 @@ class VTimer(VObject):
         # thread as it's still running.
         self._thread = None
 
-    def isRunning(self):
+    def is_running(self):
         return self._thread is not None
 
-    def timerEvent(self, event):
+    def timer_event(self, event):
         if isinstance(event, VTimerEvent.VTimerEvent):
             self.timeout.emit()
 
     @staticmethod
-    def singleShot(timeout, callback):
+    def single_shot(timeout, callback):
         timer = VTimer()
-        timer.setInterval(timeout)
-        timer.setSingleShot(True)
+        timer.set_interval(timeout)
+        timer.set_single_shot(True)
         timer.timeout.connect(callback)
         timer.start()
