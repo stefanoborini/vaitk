@@ -1,5 +1,5 @@
 import unittest
-from vaitk import gui, test
+from vaitk import gui, test, core
 
 class TestVLabel(unittest.TestCase):
     def setUp(self):
@@ -9,6 +9,7 @@ class TestVLabel(unittest.TestCase):
     def tearDown(self):
         del self.screen
         self.app.exit()
+        core.VCoreApplication.vApp = None
         del self.app
 
     @unittest.skip

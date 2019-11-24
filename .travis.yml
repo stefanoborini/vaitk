@@ -7,4 +7,4 @@ install:
 - poetry debug:info
 - poetry install
 script: 
-    - poetry run nosetests
+- poetry run pytest
