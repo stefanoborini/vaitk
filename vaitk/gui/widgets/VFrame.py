@@ -2,6 +2,7 @@ from ..VWidget import VWidget
 from ..VPalette import VPalette
 from ..VPainter import VPainter
 
+
 class VFrame(VWidget):
     def __init__(self, parent=None):
         super(VFrame, self).__init__(parent)
@@ -19,10 +20,10 @@ class VFrame(VWidget):
         fg, bg = self.colors(color_group)
         w, h = self.size()
         painter = VPainter(self)
-        painter.fillRect( (0,0,w,h) )
+        painter.fillRect((0, 0, w, h))
         if self._title:
-            title_pos = int((w - len(self._title)) / 2)
-            painter.drawText( (0, dash_length), " " + self._title + " ", fg, bg)
+            dash_length = 0  # FIXME
+            painter.drawText((0, dash_length), " " + self._title + " ", fg, bg)
 
     def setTitle(self, title):
         self._title = title
@@ -31,7 +32,7 @@ class VFrame(VWidget):
         if self._title:
             return (len(self._title) + 8, 2)
         else:
-            return (2,2)
+            return (2, 2)
 
     def contentsMargins(self):
-        return (1,1,1,1)
+        return (1, 1, 1, 1)

@@ -1,5 +1,6 @@
 from .VApplication import VApplication
 
+
 class VCursor:
     @staticmethod
     def setPos(pos):
@@ -8,5 +9,3 @@ class VCursor:
     @staticmethod
     def pos():
         return VApplication.vApp.screen().cursorPos()
-
-

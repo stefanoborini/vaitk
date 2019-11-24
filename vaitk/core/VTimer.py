@@ -5,6 +5,7 @@ from . import VTimerEvent
 import time
 import threading
 
+
 class _TimerThread(threading.Thread):
     def __init__(self, timeout, single_shot, callback):
         super(_TimerThread, self).__init__()
@@ -23,6 +24,7 @@ class _TimerThread(threading.Thread):
             if self._single_shot:
                 break
 
+
 class VTimer(VObject):
     def __init__(self):
         super().__init__()
@@ -37,7 +39,8 @@ class VTimer(VObject):
             return
         if self._interval is None:
             return
-        self._thread = _TimerThread(self._interval, self._single_shot, self._timeout)
+        self._thread = _TimerThread(
+            self._interval, self._single_shot, self._timeout)
         self._thread.start()
 
     def _timeout(self):
@@ -53,7 +56,8 @@ class VTimer(VObject):
         if self._thread:
             self._thread.stop.set()
 
-        # XXX problem here. We could incur in deletion of the secondary thread as it's still running.
+        # XXX problem here. We could incur in deletion of the secondary
+        # thread as it's still running.
         self._thread = None
 
     def isRunning(self):
@@ -70,5 +74,3 @@ class VTimer(VObject):
         timer.setSingleShot(True)
         timer.timeout.connect(callback)
         timer.start()
-
-

@@ -2,6 +2,7 @@ from ..VWidget import VWidget
 from ..VPalette import VPalette
 from ..VPainter import VPainter
 
+
 class VDialog(VWidget):
     def __init__(self, parent=None):
         super(VDialog, self).__init__(parent)
@@ -20,12 +21,14 @@ class VDialog(VWidget):
         w, h = self.size()
         if self._title:
 
-            #0123456789012
-            #+-| hello |-+
+            # 0123456789012
+            # +-| hello |-+
             dash_length = (w -                  # total width of the dialog
                            2 -                  # space for the angles
-                           len(self._title) -   # the space for the title itself
-                           2 -                  # the two empty spaces on the sides of the title
+                           # the space for the title itself
+                           len(self._title) -
+                           2 -                  # the two empty spaces on the
+                                                # sides of the title
                            2)                   # the vertical bars
             header = '+' + \
                      "-"*(dash_length/2) + \
@@ -51,7 +54,7 @@ class VDialog(VWidget):
         if self._title:
             return (len(self._title) + 8, 2)
         else:
-            return (2,2)
+            return (2, 2)
 
     def contentsMargins(self):
-        return (1,1,1,1)
+        return (1, 1, 1, 1)

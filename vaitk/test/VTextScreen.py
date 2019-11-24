@@ -1,12 +1,15 @@
 import itertools
 
+
 class VTextScreen(object):
     """
-    Dummy Screen that renders information in an indexed buffer, instead of the actual terminal
+    Dummy Screen that renders information in an indexed buffer, instead of
+    the actual terminal
     screen.
     """
+
     def __init__(self, size):
-        self._cursor_pos = (0,0)
+        self._cursor_pos = (0, 0)
         self._size = size
         self._text = ""
 
@@ -64,15 +67,17 @@ class VTextScreen(object):
         for pos_x in range(len(string)):
             try:
                 self._render_output[pos[1]][pos[0]+pos_x] = string[pos_x]
-            except:
+            except Exception:
                 print("Invalid write position : ", str(pos), string)
+
     def dump(self):
         ret = []
-        ret.append(" "+"".join(list(itertools.islice(itertools.cycle(list(map(str, list(range(10))))), self._size[0]+1))))
-        #print "+"*(self._size[0]+2)
+        ret.append(" "+"".join(list(itertools.islice(itertools.cycle(
+            list(map(str, list(range(10))))), self._size[0]+1))))
+        # print "+"*(self._size[0]+2)
         for i, r in enumerate(self._render_output):
-            ret.append(str(i%10)+''.join(r)+"+")
-        ret.append( "+"*(self._size[0]+2))
+            ret.append(str(i % 10)+''.join(r)+"+")
+        ret.append("+"*(self._size[0]+2))
         return ret
 
     def __str__(self):

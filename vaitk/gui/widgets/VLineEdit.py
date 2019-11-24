@@ -6,6 +6,7 @@ from ..VWidget import VWidget
 from ..VPainter import VPainter
 from ..VCursor import VCursor
 
+
 class VLineEdit(VWidget):
     def __init__(self, contents="", parent=None):
         super().__init__(parent)
@@ -110,20 +111,20 @@ class VLineEdit(VWidget):
     def paintEvent(self, event):
         w, h = self.size()
         painter = VPainter(self)
-        painter.drawText( (0, 0), self._text + ' '*(w-len(self._text)))
+        painter.drawText((0, 0), self._text + ' '*(w-len(self._text)))
         if self.hasFocus():
-            abs_top_left = self.mapToGlobal((0,0))
-            VCursor.setPos( (abs_top_left[Index.X] + self._cursor_position,
-                             abs_top_left[Index.Y]
+            abs_top_left = self.mapToGlobal((0, 0))
+            VCursor.setPos((abs_top_left[Index.X] + self._cursor_position,
+                            abs_top_left[Index.Y]
                             )
-                          )
+                           )
 
     def focusInEvent(self, event):
-        abs_top_left = self.mapToGlobal((0,0))
-        VCursor.setPos( (abs_top_left[Index.X] + self._cursor_position,
-                         abs_top_left[Index.Y]
+        abs_top_left = self.mapToGlobal((0, 0))
+        VCursor.setPos((abs_top_left[Index.X] + self._cursor_position,
+                        abs_top_left[Index.Y]
                         )
-                      )
+                       )
 
     def keyEvent(self, event):
         if event.key() == Key.Key_Return:
@@ -131,15 +132,18 @@ class VLineEdit(VWidget):
         elif event.key() == Key.Key_Left:
             self._cursor_position = max(0, self._cursor_position-1)
         elif event.key() == Key.Key_Right:
-            self._cursor_position = min(len(self._text), self._cursor_position+1)
+            self._cursor_position = min(
+                len(self._text), self._cursor_position+1)
         elif event.key() == Key.Key_Backspace:
             if self._cursor_position == 0:
                 event.accept()
                 return
             self._cursor_position -= 1
-            self._text = self._text[:self._cursor_position] + self._text[self._cursor_position+1:]
+            self._text = self._text[:self._cursor_position] + \
+                self._text[self._cursor_position+1:]
         else:
-            self._text = self._text[:self._cursor_position] + event.text() +  self._text[self._cursor_position:]
+            self._text = self._text[:self._cursor_position] + \
+                event.text() + self._text[self._cursor_position:]
             self._cursor_position += len(event.text())
         event.accept()
         self.update()

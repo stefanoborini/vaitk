@@ -1,7 +1,7 @@
-from ... import core
 from ..VWidget import VWidget
 from ..VPainter import VPainter
 from ..VPalette import VPalette
+
 
 class VProgressBar(VWidget):
     def __init__(self, parent=None):
@@ -10,6 +10,7 @@ class VProgressBar(VWidget):
         self._minimum = 0
         self._maximum = 100
         self._value = 0
+
     def paintEvent(self, event):
         painter = VPainter(self)
         w, h = self.size()
@@ -20,22 +21,24 @@ class VProgressBar(VWidget):
 
         final_text = ""
         if len(self._text) > 0:
-            final_text += (self._text+ " ")
+            final_text += (self._text + " ")
 
-        percentage = int(100 * (self.value() - self.minimum())/(self.maximum() - self.minimum()))
+        percentage = int(100 * (self.value() - self.minimum()) /
+                         (self.maximum() - self.minimum()))
         percentage_text = ("%d" % percentage) + "%"
         bar_total_length = w - len(final_text) - 2
         if bar_total_length < 5:
             bar_text = percentage_text.rjust(4)
         else:
             bar_fill_length = int(bar_total_length * percentage / 100)
-            bar_text = ("="*bar_fill_length) + (' '*(bar_total_length-bar_fill_length))
+            bar_text = ("="*bar_fill_length) + \
+                (' '*(bar_total_length-bar_fill_length))
             bar_text = bar_text[:int(bar_total_length/2)-1] + \
-                       percentage_text + \
-                       bar_text[int(bar_total_length/2)-1+len(percentage_text):]
+                percentage_text + \
+                bar_text[int(bar_total_length/2)-1+len(percentage_text):]
 
         final_text += '[' + bar_text + ']'
-        painter.drawText( (0, 0), final_text, fg_color, bg_color)
+        painter.drawText((0, 0), final_text, fg_color, bg_color)
 
     def minimumSize(self):
         if len(self._text) > 0:
@@ -52,8 +55,10 @@ class VProgressBar(VWidget):
 
     def minimum(self):
         return self._minimum
+
     def maximum(self):
         return self._maximum
+
     def setMinimum(self, minimum):
         if self._minimum == minimum:
             return

@@ -1,11 +1,10 @@
-from .VObject import VObject
-from .VPoint import VPoint
-from .VRect import VRect
-from .VSize import VSize
-from .VCoreApplication import VCoreApplication
-from .VTimer import VTimer
-from .VSignal import VSignal
-from .VEvent import VEvent
-from .VTimerEvent import VTimerEvent
-from ..consts import Index
-
+from .VObject import VObject  # noqa
+from .VPoint import VPoint  # noqa
+from .VRect import VRect  # noqa
+from .VSize import VSize  # noqa
+from .VCoreApplication import VCoreApplication  # noqa
+from .VTimer import VTimer  # noqa
+from .VSignal import VSignal  # noqa
+from .VEvent import VEvent  # noqa
+from .VTimerEvent import VTimerEvent  # noqa
+from ..consts import Index  # noqa

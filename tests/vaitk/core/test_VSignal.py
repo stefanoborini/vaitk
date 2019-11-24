@@ -1,11 +1,13 @@
 from vaitk import core
 import unittest
 
+
 class TestVSignal(unittest.TestCase):
     def testVSignal(self):
         arg = []
         sender = core.VObject()
         signal = core.VSignal(sender)
+
         def slot(x):
             arg.append(x)
         signal.connect(slot)
@@ -26,6 +28,7 @@ class TestVSignal(unittest.TestCase):
         arg = []
         sender = core.VObject()
         signal = core.VSignal(sender)
+
         def slot(x):
             arg.append(x)
         signal.disconnect(slot)

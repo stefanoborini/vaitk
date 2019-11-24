@@ -7,7 +7,9 @@ import os
 from vai.models import Buffer
 
 # The place where global fixtures are looked up if local fixtures are not found
-GLOBAL_FIXTURES_DIR = os.path.join(os.path.dirname(__file__), "global_fixtures")
+GLOBAL_FIXTURES_DIR = os.path.join(
+    os.path.dirname(__file__), "global_fixtures")
+
 
 def get(name, dirname="fixtures"):
     """
@@ -20,8 +22,9 @@ def get(name, dirname="fixtures"):
     path = os.path.join(fixture_local_dir, name)
     if os.path.exists(path):
         return path
-    
+
     return os.path.join(GLOBAL_FIXTURES_DIR, name)
+
 
 def localDir(dirname="fixtures"):
     """
@@ -45,12 +48,13 @@ def buffer(name):
     buf.document.open(get(name))
     return buf
 
+
 def tempFile(name):
     """
     Returns a temporary file in a proper subdirectory
     Useful if the test needs a file that must be used and deleted afterwards
     """
-    
+
     path = os.path.join(localDir("_test_"), name)
 
     try:
@@ -60,4 +64,3 @@ def tempFile(name):
     if not os.path.exists(os.path.dirname(path)):
         os.mkdir(os.path.dirname(path))
     return path
-
