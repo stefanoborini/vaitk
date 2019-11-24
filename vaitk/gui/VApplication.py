@@ -8,7 +8,6 @@ from .events import VFocusEvent
 from .VGraphicElements import VGraphicElements
 import threading
 import queue
-import time
 
 
 class _VExceptionEvent:
@@ -61,13 +60,8 @@ class _KeyEventThread(threading.Thread):
         """
 
         while not self.stop_event.is_set():
-            last_event = (None, time.time())
             try:
                 c = self._screen.getKeyCode()
-
-#                if last_event[0] == c and time.time()-last_event[1] < 0.04:
-#                    continue
-                last_event = (c, time.time())
 
                 event = events.VKeyEvent.fromNativeKeyCode(c)
                 if event is not None:
@@ -217,7 +211,7 @@ class VApplication(core.VCoreApplication):
             if widget.focusPolicy() == FocusPolicy.NoFocus:
                 self.logger.info(
                     ("Focus not accepted on widget "
-                     "%s due to its focus policy." % self._focus_widget)
+                     "%s due to its focus policy.") % self._focus_widget)
                 return
 
             self._focus_widget = widget
@@ -383,13 +377,13 @@ class VApplication(core.VCoreApplication):
 
             # self._stop_flag.append(1)
         # Check if screen was re-sized (True or False)
-        #x,y = self._screen.size()
-        #resize = curses.is_term_resized(y, x)
+        # x,y = self._screen.size()
+        # resize = curses.is_term_resized(y, x)
 
         # Action in loop if resize is True:
         # if resize is True:
-            #x, y = self._screen.size()
-            #curses.resizeterm(y, x)
+            # x, y = self._screen.size()
+            # curses.resizeterm(y, x)
             # self.renderWidgets()
 
     def _sendPaintEvents(self):
