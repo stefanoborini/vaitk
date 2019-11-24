@@ -1,7 +1,6 @@
 from . import VColor
 from ..consts import Index
 import curses
-import _curses
 import select
 import sys
 import os
@@ -15,13 +14,15 @@ class VException(Exception):
 
 class VScreen(object):
     def __init__(self):
-        # Timeout so that ncurses sends out the pure esc key instead of considering it
-        # the start of a escape command. We need this to exit insert mode in vai, and
+        # Timeout so that ncurses sends out the pure esc key instead of
+        # considering it
+        # the start of a escape command. We need this to exit insert mode in
+        # vai, and
         # it makes sense overall
         os.environ["ESCDELAY"] = "25"
         try:
             self._curses_screen = curses.initscr()
-        except:
+        except Exception:
             raise VException("Cannot initialize screen")
         curses.start_color()
         curses.use_default_colors()
@@ -33,7 +34,8 @@ class VScreen(object):
         self._curses_screen.leaveok(True)
         self._curses_screen.notimeout(True)
 
-        # ncurses is not thread safe, we need a lock to prevent writing collide with reading
+        # ncurses is not thread safe, we need a lock to prevent writing
+        # collide with reading
         self._curses_lock = threading.Lock()
 
         # Resolves the rgb color to the screen color
@@ -42,7 +44,8 @@ class VScreen(object):
         # Resolves fg, bg native index to the associated color pair index
         self._attr_lookup_cache = {}
 
-        # The first color pair is always defined with index 0 and contains the default fg and bg colors
+        # The first color pair is always defined with index 0 and contains
+        # the default fg and bg colors
         self._color_pairs = [(-1, -1)]
 
         self._cursor_pos = (0, 0)
@@ -106,15 +109,17 @@ class VScreen(object):
         out_string = string
 
         if y < 0 or y >= h or x >= w:
-            self.logger.error("Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
-                str(pos), str(self.size()), len(string), string))
+            self.logger.error(
+                "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
+                    str(pos), str(self.size()), len(string), string))
             return
 
         out_string = out_string[:w-x]
 
         if x < 0:
-            self.logger.error("Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
-                str(pos), str(self.size()), len(string), string))
+            self.logger.error(
+                "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
+                    str(pos), str(self.size()), len(string), string))
             out_string = string[-x:]
 
         if len(out_string) == 0:
@@ -122,14 +127,16 @@ class VScreen(object):
 
         attr = self.getColorAttributeCode(fg_color, bg_color)
         if (x+len(out_string) > w):
-            self.logger.error("Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
-                str(pos), str(self.size()), len(string), string))
+            self.logger.error(
+                "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
+                    str(pos), str(self.size()), len(string), string))
             out_string = out_string[:w-x]
 
         if (x+len(out_string) == w):
             with self._curses_lock:
                 # Old ncurses trick. We can't write the very last character, so
-                # we add everything but the first, and then push everything forward
+                # we add everything but the first, and then push everything
+                # forward
                 self._curses_screen.addstr(y, x, out_string[1:], attr)
                 self._curses_screen.insstr(y, x, out_string[0], attr)
                 self._curses_screen.noutrefresh()
@@ -140,7 +147,8 @@ class VScreen(object):
 
     def setColors(self, pos, colors):
         """
-        Sets the color attributes for a specific line, starting at pos and forward until the colors
+        Sets the color attributes for a specific line, starting at pos and
+        forward until the colors
         array runs out.
 
         """
@@ -151,37 +159,37 @@ class VScreen(object):
         out_colors = colors
 
         if y < 0 or y >= h or x >= w:
-            self.logger.error("Out of bound in VScreen.setColors: pos=%s size=%s len=%d" % (
-                str(pos), str(self.size()), len(colors)))
+            self.logger.error(
+                "Out of bound in VScreen.setColors: pos=%s size=%s len=%d" % (
+                    str(pos), str(self.size()), len(colors)))
             return
 
         out_colors = out_colors[:w-x]
 
         if x < 0:
-            self.logger.error("Out of bound in VScreen.setColors: pos=%s size=%s len=%d" % (
-                str(pos), str(self.size()), len(colors)))
+            self.logger.error(
+                "Out of bound in VScreen.setColors: pos=%s size=%s len=%d" % (
+                    str(pos), str(self.size()), len(colors)))
             out_colors = colors[-x:]
 
         if len(out_colors) == 0:
             return
 
         if (x+len(out_colors) > w):
-            self.logger.error("Out of bound in VScreen.setColors: pos=%s size=%s len=%d" % (
-                str(pos), str(self.size()), len(colors)))
+            self.logger.error(
+                "Out of bound in VScreen.setColors: pos=%s size=%s len=%d" % (
+                    str(pos), str(self.size()), len(colors)))
             out_colors = out_colors[:w-x]
 
         for num, col in enumerate(out_colors):
             if len(col) == 1:
                 fg_color = col[0]
                 bg_color = None
-                fg_font = None
             elif len(col) == 2:
                 fg_color = col[0]
-                fg_font = None
                 bg_color = col[1]
             else:
                 fg_color = col[0]
-                fg_font = None
                 bg_color = col[2]
 
             attr = self.getColorAttributeCode(fg_color, bg_color)
@@ -192,7 +200,8 @@ class VScreen(object):
         return curses.COLORS
 
     def getColorAttributeCode(self, fg=None, bg=None):
-        """Given fg and bg colors, find and return the correct attribute code to apply with chgat"""
+        """Given fg and bg colors, find and return the correct attribute code
+        to apply with chgat"""
         fg_screen = None if fg is None else self._findClosestColor(fg)
         bg_screen = None if bg is None else self._findClosestColor(bg)
 
@@ -245,10 +254,11 @@ class VScreen(object):
 
         closest = sorted([(VColor.VColor.distance(color, screen_color),
                            screen_color)
-                          for index, screen_color in enumerate(VGlobalScreenColor.allColors())
-                          ],
-                         key=lambda x: x[0]
-                         )[0]
+                          for index, screen_color in enumerate(
+            VGlobalScreenColor.allColors())
+        ],
+            key=lambda x: x[0]
+        )[0]
         self._color_lookup_cache[color.rgb] = closest[1]
         return closest[1]
 
@@ -587,7 +597,8 @@ class VGlobalScreenColor(object):
 
     @classmethod
     def allColors(cls):
-        return [c for c in list(cls.__dict__.values()) if isinstance(c, VScreenColor)]
+        return [c for c in list(cls.__dict__.values())
+                if isinstance(c, VScreenColor)]
 
 
 class VScreenArea(object):
@@ -605,14 +616,18 @@ class VScreenArea(object):
         w, h = self.size()
 
         if rel_y < 0 or rel_y >= h or rel_x >= w:
-            self.logger.error("Out of bound in VScreenArea.write: pos=%s size=%s len=%d '%s'" % (
-                str(pos), str(self.size()), len(string), string))
+            self.logger.error(
+                ("Out of bound in VScreenArea.write: "
+                 "pos=%s size=%s len=%d '%s'") % (
+                    str(pos), str(self.size()), len(string), string))
             return
 
         out_string = string
         if rel_x < 0:
-            self.logger.error("Out of bound in VScreenArea.write: pos=%s size=%s len=%d '%s'" % (
-                str(pos), str(self.size()), len(string), string))
+            self.logger.error(
+                ("Out of bound in VScreenArea.write: "
+                 "pos=%s size=%s len=%d '%s'") % (
+                    str(pos), str(self.size()), len(string), string))
             out_string = string[-rel_x:]
             rel_x = 0
 
@@ -620,8 +635,10 @@ class VScreenArea(object):
             return
 
         if (rel_x+len(out_string) > w):
-            self.logger.error("Out of bound in VScreenArea.write: pos=%s size=%s len=%d '%s'" % (
-                str(pos), str(self.size()), len(string), string))
+            self.logger.error(
+                ("Out of bound in VScreenArea.write: "
+                 "pos=%s size=%s len=%d '%s'") % (
+                    str(pos), str(self.size()), len(string), string))
             out_string = out_string[:w-rel_x]
 
         top_left_x, top_left_y = self.topLeft()
@@ -635,14 +652,18 @@ class VScreenArea(object):
         w, h = self.size()
 
         if rel_y < 0 or rel_y >= h or rel_x >= w:
-            self.logger.error("Out of bound in VScreenArea.setColors: pos=%s size=%s len=%d" % (
-                str(pos), str(self.size()), len(colors)))
+            self.logger.error(
+                ("Out of bound in VScreenArea.setColors: "
+                 "pos=%s size=%s len=%d") % (
+                    str(pos), str(self.size()), len(colors)))
             return
 
         out_colors = colors
         if rel_x < 0:
-            self.logger.error("Out of bound in VScreenArea.setColors: pos=%s size=%s len=%d" % (
-                str(pos), str(self.size()), len(colors)))
+            self.logger.error(
+                ("Out of bound in VScreenArea.setColors: "
+                 "pos=%s size=%s len=%d") % (
+                    str(pos), str(self.size()), len(colors)))
             out_colors = colors[-rel_x:]
             rel_x = 0
 
@@ -650,8 +671,10 @@ class VScreenArea(object):
             return
 
         if (rel_x+len(out_colors) > w):
-            self.logger.error("Out of bound in VScreenArea.setColors: pos=%s size=%s len=%d" % (
-                str(pos), str(self.size()), len(colors)))
+            self.logger.error(
+                ("Out of bound in VScreenArea.setColors: "
+                 "pos=%s size=%s len=%d") % (
+                    str(pos), str(self.size()), len(colors)))
             out_colors = out_colors[:w-rel_x]
 
         top_left_x, top_left_y = self.topLeft()
@@ -682,4 +705,5 @@ class VScreenArea(object):
 
     def outOfBounds(self, pos):
         x, y = pos
-        return (x >= self.size()[Index.SIZE_WIDTH] or y >= self.size()[Index.SIZE_HEIGHT] or x < 0 or y < 0)
+        return (x >= self.size()[Index.SIZE_WIDTH] or
+                y >= self.size()[Index.SIZE_HEIGHT] or x < 0 or y < 0)

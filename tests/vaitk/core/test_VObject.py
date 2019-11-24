@@ -35,7 +35,6 @@ class TestVObject(unittest.TestCase):
     def testTraverseToRoot(self):
         p = core.VObject()
         c1 = core.VObject(p)
-        c2 = core.VObject(p)
         c3 = core.VObject(c1)
 
         self.assertEqual(p.traverseToRoot(), [p])
@@ -55,7 +54,6 @@ class TestVObject(unittest.TestCase):
     def testRightTree(self):
         p = core.VObject()
         c1_1 = core.VObject(p)
-        c2_1 = core.VObject(c1_1)
         c2_2 = core.VObject(c1_1)
         c3_1 = core.VObject(c2_2)
         c3_2 = core.VObject(c2_2)

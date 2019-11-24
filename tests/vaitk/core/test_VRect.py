@@ -16,15 +16,6 @@ class TestVRect(unittest.TestCase):
         self.assertTrue(r.isNull())
 
     def testVRectIntersects(self):
-        #self.assertTrue(core.VRect((2,3), (4,5)).intersects(core.VRect((2,3), (4,5))))
-        #self.assertFalse(core.VRect((2,3), (4,5)).intersects(core.VRect((2,3), (0,0))))
-        #self.assertFalse(core.VRect((2,3), (4,5)).intersects(core.VRect((0,0), (2,3))))
-        #self.assertTrue(core.VRect((2,3), (4,5)).intersects(core.VRect((3,4), (1,1))))
-        #self.assertFalse(core.VRect((2,3), (1,1)).intersects(core.VRect((1,2), (1,1))))
-        #self.assertFalse(core.VRect((2,3), (1,1)).intersects(core.VRect((3,4), (1,1))))
-        #self.assertFalse(core.VRect((2,3), (1,1)).intersects(core.VRect((3,3), (1,1))))
-        #self.assertFalse(core.VRect((2,3), (1,1)).intersects(core.VRect((4,4), (1,1))))
-
         self.assertTrue(core.VRect((0, 0), (18, 1)).intersects(
             core.VRect((4, 0), (142, 40))))
 

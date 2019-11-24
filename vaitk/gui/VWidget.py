@@ -96,12 +96,14 @@ class VWidget(core.VObject):
             deliver_routine = VApplication.vApp.postEvent
 
         if (old_geometry[Index.RECT_X], old_geometry[Index.RECT_Y])  \
-                != (self._geometry[Index.RECT_X], self._geometry[Index.RECT_Y]):
+                != (self._geometry[Index.RECT_X],
+                    self._geometry[Index.RECT_Y]):
 
             deliver_routine(self, events.VMoveEvent())
 
         if (old_geometry[Index.RECT_WIDTH], old_geometry[Index.RECT_WIDTH]) \
-                != (self._geometry[Index.RECT_HEIGHT], self._geometry[Index.RECT_HEIGHT]):
+                != (self._geometry[Index.RECT_HEIGHT],
+                    self._geometry[Index.RECT_HEIGHT]):
 
             deliver_routine(self, events.VResizeEvent())
 
@@ -128,9 +130,11 @@ class VWidget(core.VObject):
 
     def setVisible(self, visible):
         """
-        Changes the visibility of the widget. If setVisible(True) is called on a visible widget, nothing
+        Changes the visibility of the widget. If setVisible(True) is called
+        on a visible widget, nothing
         happens. The same for the hidden case.
-        A ShowEvent (HideEvent) is sent before (resp. after) the visibility change is performed on screen.
+        A ShowEvent (HideEvent) is sent before (resp. after) the visibility
+        change is performed on screen.
 
         Arguments:
             visible: True to set the widget to visible. False to hide it.
@@ -169,7 +173,8 @@ class VWidget(core.VObject):
         Returns:
             the widget current size as a 2-tuple (width, height)
         """
-        return (self.geometry()[Index.RECT_WIDTH], self.geometry()[Index.RECT_HEIGHT])
+        return (self.geometry()[Index.RECT_WIDTH],
+                self.geometry()[Index.RECT_HEIGHT])
 
     def rect(self):
         """
@@ -242,9 +247,11 @@ class VWidget(core.VObject):
         """
         Returns:
             True if the widget is visible. False if hidden.
-            Note that a widget is considered visible even if fully covered by an overlapping widget.
+            Note that a widget is considered visible even if fully covered by
+            an overlapping widget.
         """
-        return self._visible_explicit if self._visible_explicit is not None else self._visible_implicit
+        return (self._visible_explicit if self._visible_explicit is not None
+                else self._visible_implicit)
 
     def isVisibleTo(self, ancestor):
         pass
@@ -252,7 +259,8 @@ class VWidget(core.VObject):
     def minimumSize(self):
         """
         Returns:
-            a 2-tuple (width, height) with the minimum allowed size of the widget
+            a 2-tuple (width, height) with the minimum allowed size of the
+            widget
         """
         return self._minimum_size
 
@@ -262,7 +270,8 @@ class VWidget(core.VObject):
 
     def mapToGlobal(self, pos):
         """
-        Given a position pos in coordinates relative to this widget, return the coordinate
+        Given a position pos in coordinates relative to this widget, return
+        the coordinate
         in absolute screen coordinates.
 
         Arguments:
@@ -273,19 +282,13 @@ class VWidget(core.VObject):
         """
         top_left = self.pos()
         if self.parent() is None:
-            return (pos[Index.X]+top_left[Index.X], pos[Index.Y]+top_left[Index.Y])
+            return (pos[Index.X]+top_left[Index.X],
+                    pos[Index.Y]+top_left[Index.Y])
 
         parent_corner = self.parent().mapToGlobal((0, 0))
         return (parent_corner[Index.X] + top_left[Index.X] + pos[Index.X],
                 parent_corner[Index.Y] + top_left[Index.Y] + pos[Index.Y]
                 )
-
-#    def QPoint  mapFrom ( QWidget * parent, const QPoint & pos ) const
-#    def QPoint  mapFromGlobal ( const QPoint & pos ) const
-#    def QPoint  mapFromParent ( const QPoint & pos ) const
-#    def QPoint  mapTo ( QWidget * parent, const QPoint & pos ) const
-#    def QPoint  mapToGlobal ( const QPoint & pos ) const
-#    def QPoint  mapToParent ( const QPoint & pos ) const
 
     def screenArea(self):
         abs_pos_topleft = self.mapToGlobal((0, 0))
@@ -418,7 +421,8 @@ class VWidget(core.VObject):
         Returns:
             True if the widget is enabled. False otherwise.
         """
-        # XXX Check if an enabled widget is not sent focus events, and how focus is reassigned when a widget is made enabled False
+        # XXX Check if an enabled widget is not sent focus events, and how
+        # focus is reassigned when a widget is made enabled False
         return self._enabled
 
     def isEnabledTo(self, ancestor):
@@ -454,7 +458,8 @@ class VWidget(core.VObject):
     def setColors(self, fg=None, bg=None):
         self.palette().setColor(VPalette.ColorGroup.Active,
                                 VPalette.ColorRole.WindowText, fg)
-        self.palette().setColor(VPalette.ColorGroup.Active, VPalette.ColorRole.Window, bg)
+        self.palette().setColor(VPalette.ColorGroup.Active,
+                                VPalette.ColorRole.Window, bg)
 
     def colors(self, color_group=VPalette.ColorGroup.Active):
         fg = self.palette().color(color_group, VPalette.ColorRole.WindowText)
@@ -466,7 +471,7 @@ class VWidget(core.VObject):
         if self.isActive():
             color_group = VPalette.ColorGroup.Active
         else:
-            if isEnabled(self):
+            if self.isEnabled(self):
                 color_group = VPalette.ColorGroup.Inactive
             else:
                 color_group = VPalette.ColorGroup.Disabled
@@ -576,119 +581,5 @@ class VWidget(core.VObject):
     def setFixedSize(self, size):
         pass
 
-#    QRegion childrenRegion () const
-
-#    void    setSizePolicy ( QSizePolicy )
-#    void    setSizePolicy ( QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical )
-#    QSizePolicy sizePolicy () const
-
-#    def accessibleName(self):
-
-# QByteArray  saveGeometry () const
     def fontInfo(self):
         pass
-#    void    setFont ( const QFont & )
-#    const QFont &   font () const
-
-#    def layout ()
-
-
-#    def actions ()
-#    void    removeAction ( QAction * action )
-#    void    addAction ( QAction * action )
-#    void    addActions ( QList<QAction *> actions )
-#    void    insertAction ( QAction * before, QAction * action )
-#    void    insertActions ( QAction * before, QList<QAction *> actions )
-
-#    def locale ()
-#    QRegion mask () const
-#    QRegion visibleRegion () const
-#    QString windowRole () const
-#    QString windowTitle () const
-#    QWidget *   childAt ( const QPoint & p ) const
-#    QWidget *   childAt ( int x, int y ) const
-#    QWidget *   focusProxy () const
-#    QWidget *   focusWidget () const
-#    QWidget *   nativeParentWidget () const
-#    QWidget *   nextInFocusChain () const
-#    QWidget *   parentWidget () const
-#    QWidget *   previousInFocusChain () const
-#    QWidget *   window () const
-#    QWindowSurface *    windowSurface () const (preliminary)
-#    Qt::ContextMenuPolicy   contextMenuPolicy () const
-#    Qt::InputMethodHints    inputMethodHints () const
-#    Qt::LayoutDirection layoutDirection () const
-#    Qt::WindowFlags windowFlags () const
-#    Qt::WindowModality  windowModality () const
-#    Qt::WindowStates    windowState () const
-#    Qt::WindowType  windowType () const
-#    bool    autoFillBackground () const
-#    bool    hasEditFocus () const
-#    bool    isActiveWindow () const
-#    bool    isAncestorOf ( const QWidget * child ) const
-#    bool    isFullScreen () const
-#    bool    isMaximized () const
-#    bool    isMinimized () const
-#    bool    isModal () const
-#    bool    isWindow () const
-#    bool    isWindowModified () const
-#    bool    restoreGeometry ( const QByteArray & geometry )
-#    bool    testAttribute ( Qt::WidgetAttribute attribute ) const
-#    bool    updatesEnabled () const
-#    void    activateWindow ()
-#    void    adjustSize ()
-#    void    clearFocus ()
-#    void    clearMask ()
-#    void    ensurePolished () const
-#    void    overrideWindowFlags ( Qt::WindowFlags flags )
-#    void    render ( QPaintDevice * target, const QPoint & targetOffset = QPoint(), const QRegion & sourceRegion = QRegion(), RenderFlags renderFlags = RenderFlags( DrawWindowBackground | DrawChildren ) )
-#    void    render ( QPainter * painter, const QPoint & targetOffset = QPoint(), const QRegion & sourceRegion = QRegion(), RenderFlags renderFlags = RenderFlags( DrawWindowBackground | DrawChildren ) )
-#    void    repaint ( const QRect & rect )
-#    void    repaint ( const QRegion & rgn )
-#    void    repaint ( int x, int y, int w, int h )
-#    void    repaint ()
-#    void    scroll ( int dx, int dy )
-#    void    scroll ( int dx, int dy, const QRect & r )
-#    void    setAcceptDrops ( bool on )
-#    void    setAccessibleDescription ( const QString & description )
-#    void    setAccessibleName ( const QString & name )
-#    void    setAttribute ( Qt::WidgetAttribute attribute, bool on = true )
-#    void    setAutoFillBackground ( bool enabled )
-#    void    setContextMenuPolicy ( Qt::ContextMenuPolicy policy )
-#    void    setEditFocus ( bool enable )
-#    void    setFocusProxy ( QWidget * w )
-#    void    setInputContext ( QInputContext * context )
-#    void    setInputMethodHints ( Qt::InputMethodHints hints )
-#    void    setLayout ( QLayout * layout )
-#    void    setLayoutDirection ( Qt::LayoutDirection direction )
-#    void    setLocale ( const QLocale & locale )
-#    void    setMask ( const QBitmap & bitmap )
-#    void    setMask ( const QRegion & region )
-#    void    setPalette ( const QPalette & )
-#    void    setParent ( QWidget * parent )
-#    void    setParent ( QWidget * parent, Qt::WindowFlags f )
-#    void    setShortcutAutoRepeat ( int id, bool enable = true )
-#    void    setShortcutEnabled ( int id, bool enable = true )
-#    void    setUpdatesEnabled ( bool enable )
-#    void    setWindowFilePath ( const QString & filePath )
-#    void    setWindowFlags ( Qt::WindowFlags type )
-#    void    setWindowModality ( Qt::WindowModality windowModality )
-#    void    setWindowModified ( bool )
-#    void    setWindowOpacity ( qreal level )
-#    void    setWindowRole ( const QString & role )
-#    void    setWindowState ( Qt::WindowStates windowState )
-#    void    setWindowSurface ( QWindowSurface * surface ) (preliminary)
-#    void    setWindowTitle ( const QString & )
-#    void    showFullScreen ()
-#    void    showMaximized ()
-#    void    showMinimized ()
-#    void    showNormal ()
-#    void    stackUnder ( QWidget * w )
-#    void    unsetCursor ()
-#    void    unsetLayoutDirection ()
-#    void    unsetLocale ()
-#    void    update ( const QRect & rect )
-#    void    update ( const QRegion & rgn )
-#    void    update ( int x, int y, int w, int h )
-#    void    update ()
-#    void    updateGeometry ()

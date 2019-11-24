@@ -1,5 +1,5 @@
-from .. import FocusPolicy
 from .. import KeyModifier, Key
+from .. import FocusPolicy
 from .. import core
 from . import events
 from .VPalette import VPalette
@@ -8,7 +8,6 @@ from .events import VFocusEvent
 from .VGraphicElements import VGraphicElements
 import threading
 import queue
-import logging
 import time
 
 
@@ -27,16 +26,20 @@ class _KeyEventThread(threading.Thread):
     - with the stop_thread flag, which stops the loop
 
     the reason why we use the event_available_flag is because we have two
-    queues, one for the key events, and the other for the other events (timer etc).
-    We can't check the queues without altering them, so we need a flag to communicate
-    when either of the queues has something to fetch. (to be verified, I remember
+    queues, one for the key events, and the other for the other events
+    (timer etc).
+    We can't check the queues without altering them, so we need a flag to
+    communicate
+    when either of the queues has something to fetch. (to be verified, I
+    remember
     I had to devise this solution due to limits of the queue object)
 
     Important thing (for future resolution): the stop_event is pretty useless
     since the thread stay stopped in getKeyCode and can't check the flag until
     it leaves. Either I need to add a timer, or come up with a better solution.
     In any case, the self.daemon flag should solve the problem, since the main
-    thread is free to quit even if the secondary daemon thread is still running.
+    thread is free to quit even if the secondary daemon thread is still
+    running.
     """
 
     def __init__(self, screen, key_event_queue, event_available_flag):
@@ -92,10 +95,14 @@ class VApplication(core.VCoreApplication):
         else:
             self._screen = VScreen()
 
-        # The root widget is the one representing the whole background screen. It it always rendered last.
-        # This may seem weird, but we need to initialize it first to None, _then_ create the root VWidget.
-        # The reason is that VWidget asks for the current root widget if there's no parent, and the
-        # subsequent initialization results in a chicken-egg problem (the root widget is the only widget
+        # The root widget is the one representing the whole background screen.
+        # It it always rendered last.
+        # This may seem weird, but we need to initialize it first to None,
+        # _then_ create the root VWidget.
+        # The reason is that VWidget asks for the current root widget if
+        # there's no parent, and the
+        # subsequent initialization results in a chicken-egg problem
+        # (the root widget is the only widget
         # having strictly None as parent).
         self._root_widget = None
         self._root_widget = VWidget()
@@ -120,9 +127,12 @@ class VApplication(core.VCoreApplication):
         self.lastWindowClosed = core.VSignal(self)
         self.focusChanged = core.VSignal(self)
 
-        # Graphic elements contains characters to draw boxes, buttons, icons, and so on.
-        # We choose ascii as default because in basic ncurses implementation unicode is not
-        # rendered correctly. We stay conservative, and allow overriding if the client code is
+        # Graphic elements contains characters to draw boxes, buttons, icons,
+        # and so on.
+        # We choose ascii as default because in basic ncurses implementation
+        # unicode is not
+        # rendered correctly. We stay conservative, and allow overriding if
+        # the client code is
         # confident of the current ncurses implementation.
         self._default_graphic_elements = VGraphicElements.ASCII
 
@@ -133,7 +143,7 @@ class VApplication(core.VCoreApplication):
         self._root_widget.show()
         self.processEvents(True)
         self._key_event_thread.start()
-        while self._exit_flag != True:
+        while self._exit_flag is not True:
             self.logger.info("Waiting for events")
             self._event_available_flag.wait()
             self._event_available_flag.clear()
@@ -155,7 +165,8 @@ class VApplication(core.VCoreApplication):
 
     def postEvent(self, receiver, event):
         """
-        Add an event to the event queue, to be delivered at a later time to receiver.
+        Add an event to the event queue, to be delivered at a later time to
+        receiver.
 
         Arguments:
             receiver: the intended receiver of the event
@@ -198,13 +209,15 @@ class VApplication(core.VCoreApplication):
         if self._focus_widget is not None:
             self.logger.info("Focus out on widget %s." % self._focus_widget)
             VApplication.vApp.postEvent(
-                self._focus_widget, VFocusEvent(core.VEvent.EventType.FocusOut))
+                self._focus_widget,
+                VFocusEvent(core.VEvent.EventType.FocusOut))
 
         self._focus_widget = None
         if widget is not None:
             if widget.focusPolicy() == FocusPolicy.NoFocus:
                 self.logger.info(
-                    "Focus not accepted on widget %s due to its focus policy." % self._focus_widget)
+                    ("Focus not accepted on widget "
+                     "%s due to its focus policy." % self._focus_widget)
                 return
 
             self._focus_widget = widget
@@ -268,14 +281,17 @@ class VApplication(core.VCoreApplication):
 
     def eventFilter(self, event):
         """
-        Default event filter that is used when no other event interceptor catches the event.
-        By default, this event filter reacts to Ctrl+C keyevents, quitting the application.
+        Default event filter that is used when no other event interceptor
+        catches the event.
+        By default, this event filter reacts to Ctrl+C keyevents, quitting
+        the application.
 
         Arguments:
             event: the VEvent
 
         """
-        if event.key() == Key.Key_C and event.modifiers() & KeyModifier.ControlModifier:
+        if (event.key() == Key.Key_C and
+                event.modifiers() & KeyModifier.ControlModifier):
             self.exit()
 
     # Private
@@ -355,11 +371,13 @@ class VApplication(core.VCoreApplication):
 
             if previous_data is not None:
                 prev_receiver, prev_event = previous_data
-                if event.eventType() == prev_event.eventType() and receiver == prev_receiver:
+                if (event.eventType() == prev_event.eventType() and
+                        receiver == prev_receiver):
                     continue
 
             self.logger.info("Data queue %d. Processing %s -> %s." %
-                             (self._event_queue.qsize(), str(event), str(receiver)))
+                             (self._event_queue.qsize(), str(event),
+                              str(receiver)))
             receiver.event(event)
             previous_data = (receiver, event)
 
@@ -378,7 +396,8 @@ class VApplication(core.VCoreApplication):
         for w in self.rootWidget().depthFirstFullTree():
             if w.needsUpdate():
                 for w2 in w.depthFirstRightTree():
-                    if core.VRect.tuple.intersects(w.absoluteRect(), w2.absoluteRect()):
+                    if core.VRect.tuple.intersects(w.absoluteRect(),
+                                                   w2.absoluteRect()):
                         w2.update()
 
         for w in self.rootWidget().depthFirstFullTree():

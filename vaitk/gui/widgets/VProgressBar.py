@@ -1,4 +1,3 @@
-from ... import core
 from ..VWidget import VWidget
 from ..VPainter import VPainter
 from ..VPalette import VPalette

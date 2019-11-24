@@ -90,7 +90,8 @@ class VRect(object):
         return VPoint(self.right, self.bottom)
 
     def __str__(self):
-        return "VRect(x=%d, y=%d, width=%d, height=%d)" % (self.x, self.y, self.width, self.height)
+        return "VRect(x=%d, y=%d, width=%d, height=%d)" % (
+            self.x, self.y, self.width, self.height)
 
     class tuple:
         @staticmethod

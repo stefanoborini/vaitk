@@ -1,7 +1,6 @@
 from .VLabel import VLabel
 from ..VPainter import VPainter
 from ..VPalette import VPalette
-from ..VPalette import VPalette
 
 
 class VToolTip(VLabel):

@@ -1,4 +1,3 @@
-import os
 import curses
 
 __version__ = "1.7"

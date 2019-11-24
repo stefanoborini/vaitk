@@ -3,7 +3,8 @@ import itertools
 
 class VTextScreen(object):
     """
-    Dummy Screen that renders information in an indexed buffer, instead of the actual terminal
+    Dummy Screen that renders information in an indexed buffer, instead of
+    the actual terminal
     screen.
     """
 
@@ -66,7 +67,7 @@ class VTextScreen(object):
         for pos_x in range(len(string)):
             try:
                 self._render_output[pos[1]][pos[0]+pos_x] = string[pos_x]
-            except:
+            except Exception:
                 print("Invalid write position : ", str(pos), string)
 
     def dump(self):

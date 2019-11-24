@@ -1,5 +1,5 @@
 import unittest
-from vaitk import gui, core, test
+from vaitk import test
 
 from vaitk.gui.VScreen import VScreenArea
 

@@ -15,3 +15,4 @@ class TestVWidget(unittest.TestCase):
 
     def testInit(self):
         w = gui.VWidget()
+        self.assertEqual(isinstance(w, gui.VWidget))

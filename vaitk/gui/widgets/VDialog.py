@@ -27,7 +27,8 @@ class VDialog(VWidget):
                            2 -                  # space for the angles
                            # the space for the title itself
                            len(self._title) -
-                           2 -                  # the two empty spaces on the sides of the title
+                           2 -                  # the two empty spaces on the
+                                                # sides of the title
                            2)                   # the vertical bars
             header = '+' + \
                      "-"*(dash_length/2) + \
