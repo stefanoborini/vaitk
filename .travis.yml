@@ -9,4 +9,8 @@ install:
 script: 
 - poetry run flake8
 - poetry run pytest
-
+after_success:
+- coverage run -m pytest tests 
+- pip install codecov
+- codecov
+- bash <(curl -s https://codecov.io/bash)
