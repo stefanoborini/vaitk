@@ -4,7 +4,8 @@ import vaitk
 
 class TestVaiTk(unittest.TestCase):
     def testNativeToVaiKeyCode(self):
-        self.assertEqual(vaitk.native_to_vai_key_code(ord('a')), vaitk.Key.Key_A)
+        self.assertEqual(vaitk.native_to_vai_key_code(ord('a')),
+                         vaitk.Key.Key_A)
         self.assertEqual(vaitk.native_to_vai_key_code(ord('A')),
                          vaitk.Key.Key_A | vaitk.KeyModifier.ShiftModifier)
         self.assertEqual(vaitk.native_to_vai_key_code(337), None)

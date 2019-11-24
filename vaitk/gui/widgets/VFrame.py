@@ -23,7 +23,8 @@ class VFrame(VWidget):
         painter.fill_rect((0, 0, w, h))
         if self._title:
             dash_length = 0  # FIXME
-            painter.draw_text((0, dash_length), " " + self._title + " ", fg, bg)
+            painter.draw_text((0, dash_length),
+                              " " + self._title + " ", fg, bg)
 
     def set_title(self, title):
         self._title = title

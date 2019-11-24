@@ -18,7 +18,8 @@ class VLabel(VWidget):
         string = ' '*w
         for i in range(0, int(h/2)):
             painter.draw_text((0, i), string)
-        painter.draw_text((0, int(h / 2)), self._label + ' ' * (w - len(self._label)))
+        painter.draw_text((0, int(h / 2)),
+                          self._label + ' ' * (w - len(self._label)))
         for i in range(1+int(h/2), h):
             painter.draw_text((0, i), string)
 
