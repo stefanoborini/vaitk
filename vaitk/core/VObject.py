@@ -31,13 +31,14 @@ class VObject:
             else:
                 level = logging.DEBUG
             instance.logger.setLevel(level)
-            instance.logger.log(level, "Debugging enabled for "+str(cls.__name__))
+            instance.logger.log(
+                level, "Debugging enabled for "+str(cls.__name__))
         else:
             instance.logger.setLevel(logging.CRITICAL+1)
 
         return instance
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         self._parent = parent
         self._children = []
         self._event_filters = []

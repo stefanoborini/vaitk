@@ -1,9 +1,10 @@
 import unittest
 from vaitk import gui, test, core
 
+
 class TestVWidget(unittest.TestCase):
     def setUp(self):
-        self.screen = test.VTextScreen((40,40))
+        self.screen = test.VTextScreen((40, 40))
         self.app = gui.VApplication([], screen=self.screen)
 
     def tearDown(self):
@@ -14,4 +15,3 @@ class TestVWidget(unittest.TestCase):
 
     def testInit(self):
         w = gui.VWidget()
-

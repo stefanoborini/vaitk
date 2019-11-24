@@ -1,5 +1,6 @@
 from ..core.VObject import VObject
 
+
 class VSignalSpy(VObject):
     def __init__(self, signal):
         self._signal_params = []
@@ -7,7 +8,7 @@ class VSignalSpy(VObject):
         self._signal.connect(self._signalReceived)
 
     def _signalReceived(self, *args, **kwargs):
-        self._signal_params.append( (args, kwargs) )
+        self._signal_params.append((args, kwargs))
 
     def count(self):
         return len(self._signal_params)
@@ -17,4 +18,3 @@ class VSignalSpy(VObject):
 
     def signalParams(self):
         return self._signal_params
-

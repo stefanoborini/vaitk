@@ -21,12 +21,15 @@ class VPainter:
     @property
     def fg_color(self):
         return self._fg_color
+
     @fg_color.setter
     def fg_color(self, color):
         self._fg_color = color
+
     @property
     def bg_color(self):
         return self._bg_color
+
     @bg_color.setter
     def bg_color(self, color):
         self._bg_color = color
@@ -62,16 +65,16 @@ class VPainter:
                (align & Alignment.AlignVCenter and h == int(rect[Index.RECT_HEIGHT]/2)) or\
                (align & Alignment.AlignBottom and h == rect[Index.RECT_HEIGHT]-1):
 
-                self._widget.screenArea().write( (rect[Index.RECT_X], rect[Index.RECT_Y]+h),
-                                                      line_formatted,
-                                                      self.fg_color,
-                                                      self.bg_color)
+                self._widget.screenArea().write((rect[Index.RECT_X], rect[Index.RECT_Y]+h),
+                                                line_formatted,
+                                                self.fg_color,
+                                                self.bg_color)
 
             else:
-                self._widget.screenArea().write( (rect[Index.RECT_X], rect[Index.RECT_Y]+h),
-                                                  ' '*rect[Index.RECT_WIDTH],
-                                                  self.fg_color,
-                                                  self.bg_color)
+                self._widget.screenArea().write((rect[Index.RECT_X], rect[Index.RECT_Y]+h),
+                                                ' '*rect[Index.RECT_WIDTH],
+                                                self.fg_color,
+                                                self.bg_color)
 
     def drawRect(self, rect):
         """
@@ -97,11 +100,13 @@ class VPainter:
         left_border = self._graphic_elements["BOX DRAWINGS LIGHT VERTICAL"]
 
         if w >= 2 and h >= 2:
-            screen_area.write( (x,y), top_left_corner + top_border * (w-2) + top_right_corner, fg, bg)
+            screen_area.write((x, y), top_left_corner +
+                              top_border * (w-2) + top_right_corner, fg, bg)
             for i in range(0, h-2):
-                screen_area.write( (x,y+i+1), left_border, fg, bg)
-                screen_area.write( (x+w-1, y+i+1), right_border, fg, bg)
-            screen_area.write( (x, y+h-1), bottom_left_corner + bottom_border*(w-2) + bottom_right_corner, fg, bg)
+                screen_area.write((x, y+i+1), left_border, fg, bg)
+                screen_area.write((x+w-1, y+i+1), right_border, fg, bg)
+            screen_area.write((x, y+h-1), bottom_left_corner +
+                              bottom_border*(w-2) + bottom_right_corner, fg, bg)
 
     def fillRect(self, rect):
         """
@@ -127,10 +132,13 @@ class VPainter:
         left_border = self._graphic_elements["BOX DRAWINGS LIGHT VERTICAL"]
 
         if w >= 2 and h >= 2:
-            screen_area.write( (x,y), top_left_corner + top_border * (w-2) + top_right_corner, fg, bg)
+            screen_area.write((x, y), top_left_corner +
+                              top_border * (w-2) + top_right_corner, fg, bg)
             for i in range(0, h-2):
-                screen_area.write( (x,y+i+1), left_border + ' '*(w-2) + right_border, fg, bg)
-            screen_area.write( (x, y+h-1), bottom_left_corner + bottom_border*(w-2) + bottom_right_corner, fg, bg)
+                screen_area.write((x, y+i+1), left_border +
+                                  ' '*(w-2) + right_border, fg, bg)
+            screen_area.write((x, y+h-1), bottom_left_corner +
+                              bottom_border*(w-2) + bottom_right_corner, fg, bg)
 
     def drawLine(self, pos, length, direction):
         """
@@ -143,16 +151,16 @@ class VPainter:
             direction: either Orientation.Horizontal or Orientation.Vertical
         """
         screen_area = self._widget.screenArea()
-        x,y = pos
+        x, y = pos
         fg, bg = self.fg_color, self.bg_color
         h_line = self._graphic_elements["BOX DRAWINGS LIGHT HORIZONTAL"]
         v_line = self._graphic_elements["BOX DRAWINGS LIGHT VERTICAL"]
 
         if direction == Orientation.Horizontal:
-            screen_area.write( (x,y), h_line * length, fg, bg)
+            screen_area.write((x, y), h_line * length, fg, bg)
         elif direction == Orientation.Vertical:
             for i in range(0, length):
-                screen_area.write( (x,y+i), v_line, fg, bg)
+                screen_area.write((x, y+i), v_line, fg, bg)
 
     def eraseRect(self, rect):
         """
@@ -166,9 +174,9 @@ class VPainter:
         top_left = (rect[Index.RECT_X], rect[Index.RECT_Y])
         string = ' '*rect[Index.RECT_WIDTH]
         for h_idx in range(rect[Index.RECT_HEIGHT]):
-            screen_area.write( (top_left[Index.X], top_left[Index.Y] + h_idx),
-                               string,
-                               widget_colors[Index.FG_COLOR], widget_colors[Index.BG_COLOR])
+            screen_area.write((top_left[Index.X], top_left[Index.Y] + h_idx),
+                              string,
+                              widget_colors[Index.FG_COLOR], widget_colors[Index.BG_COLOR])
 
     def erase(self):
         """
@@ -181,5 +189,3 @@ class VPainter:
         Modifies the color of a given position in the drawable area.
         """
         self._widget.screenArea().setColors(pos, colors)
-
-

@@ -8,4 +8,3 @@ from .VSignal import VSignal
 from .VEvent import VEvent
 from .VTimerEvent import VTimerEvent
 from ..consts import Index
-

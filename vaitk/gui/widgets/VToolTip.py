@@ -3,6 +3,7 @@ from ..VPainter import VPainter
 from ..VPalette import VPalette
 from ..VPalette import VPalette
 
+
 class VToolTip(VLabel):
     _instance = None
     @classmethod
@@ -15,7 +16,7 @@ class VToolTip(VLabel):
         if cls._instance is None:
             cls._instance = VToolTip(text, parent=None)
         cls._instance.setText(text)
-        cls._instance.resize((len(text),1))
+        cls._instance.resize((len(text), 1))
         cls._instance.move(pos)
         cls._instance.show()
 
@@ -29,7 +30,7 @@ class VToolTip(VLabel):
         painter = VPainter(self)
         w, h = self.size()
         painter.fg_color = self.palette().color(VPalette.ColorGroup.Active,
-                                        VPalette.ColorRole.ToolTipText)
+                                                VPalette.ColorRole.ToolTipText)
         painter.bg_color = self.palette().color(VPalette.ColorGroup.Active,
-                                        VPalette.ColorRole.ToolTipBase)
-        painter.drawText( (0, 0), self._label)
+                                                VPalette.ColorRole.ToolTipBase)
+        painter.drawText((0, 0), self._label)

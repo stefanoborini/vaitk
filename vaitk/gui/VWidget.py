@@ -16,7 +16,7 @@ class VWidget(core.VObject):
         super().__init__(parent)
 
         if self.parent() is None:
-            self._geometry = (0,0) + VApplication.vApp.screen().size()
+            self._geometry = (0, 0) + VApplication.vApp.screen().size()
         else:
             self._geometry = self.parent().contentsRect()
 
@@ -28,7 +28,7 @@ class VWidget(core.VObject):
         self._active = True
         self._focus_policy = FocusPolicy.NoFocus
         self._needs_update = False
-        self._minimum_size = (0,0)
+        self._minimum_size = (0, 0)
 
         # True for dialogs and other widgets that hover, grabbing the focus
         self._is_window = False
@@ -84,22 +84,24 @@ class VWidget(core.VObject):
         min_size = self.minimumSize()
         self._geometry = (rect[Index.RECT_X],
                           rect[Index.RECT_Y],
-                          max(min_size[Index.SIZE_WIDTH], rect[Index.RECT_WIDTH]),
-                          max(min_size[Index.SIZE_HEIGHT], rect[Index.RECT_HEIGHT])
-                         )
+                          max(min_size[Index.SIZE_WIDTH],
+                              rect[Index.RECT_WIDTH]),
+                          max(min_size[Index.SIZE_HEIGHT],
+                              rect[Index.RECT_HEIGHT])
+                          )
 
         if self.isVisible():
             deliver_routine = VApplication.vApp.sendEvent
         else:
             deliver_routine = VApplication.vApp.postEvent
 
-        if  (old_geometry[Index.RECT_X], old_geometry[Index.RECT_Y])  \
-            != (self._geometry[Index.RECT_X], self._geometry[Index.RECT_Y]):
+        if (old_geometry[Index.RECT_X], old_geometry[Index.RECT_Y])  \
+                != (self._geometry[Index.RECT_X], self._geometry[Index.RECT_Y]):
 
             deliver_routine(self, events.VMoveEvent())
 
         if (old_geometry[Index.RECT_WIDTH], old_geometry[Index.RECT_WIDTH]) \
-            != (self._geometry[Index.RECT_HEIGHT], self._geometry[Index.RECT_HEIGHT]):
+                != (self._geometry[Index.RECT_HEIGHT], self._geometry[Index.RECT_HEIGHT]):
 
             deliver_routine(self, events.VResizeEvent())
 
@@ -134,27 +136,29 @@ class VWidget(core.VObject):
             visible: True to set the widget to visible. False to hide it.
 
         """
-        self.logger.info("Setting explicit visibility for %s : %s" % (str(self), str(visible)))
+        self.logger.info("Setting explicit visibility for %s : %s" %
+                         (str(self), str(visible)))
         visible_before = self.isVisible()
         self._visible_explicit = visible
 
         if visible and not visible_before:
-            VApplication.vApp.postEvent(self,events.VShowEvent())
+            VApplication.vApp.postEvent(self, events.VShowEvent())
         elif not visible and visible_before:
-            VApplication.vApp.postEvent(self,events.VHideEvent())
+            VApplication.vApp.postEvent(self, events.VHideEvent())
 
         for w in self.children():
             w.setVisibleImplicit(visible)
 
     def setVisibleImplicit(self, visible):
         # XXX private?
-        self.logger.info("Setting implicit visibility for %s : %s" % (str(self), str(visible)))
+        self.logger.info("Setting implicit visibility for %s : %s" %
+                         (str(self), str(visible)))
         self._visible_implicit = visible
 
         if visible:
-            VApplication.vApp.postEvent(self,events.VShowEvent())
+            VApplication.vApp.postEvent(self, events.VShowEvent())
         else:
-            VApplication.vApp.postEvent(self,events.VHideEvent())
+            VApplication.vApp.postEvent(self, events.VHideEvent())
 
         for w in self.children():
             w.setVisibleImplicit(visible)
@@ -172,10 +176,10 @@ class VWidget(core.VObject):
         Returns:
             The widget current rect as a 4-tuple (0, 0, width, height).
         """
-        return (0,0)+self.size()
+        return (0, 0)+self.size()
 
     def absoluteRect(self):
-        return self.mapToGlobal((0,0))+self.size()
+        return self.mapToGlobal((0, 0))+self.size()
 
     def geometry(self):
         """
@@ -256,7 +260,6 @@ class VWidget(core.VObject):
         self._layout = layout
         self._layout.setParent(self)
 
-
     def mapToGlobal(self, pos):
         """
         Given a position pos in coordinates relative to this widget, return the coordinate
@@ -272,10 +275,10 @@ class VWidget(core.VObject):
         if self.parent() is None:
             return (pos[Index.X]+top_left[Index.X], pos[Index.Y]+top_left[Index.Y])
 
-        parent_corner = self.parent().mapToGlobal((0,0))
-        return ( parent_corner[Index.X] + top_left[Index.X] + pos[Index.X],
-                 parent_corner[Index.Y] + top_left[Index.Y] + pos[Index.Y]
-                 )
+        parent_corner = self.parent().mapToGlobal((0, 0))
+        return (parent_corner[Index.X] + top_left[Index.X] + pos[Index.X],
+                parent_corner[Index.Y] + top_left[Index.Y] + pos[Index.Y]
+                )
 
 #    def QPoint  mapFrom ( QWidget * parent, const QPoint & pos ) const
 #    def QPoint  mapFromGlobal ( const QPoint & pos ) const
@@ -285,12 +288,13 @@ class VWidget(core.VObject):
 #    def QPoint  mapToParent ( const QPoint & pos ) const
 
     def screenArea(self):
-        abs_pos_topleft = self.mapToGlobal((0,0))
+        abs_pos_topleft = self.mapToGlobal((0, 0))
 
-        return VScreenArea( VApplication.vApp.screen(),
-                            abs_pos_topleft + self.size()
-                          )
+        return VScreenArea(VApplication.vApp.screen(),
+                           abs_pos_topleft + self.size()
+                           )
     # Events
+
     def event(self, event):
         """
         Generic event method. Gets called for all events, and dispatches to a
@@ -373,14 +377,14 @@ class VWidget(core.VObject):
 
     def paintEvent(self, event):
         painter = VPainter(self)
-        #if self._layout is not None:
+        # if self._layout is not None:
         #    self._layout.apply()
 
         size = self.size()
 
         string = ' '*size[Index.SIZE_WIDTH]
         for i in range(0, size[Index.SIZE_HEIGHT]):
-            painter.drawText( (0, i), string)
+            painter.drawText((0, i), string)
 
     def focusInEvent(self, event):
         self.logger.info("FocusIn event")
@@ -448,10 +452,11 @@ class VWidget(core.VObject):
         return self._palette
 
     def setColors(self, fg=None, bg=None):
-        self.palette().setColor(VPalette.ColorGroup.Active, VPalette.ColorRole.WindowText, fg)
+        self.palette().setColor(VPalette.ColorGroup.Active,
+                                VPalette.ColorRole.WindowText, fg)
         self.palette().setColor(VPalette.ColorGroup.Active, VPalette.ColorRole.Window, bg)
 
-    def colors(self, color_group = VPalette.ColorGroup.Active):
+    def colors(self, color_group=VPalette.ColorGroup.Active):
         fg = self.palette().color(color_group, VPalette.ColorRole.WindowText)
         bg = self.palette().color(color_group, VPalette.ColorRole.Window)
 
@@ -489,13 +494,15 @@ class VWidget(core.VObject):
         margins = self.contentsMargins()
         return (margins[Index.MARGIN_LEFT],
                 margins[Index.MARGIN_TOP],
-                self.width()-margins[Index.MARGIN_LEFT]-margins[Index.MARGIN_RIGHT],
-                self.height()-margins[Index.MARGIN_TOP]-margins[Index.MARGIN_BOTTOM]
+                self.width()-margins[Index.MARGIN_LEFT] -
+                margins[Index.MARGIN_RIGHT],
+                self.height()-margins[Index.MARGIN_TOP] -
+                margins[Index.MARGIN_BOTTOM]
                 )
 
     def contentsMargins(self):
         # XXX not sure about the definition of margins for qt
-        return (0,0,0,0)
+        return (0, 0, 0, 0)
 
     def childrenRect(self):
         pass

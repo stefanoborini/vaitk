@@ -1,6 +1,7 @@
 from .VObject import VObject
 from .VSignal import VSignal
 
+
 class VCoreApplication(VObject):
     """
     Core application class. Only one instance is allowed to exist.
@@ -80,6 +81,3 @@ class VCoreApplication(VObject):
 
     def setEventFilter(self, event_filter):
         raise NotImplementedError()
-
-
-

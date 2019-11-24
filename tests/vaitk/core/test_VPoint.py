@@ -1,12 +1,13 @@
 import unittest
 from vaitk import core
 
+
 class testVPoint(unittest.TestCase):
     def testVPoint(self):
         v = core.VPoint(x=4, y=5)
         self.assertEqual(v.x, 4)
         self.assertEqual(v.y, 5)
-        self.assertEqual(tuple(v), (4,5))
+        self.assertEqual(tuple(v), (4, 5))
 
     def testSum(self):
         v1 = core.VPoint(x=4, y=5)
@@ -23,7 +24,7 @@ class testVPoint(unittest.TestCase):
         self.assertEqual(vres.y, 3)
 
     def testVPointTuple(self):
-        self.assertEqual(core.VPoint.tuple.x((3,2)), 3)
-        self.assertEqual(core.VPoint.tuple.y((3,2)), 2)
-        self.assertEqual(core.VPoint.tuple.add((4,5), (2,3)), (6,8))
-        self.assertEqual(core.VPoint.tuple.sub((4,5), (2,2)), (2,3))
+        self.assertEqual(core.VPoint.tuple.x((3, 2)), 3)
+        self.assertEqual(core.VPoint.tuple.y((3, 2)), 2)
+        self.assertEqual(core.VPoint.tuple.add((4, 5), (2, 3)), (6, 8))
+        self.assertEqual(core.VPoint.tuple.sub((4, 5), (2, 2)), (2, 3))

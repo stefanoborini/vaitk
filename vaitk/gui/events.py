@@ -1,6 +1,7 @@
 from .. import Key, KeyModifier, nativeToVaiKeyCode, vaiKeyCodeToText
 from ..core import VEvent
 
+
 class VKeyEvent(VEvent):
     def __init__(self, key_code):
         super().__init__(VEvent.EventType.KeyPress)
@@ -26,27 +27,32 @@ class VKeyEvent(VEvent):
             return None
         return VKeyEvent(key_code)
 
+
 class VFocusEvent(VEvent):
     def __init__(self, focus_type):
         super().__init__(focus_type)
+
 
 class VPaintEvent(VEvent):
     def __init__(self):
         super().__init__(VEvent.EventType.Paint)
 
+
 class VHideEvent(VEvent):
     def __init__(self):
         super().__init__(VEvent.EventType.Hide)
+
 
 class VShowEvent(VEvent):
     def __init__(self):
         super().__init__(VEvent.EventType.Show)
 
+
 class VMoveEvent(VEvent):
     def __init__(self):
         super().__init__(VEvent.EventType.Move)
 
+
 class VResizeEvent(VEvent):
     def __init__(self):
         super().__init__(VEvent.EventType.Resize)
-

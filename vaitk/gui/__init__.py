@@ -8,8 +8,3 @@ from .VWidget import VWidget
 from .widgets import VLabel, VDialog, VLineEdit, VToolTip
 from .layouts import VHLayout, VVLayout
 from .events import VKeyEvent, VPaintEvent
-
-
-
-
-

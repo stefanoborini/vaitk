@@ -11,9 +11,11 @@ import queue
 import logging
 import time
 
+
 class _VExceptionEvent:
     def __init__(self, exception):
         self.exception = exception
+
 
 class _KeyEventThread(threading.Thread):
     """
@@ -36,6 +38,7 @@ class _KeyEventThread(threading.Thread):
     In any case, the self.daemon flag should solve the problem, since the main
     thread is free to quit even if the secondary daemon thread is still running.
     """
+
     def __init__(self, screen, key_event_queue, event_available_flag):
         super().__init__()
         self.daemon = True
@@ -46,7 +49,6 @@ class _KeyEventThread(threading.Thread):
         self._key_event_queue = key_event_queue
         self.throttle = threading.Event()
         self._event_available_flag = event_available_flag
-
 
     def run(self):
         """
@@ -80,6 +82,7 @@ class _KeyEventThread(threading.Thread):
     def registerTimer(self, timer):
         pass
 
+
 class VApplication(core.VCoreApplication):
     def __init__(self, argv, screen=None):
         from . import VWidget
@@ -104,7 +107,8 @@ class VApplication(core.VCoreApplication):
         self._event_available_flag = threading.Event()
         self._event_queue = queue.Queue()
         self._key_event_queue = queue.Queue()
-        self._key_event_thread = _KeyEventThread(self._screen, self._key_event_queue, self._event_available_flag)
+        self._key_event_thread = _KeyEventThread(
+            self._screen, self._key_event_queue, self._event_available_flag)
 
         # XXX I am not sure we need the delete later anymore.
         self._delete_later_queue = []
@@ -140,7 +144,8 @@ class VApplication(core.VCoreApplication):
         self._exitCleanup()
 
     def processEvents(self, native=False):
-        self.logger.info("++++---- %s processing events ---+++++" % ("Native" if native else "Forced"))
+        self.logger.info("++++---- %s processing events ---+++++" %
+                         ("Native" if native else "Forced"))
         self._processKeyEvents()
         self._processRemainingEvents()
         self._sendPaintEvents()
@@ -192,16 +197,19 @@ class VApplication(core.VCoreApplication):
 
         if self._focus_widget is not None:
             self.logger.info("Focus out on widget %s." % self._focus_widget)
-            VApplication.vApp.postEvent(self._focus_widget, VFocusEvent(core.VEvent.EventType.FocusOut))
+            VApplication.vApp.postEvent(
+                self._focus_widget, VFocusEvent(core.VEvent.EventType.FocusOut))
 
         self._focus_widget = None
         if widget is not None:
             if widget.focusPolicy() == FocusPolicy.NoFocus:
-                self.logger.info("Focus not accepted on widget %s due to its focus policy." % self._focus_widget)
+                self.logger.info(
+                    "Focus not accepted on widget %s due to its focus policy." % self._focus_widget)
                 return
 
             self._focus_widget = widget
-            VApplication.vApp.postEvent(self._focus_widget, VFocusEvent(core.VEvent.EventType.FocusIn))
+            VApplication.vApp.postEvent(
+                self._focus_widget, VFocusEvent(core.VEvent.EventType.FocusIn))
 
     def defaultPalette(self):
         """
@@ -224,7 +232,6 @@ class VApplication(core.VCoreApplication):
 
     def setDefaultGraphicElements(self, graphic_elements):
         self._default_graphic_elements = graphic_elements
-
 
     def rootWidget(self):
         return self._root_widget
@@ -274,9 +281,11 @@ class VApplication(core.VCoreApplication):
     # Private
 
     def _hideScheduled(self):
-        self.logger.info("Widget scheduled for deletion: %s" % str(self._delete_later_queue))
+        self.logger.info("Widget scheduled for deletion: %s" %
+                         str(self._delete_later_queue))
         for w in self._delete_later_queue:
-            self.logger.info("Posting hide events for deleted widget %s" % str(w))
+            self.logger.info(
+                "Posting hide events for deleted widget %s" % str(w))
             w.hide()
 
     def _deleteScheduled(self):
@@ -302,23 +311,28 @@ class VApplication(core.VCoreApplication):
                 raise event.exception
 
     def _processSingleKeyEvent(self, key_event):
-        self.logger.info("Key event %d %x" % (key_event.key(), key_event.modifiers()))
+        self.logger.info("Key event %d %x" %
+                         (key_event.key(), key_event.modifiers()))
 
         key_event.setAccepted(False)
 
         focus_widget = self.focusWidget()
         if focus_widget:
             for widget in focus_widget.traverseToRoot():
-                self.logger.info("KeyEvent attempting delivery to "+str(widget))
+                self.logger.info(
+                    "KeyEvent attempting delivery to "+str(widget))
                 stop_event = False
                 for event_filter in reversed(widget.installedEventFilters()):
-                    stop_event = stop_event | event_filter.eventFilter(key_event)
+                    stop_event = stop_event | event_filter.eventFilter(
+                        key_event)
                     if key_event.isAccepted():
-                        self.logger.info("KeyEvent accepted by filter "+str(event_filter))
+                        self.logger.info(
+                            "KeyEvent accepted by filter "+str(event_filter))
                         return
 
                 if not stop_event:
-                    self.logger.info("KeyEvent not stopped. Sending to widget "+str(widget))
+                    self.logger.info(
+                        "KeyEvent not stopped. Sending to widget "+str(widget))
                     widget.keyEvent(key_event)
 
                     if key_event.isAccepted():
@@ -327,7 +341,6 @@ class VApplication(core.VCoreApplication):
 
         # If all fails, deliver it to the application itself.
         self.eventFilter(key_event)
-
 
     def _processRemainingEvents(self):
         previous_data = None
@@ -343,29 +356,29 @@ class VApplication(core.VCoreApplication):
             if previous_data is not None:
                 prev_receiver, prev_event = previous_data
                 if event.eventType() == prev_event.eventType() and receiver == prev_receiver:
-                   continue
+                    continue
 
-            self.logger.info("Data queue %d. Processing %s -> %s." % (self._event_queue.qsize(), str(event), str(receiver)))
+            self.logger.info("Data queue %d. Processing %s -> %s." %
+                             (self._event_queue.qsize(), str(event), str(receiver)))
             receiver.event(event)
             previous_data = (receiver, event)
 
-            #self._stop_flag.append(1)
+            # self._stop_flag.append(1)
         # Check if screen was re-sized (True or False)
         #x,y = self._screen.size()
         #resize = curses.is_term_resized(y, x)
 
         # Action in loop if resize is True:
-        #if resize is True:
+        # if resize is True:
             #x, y = self._screen.size()
             #curses.resizeterm(y, x)
-            #self.renderWidgets()
-
+            # self.renderWidgets()
 
     def _sendPaintEvents(self):
         for w in self.rootWidget().depthFirstFullTree():
             if w.needsUpdate():
                 for w2 in w.depthFirstRightTree():
-                    if core.VRect.tuple.intersects(w.absoluteRect(),w2.absoluteRect()):
+                    if core.VRect.tuple.intersects(w.absoluteRect(), w2.absoluteRect()):
                         w2.update()
 
         for w in self.rootWidget().depthFirstFullTree():
@@ -376,4 +389,3 @@ class VApplication(core.VCoreApplication):
         self._key_event_thread.stop_event.set()
         self._screen.reset()
         super().exit()
-

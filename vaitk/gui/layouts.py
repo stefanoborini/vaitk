@@ -9,8 +9,8 @@ class VHLayout(object):
     def apply(self):
         size = self.parent().size()
         available_size = size[0]/len(self._widgets)
-        for i,w in enumerate(self._widgets):
-            w.move(available_size*i,0)
+        for i, w in enumerate(self._widgets):
+            w.move(available_size*i, 0)
             w.resize(available_size, size[1])
 
     def setParent(self, parent):
@@ -18,6 +18,7 @@ class VHLayout(object):
 
     def parent(self):
         return self._parent
+
 
 class VVLayout(object):
     def __init__(self):
@@ -32,7 +33,7 @@ class VVLayout(object):
         available_size = size[1]/len(self._widgets)
         remainder = size[1] % len(self._widgets)
         plot_pos = 0
-        for i,w in enumerate(self._widgets):
+        for i, w in enumerate(self._widgets):
             w.move(0, plot_pos)
             if remainder > 0:
                 w.resize(size[0], available_size+1)
@@ -47,4 +48,3 @@ class VVLayout(object):
 
     def parent(self):
         return self._parent
-
