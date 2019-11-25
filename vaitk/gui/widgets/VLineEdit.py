@@ -14,7 +14,7 @@ class VLineEdit(VWidget):
         self._cursor_position = len(self._text)
         self._selection = None
         self._max_length = 32767
-        self.setFocusPolicy(FocusPolicy.StrongFocus)
+        self.set_focus_policy(FocusPolicy.StrongFocus)
 
         self.returnPressed = core.VSignal(self)
         self.cursorPositionChanged = core.VSignal(self)
@@ -22,41 +22,41 @@ class VLineEdit(VWidget):
         self.selectionChanged = core.VSignal(self)
         self.editingFinished = core.VSignal(self)
 
-    def maxLength(self):
+    def max_length(self):
         return self._max_length
 
-    def setMaxLength(self, max_length):
+    def set_max_length(self, max_length):
         self._max_length = max_length
         self._text = self._text[:self._max_length]
         self.deselect()
 
-    def cursorPosition(self):
+    def cursor_position(self):
         return self._cursor_position
 
-    def setCursorPosition(self, position):
+    def set_cursor_position(self, position):
         old_pos = self._cursor_position
         self._cursor_position = position
         self.cursorPositionChanged.emit(old_pos, position)
 
-    def setSelection(self, start, length):
+    def set_selection(self, start, length):
         if len(self._text) == 0:
             return
         self._selection = (0, len(self._text))
         self.selectionChanged.emit()
 
-    def selectAll(self):
+    def select_all(self):
         if len(self._text) == 0:
             return
         self._selection = (0, len(self._text))
         self.selectionChanged.emit()
 
-    def selectionStart(self):
+    def selection_start(self):
         pass
 
-    def selectionEnd(self):
+    def selection_end(self):
         pass
 
-    def sizeHint(self):
+    def size_hint(self):
         pass
 
     def deselect(self):
@@ -76,7 +76,7 @@ class VLineEdit(VWidget):
     def text(self):
         return self._text
 
-    def setText(self, text):
+    def set_text(self, text):
         self.deselect()
         if text != self._text:
             self._text = text
@@ -90,43 +90,43 @@ class VLineEdit(VWidget):
             pass
 
     def clear(self):
-        self.setText("")
+        self.set_text("")
         self._cursor_position = 0
 
-    def cursorForward(self, mark):
+    def cursor_forward(self, mark):
         pass
 
-    def cursorBackward(self, mark):
+    def cursor_backward(self, mark):
         pass
 
-    def cursorWordForward(self, mark):
+    def cursor_word_forward(self, mark):
         pass
 
-    def cursorWordBackward(self, mark):
+    def cursor_word_backward(self, mark):
         pass
 
-    def minimumSizeHint(self):
+    def minimum_size_hint(self):
         return core.VSize(len(self._text), 1)
 
-    def paintEvent(self, event):
+    def paint_event(self, event):
         w, h = self.size()
         painter = VPainter(self)
-        painter.drawText((0, 0), self._text + ' '*(w-len(self._text)))
-        if self.hasFocus():
-            abs_top_left = self.mapToGlobal((0, 0))
-            VCursor.setPos((abs_top_left[Index.X] + self._cursor_position,
-                            abs_top_left[Index.Y]
+        painter.draw_text((0, 0), self._text + ' ' * (w - len(self._text)))
+        if self.has_focus():
+            abs_top_left = self.map_to_global((0, 0))
+            VCursor.set_pos((abs_top_left[Index.X] + self._cursor_position,
+                             abs_top_left[Index.Y]
+                             )
                             )
-                           )
 
-    def focusInEvent(self, event):
-        abs_top_left = self.mapToGlobal((0, 0))
-        VCursor.setPos((abs_top_left[Index.X] + self._cursor_position,
-                        abs_top_left[Index.Y]
+    def focus_in_event(self, event):
+        abs_top_left = self.map_to_global((0, 0))
+        VCursor.set_pos((abs_top_left[Index.X] + self._cursor_position,
+                         abs_top_left[Index.Y]
+                         )
                         )
-                       )
 
-    def keyEvent(self, event):
+    def key_event(self, event):
         if event.key() == Key.Key_Return:
             self.returnPressed.emit()
         elif event.key() == Key.Key_Left:
@@ -148,8 +148,8 @@ class VLineEdit(VWidget):
         event.accept()
         self.update()
 
-    def minimumSize(self):
+    def minimum_size(self):
         return (len(self._text), 1)
 
-    def selectedText(self):
+    def selected_text(self):
         pass

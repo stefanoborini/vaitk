@@ -9,7 +9,7 @@ class VTabWidget(VWidget):
         self._tabs = []
         self._selected_tab_idx = -1
 
-    def addTab(self, widget, label):
+    def add_tab(self, widget, label):
         self._tabs.append((widget, label))
         self._selected_tab_idx = 2
 

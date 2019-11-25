@@ -41,10 +41,10 @@ class VTextScreen(object):
     def size(self):
         return self._size
 
-    def cursorPos(self):
+    def cursor_pos(self):
         return self._cursor_pos
 
-    def setCursorPos(self, pos):
+    def set_cursor_pos(self, pos):
         self._cursor_pos = pos
 
     def addstr(self, *args):
@@ -57,10 +57,10 @@ class VTextScreen(object):
 
         return char_ret
 
-    def typeText(self, text):
+    def type_text(self, text):
         self._text = text
 
-    def getColor(self, fg, bg):
+    def get_color(self, fg, bg):
         return 0
 
     def write(self, pos, string, fg_color=None, bg_color=None):
@@ -83,11 +83,11 @@ class VTextScreen(object):
     def __str__(self):
         return "\n".join(self.dump())
 
-    def charAt(self, x, y):
+    def char_at(self, x, y):
         return self._render_output[y][x]
 
-    def stringAt(self, x, y, l):
+    def string_at(self, x, y, l):
         return ''.join(self._render_output[y][x:x+l])
 
-    def numColors(self):
+    def num_colors(self):
         return 8

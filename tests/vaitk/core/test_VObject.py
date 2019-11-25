@@ -27,18 +27,18 @@ class TestVObject(unittest.TestCase):
         c2 = core.VObject(p)
         c3 = core.VObject(c1)
 
-        self.assertEqual(p.depthFirstFullTree(), [p, c1, c3, c2])
-        self.assertEqual(c2.depthFirstFullTree(), [p, c1, c3, c2])
-        self.assertEqual(c2.depthFirstSubTree(), [c2])
-        self.assertEqual(c1.depthFirstSubTree(), [c1, c3])
+        self.assertEqual(p.depth_first_full_tree(), [p, c1, c3, c2])
+        self.assertEqual(c2.depth_first_full_tree(), [p, c1, c3, c2])
+        self.assertEqual(c2.depth_first_sub_tree(), [c2])
+        self.assertEqual(c1.depth_first_sub_tree(), [c1, c3])
 
     def testTraverseToRoot(self):
         p = core.VObject()
         c1 = core.VObject(p)
         c3 = core.VObject(c1)
 
-        self.assertEqual(p.traverseToRoot(), [p])
-        self.assertEqual(c3.traverseToRoot(), [c3, c1, p])
+        self.assertEqual(p.traverse_to_root(), [p])
+        self.assertEqual(c3.traverse_to_root(), [c3, c1, p])
 
     def testRoot(self):
         p = core.VObject()
@@ -64,6 +64,6 @@ class TestVObject(unittest.TestCase):
         c2_5 = core.VObject(c1_2)
         c1_3 = core.VObject(p)
 
-        self.assertEqual(c3_1.depthFirstRightTree(), [
+        self.assertEqual(c3_1.depth_first_right_tree(), [
                          c3_2, c2_3, c1_2, c2_4, c3_3, c2_5, c1_3])
-        self.assertEqual(c3_3.depthFirstRightTree(), [c2_5, c1_3])
+        self.assertEqual(c3_3.depth_first_right_tree(), [c2_5, c1_3])

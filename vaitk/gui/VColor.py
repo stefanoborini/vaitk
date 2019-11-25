@@ -6,7 +6,7 @@ class VColor:
     def rgb(self):
         return self._rgb
 
-    def hexString(self):
+    def hex_string(self):
         return "%0.2X%0.2X%0.2X" % self.rgb
 
     @property
@@ -576,7 +576,7 @@ class VGlobalColor:
     darkcyan = term_005f5f
 
     @staticmethod
-    def nameToColor(name):
+    def name_to_color(name):
         """Perform lookup of the color by string. Returns None if the
         lookup fails."""
         return VGlobalColor.__dict__.get(name)

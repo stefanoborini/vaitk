@@ -1,4 +1,4 @@
-def _asciiElements():
+def _ascii_elements():
     return {
         "BOX DRAWINGS LIGHT HORIZONTAL":      "-",
         "BOX DRAWINGS HEAVY HORIZONTAL":      "-",
@@ -131,7 +131,7 @@ def _asciiElements():
     }
 
 
-def _unicodeElements():
+def _unicode_elements():
     return {
         "BOX DRAWINGS LIGHT HORIZONTAL":      "\u2500",
         "BOX DRAWINGS HEAVY HORIZONTAL":      "\u2501",
@@ -268,5 +268,5 @@ class VGraphicElements:
     """
     """
 
-    UNICODE = _unicodeElements()
-    ASCII = _asciiElements()
+    UNICODE = _unicode_elements()
+    ASCII = _ascii_elements()

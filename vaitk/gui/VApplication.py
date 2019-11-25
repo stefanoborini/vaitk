@@ -61,9 +61,9 @@ class _KeyEventThread(threading.Thread):
 
         while not self.stop_event.is_set():
             try:
-                c = self._screen.getKeyCode()
+                c = self._screen.get_key_code()
 
-                event = events.VKeyEvent.fromNativeKeyCode(c)
+                event = events.VKeyEvent.from_native_key_code(c)
                 if event is not None:
                     self._key_event_queue.put(event)
                     self._event_available_flag.set()
@@ -76,7 +76,7 @@ class _KeyEventThread(threading.Thread):
                 self._key_event_queue.put(event)
                 self._event_available_flag.set()
 
-    def registerTimer(self, timer):
+    def register_timer(self, timer):
         pass
 
 
@@ -103,7 +103,7 @@ class VApplication(core.VCoreApplication):
 
         # The widget that currently has the focus (gets key events)
         self._focus_widget = None
-        self._palette = self.defaultPalette()
+        self._palette = self.default_palette()
 
         self._event_available_flag = threading.Event()
         self._event_queue = queue.Queue()
@@ -135,29 +135,29 @@ class VApplication(core.VCoreApplication):
         Starts the event loop.
         """
         self._root_widget.show()
-        self.processEvents(True)
+        self.process_events(True)
         self._key_event_thread.start()
         while self._exit_flag is not True:
             self.logger.info("Waiting for events")
             self._event_available_flag.wait()
             self._event_available_flag.clear()
             self.logger.info("Event available")
-            self.processEvents(True)
+            self.process_events(True)
             self._key_event_thread.throttle.set()
 
-        self._exitCleanup()
+        self._exit_cleanup()
 
-    def processEvents(self, native=False):
+    def process_events(self, native=False):
         self.logger.info("++++---- %s processing events ---+++++" %
                          ("Native" if native else "Forced"))
-        self._processKeyEvents()
-        self._processRemainingEvents()
-        self._sendPaintEvents()
-        self._deleteScheduled()
+        self._process_key_events()
+        self._process_remaining_events()
+        self._send_paint_events()
+        self._delete_scheduled()
         self.logger.info("===================================")
         self._screen.refresh()
 
-    def postEvent(self, receiver, event):
+    def post_event(self, receiver, event):
         """
         Add an event to the event queue, to be delivered at a later time to
         receiver.
@@ -173,20 +173,20 @@ class VApplication(core.VCoreApplication):
     def exit(self):
         self._exit_flag = True
 
-    def addTopLevelWidget(self, widget):
+    def add_top_level_widget(self, widget):
         self._root_widget.addChild(widget)
 
-    def deleteLater(self, widget):
+    def delete_later(self, widget):
         self.logger.info("Added widget %s to deleteLater queue" % str(widget))
         self._delete_later_queue.append(widget)
 
     def screen(self):
         return self._screen
 
-    def focusWidget(self):
+    def focus_widget(self):
         return self._focus_widget
 
-    def setFocusWidget(self, widget):
+    def set_focus_widget(self, widget):
         """
         Gives focus to the specified widget.
         Focused widgets are the one that will receive Key events.
@@ -202,29 +202,29 @@ class VApplication(core.VCoreApplication):
 
         if self._focus_widget is not None:
             self.logger.info("Focus out on widget %s." % self._focus_widget)
-            VApplication.vApp.postEvent(
+            VApplication.vApp.post_event(
                 self._focus_widget,
                 VFocusEvent(core.VEvent.EventType.FocusOut))
 
         self._focus_widget = None
         if widget is not None:
-            if widget.focusPolicy() == FocusPolicy.NoFocus:
+            if widget.focus_policy() == FocusPolicy.NoFocus:
                 self.logger.info(
                     ("Focus not accepted on widget "
                      "%s due to its focus policy.") % self._focus_widget)
                 return
 
             self._focus_widget = widget
-            VApplication.vApp.postEvent(
+            VApplication.vApp.post_event(
                 self._focus_widget, VFocusEvent(core.VEvent.EventType.FocusIn))
 
-    def defaultPalette(self):
+    def default_palette(self):
         """
         Returns:
             the default palette of the application.
         """
         palette = VPalette()
-        palette.setDefaults()
+        palette.set_defaults()
         return palette
 
     def palette(self):
@@ -234,31 +234,31 @@ class VApplication(core.VCoreApplication):
         """
         return self._palette
 
-    def defaultGraphicElements(self):
+    def default_graphic_elements(self):
         return self._default_graphic_elements
 
-    def setDefaultGraphicElements(self, graphic_elements):
+    def set_default_graphic_elements(self, graphic_elements):
         self._default_graphic_elements = graphic_elements
 
-    def rootWidget(self):
+    def root_widget(self):
         return self._root_widget
 
-    def resetScreen(self):
+    def reset_screen(self):
         self._screen.reset()
 
-    def topLevelWidgets(self):
+    def top_level_widgets(self):
         raise NotImplementedError()
 
-    def allWidgets(self):
+    def all_widgets(self):
         raise NotImplementedError()
 
-    def activeWindow(self):
+    def active_window(self):
         raise NotImplementedError()
 
-    def setActiveWindow(self, window):
+    def set_active_window(self, window):
         raise NotImplementedError()
 
-    def closeAllWindows(self):
+    def close_all_windows(self):
         raise NotImplementedError()
 
     def event(self, event):
@@ -267,13 +267,13 @@ class VApplication(core.VCoreApplication):
     def clipboard(self):
         raise NotImplementedError()
 
-    def keyboardModifiers(self):
+    def keyboard_modifiers(self):
         raise NotImplementedError()
 
     def notify(self):
         raise NotImplementedError()
 
-    def eventFilter(self, event):
+    def event_filter(self, event):
         """
         Default event filter that is used when no other event interceptor
         catches the event.
@@ -290,7 +290,7 @@ class VApplication(core.VCoreApplication):
 
     # Private
 
-    def _hideScheduled(self):
+    def _hide_scheduled(self):
         self.logger.info("Widget scheduled for deletion: %s" %
                          str(self._delete_later_queue))
         for w in self._delete_later_queue:
@@ -298,13 +298,13 @@ class VApplication(core.VCoreApplication):
                 "Posting hide events for deleted widget %s" % str(w))
             w.hide()
 
-    def _deleteScheduled(self):
+    def _delete_scheduled(self):
         for w in self._delete_later_queue:
             w.parent().removeChild(w)
 
         self._delete_later_queue.clear()
 
-    def _processKeyEvents(self):
+    def _process_key_events(self):
         while True:
             self.logger.info("key queue %d" % self._key_event_queue.qsize())
             try:
@@ -316,24 +316,24 @@ class VApplication(core.VCoreApplication):
                 return
 
             if isinstance(event, events.VKeyEvent):
-                self._processSingleKeyEvent(event)
+                self._process_single_key_event(event)
             elif isinstance(event, _VExceptionEvent):
                 raise event.exception
 
-    def _processSingleKeyEvent(self, key_event):
+    def _process_single_key_event(self, key_event):
         self.logger.info("Key event %d %x" %
                          (key_event.key(), key_event.modifiers()))
 
         key_event.setAccepted(False)
 
-        focus_widget = self.focusWidget()
+        focus_widget = self.focus_widget()
         if focus_widget:
-            for widget in focus_widget.traverseToRoot():
+            for widget in focus_widget.traverse_to_root():
                 self.logger.info(
                     "KeyEvent attempting delivery to "+str(widget))
                 stop_event = False
-                for event_filter in reversed(widget.installedEventFilters()):
-                    stop_event = stop_event | event_filter.eventFilter(
+                for event_filter in reversed(widget.installed_event_filters()):
+                    stop_event = stop_event | event_filter.event_filter(
                         key_event)
                     if key_event.isAccepted():
                         self.logger.info(
@@ -343,16 +343,16 @@ class VApplication(core.VCoreApplication):
                 if not stop_event:
                     self.logger.info(
                         "KeyEvent not stopped. Sending to widget "+str(widget))
-                    widget.keyEvent(key_event)
+                    widget.key_event(key_event)
 
                     if key_event.isAccepted():
                         self.logger.info("KeyEvent accepted by "+str(widget))
                         return
 
         # If all fails, deliver it to the application itself.
-        self.eventFilter(key_event)
+        self.event_filter(key_event)
 
-    def _processRemainingEvents(self):
+    def _process_remaining_events(self):
         previous_data = None
         while True:
             try:
@@ -386,19 +386,19 @@ class VApplication(core.VCoreApplication):
             # curses.resizeterm(y, x)
             # self.renderWidgets()
 
-    def _sendPaintEvents(self):
-        for w in self.rootWidget().depthFirstFullTree():
-            if w.needsUpdate():
-                for w2 in w.depthFirstRightTree():
-                    if core.VRect.tuple.intersects(w.absoluteRect(),
-                                                   w2.absoluteRect()):
+    def _send_paint_events(self):
+        for w in self.root_widget().depthFirstFullTree():
+            if w.needs_update():
+                for w2 in w.depth_first_right_tree():
+                    if core.VRect.tuple.intersects(w.absolute_rect(),
+                                                   w2.absolute_rect()):
                         w2.update()
 
-        for w in self.rootWidget().depthFirstFullTree():
-            if w.needsUpdate():
+        for w in self.root_widget().depthFirstFullTree():
+            if w.needs_update():
                 w.event(events.VPaintEvent())
 
-    def _exitCleanup(self):
+    def _exit_cleanup(self):
         self._key_event_thread.stop_event.set()
         self._screen.reset()
         super().exit()

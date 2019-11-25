@@ -1,5 +1,5 @@
 from ... import core  # noqa
-from ... import Key, KeyModifier, nativeToVaiKeyCode, vaiKeyCodeToText  # noqa
+from ... import Key, KeyModifier, native_to_vai_key_code, vai_key_code_to_text  # noqa
 import logging  # noqa
 import sys  # noqa
 import os  # noqa

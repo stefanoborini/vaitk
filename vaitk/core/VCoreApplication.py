@@ -18,7 +18,7 @@ class VCoreApplication(VObject):
         VCoreApplication.vApp = self
         self.aboutToQuit = VSignal(self)
 
-    def addTimer(self, timer):
+    def add_timer(self, timer):
         """
         Add a timer to the application.
         This routine should not be called manually.
@@ -31,16 +31,16 @@ class VCoreApplication(VObject):
         """
         VCoreApplication.vApp = None
 
-    def sendEvent(self, receiver, event):
+    def send_event(self, receiver, event):
         """
         Directly send an event to a receiver.
         """
         receiver.event(event)
 
-    def applicationName(self):
+    def application_name(self):
         raise NotImplementedError()
 
-    def applicationVersion(self):
+    def application_version(self):
         raise NotImplementedError()
 
     def instance(self):
@@ -49,35 +49,35 @@ class VCoreApplication(VObject):
     def exec_(self):
         raise NotImplementedError()
 
-    def processEvents(self, flags):
+    def process_events(self, flags):
         raise NotImplementedError()
 
-    def postEvent(self, receiver, event):
+    def post_event(self, receiver, event):
         raise NotImplementedError()
 
-    def sendPostedEvents(self, receiver, event_type):
+    def send_posted_event(self, receiver, event_type):
         raise NotImplementedError()
 
-    def removePostedEvents(self, receiver, event_type):
+    def remove_posted_event(self, receiver, event_type):
         raise NotImplementedError()
 
-    def hasPendingEvents(self):
+    def has_pending_events(self):
         raise NotImplementedError()
 
     def notify(self, receiver, event):
         raise NotImplementedError()
 
-    def applicationDirPath(self):
+    def application_dir_path(self):
         raise NotImplementedError()
 
-    def applicationFilePath(self):
+    def application_file_path(self):
         raise NotImplementedError()
 
-    def startingUp(self):
+    def starting_up(self):
         raise NotImplementedError()
 
-    def closingDown(self):
+    def closing_down(self):
         raise NotImplementedError()
 
-    def setEventFilter(self, event_filter):
+    def set_event_filter(self, event_filter):
         raise NotImplementedError()

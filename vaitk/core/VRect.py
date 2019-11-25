@@ -37,10 +37,10 @@ class VRect(object):
     def width(self):
         return self._size.width
 
-    def isNull(self):
+    def is_null(self):
         return (self.width == 0 and self.height == 0)
 
-    def moveTo(self, top_left):
+    def move_to(self, top_left):
         self._top_left = top_left
 
     def intersects(self, other):
@@ -119,19 +119,19 @@ class VRect(object):
             return rect[1] + rect[3] - 1
 
         @staticmethod
-        def topLeft(rect):
+        def top_left(rect):
             return (rect[0], rect[1])
 
         @staticmethod
-        def topRight(rect):
+        def top_right(rect):
             return (rect[0] + rect[2] - 1, rect[1])
 
         @staticmethod
-        def bottomLeft(rect):
+        def bottom_left(rect):
             return (rect[0], rect[1] + rect[3] - 1)
 
         @staticmethod
-        def bottomRight(rect):
+        def bottom_right(rect):
             return (rect[0] + rect[2] - 1, rect[1] + rect[3] - 1)
 
         @staticmethod
@@ -147,11 +147,11 @@ class VRect(object):
             return rect[2]
 
         @staticmethod
-        def isNull(rect):
+        def is_null(rect):
             return (rect[2] == 0 and rect[3] == 0)
 
         @staticmethod
-        def moveTo(rect, top_left):
+        def move_to(rect, top_left):
             return (top_left[0], top_left[1], rect[2], rect[3])
 
         @staticmethod

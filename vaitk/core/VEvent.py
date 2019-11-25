@@ -16,19 +16,19 @@ class VEvent:
         self._accepted = False
 
     def accept(self):
-        self.setAccepted(True)
+        self.set_accepted(True)
 
     def ignore(self):
-        self.setAccepted(False)
+        self.set_accepted(False)
 
-    def isAccepted(self):
+    def is_accepted(self):
         return self._accepted
 
-    def setAccepted(self, accepted):
+    def set_accepted(self, accepted):
         self._accepted = accepted
 
-    def eventType(self):
+    def event_type(self):
         return self._event_type
 
     def __str__(self):
-        return (self.__class__.__name__+"(%d)") % self.eventType()
+        return (self.__class__.__name__+"(%d)") % self.event_type()

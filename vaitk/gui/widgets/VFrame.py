@@ -8,9 +8,9 @@ class VFrame(VWidget):
         super(VFrame, self).__init__(parent)
         self._title = None
 
-    def paintEvent(self, event):
-        if self.isEnabled():
-            if self.isActive():
+    def paint_event(self, event):
+        if self.is_enabled():
+            if self.is_active():
                 color_group = VPalette.ColorGroup.Active
             else:
                 color_group = VPalette.ColorGroup.Inactive
@@ -20,19 +20,20 @@ class VFrame(VWidget):
         fg, bg = self.colors(color_group)
         w, h = self.size()
         painter = VPainter(self)
-        painter.fillRect((0, 0, w, h))
+        painter.fill_rect((0, 0, w, h))
         if self._title:
             dash_length = 0  # FIXME
-            painter.drawText((0, dash_length), " " + self._title + " ", fg, bg)
+            painter.draw_text((0, dash_length),
+                              " " + self._title + " ", fg, bg)
 
-    def setTitle(self, title):
+    def set_title(self, title):
         self._title = title
 
-    def minimumSize(self):
+    def minimum_size(self):
         if self._title:
             return (len(self._title) + 8, 2)
         else:
             return (2, 2)
 
-    def contentsMargins(self):
+    def contents_margins(self):
         return (1, 1, 1, 1)
