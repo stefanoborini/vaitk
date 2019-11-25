@@ -8,7 +8,6 @@ import select  # noqa
 from ..VApplication import VApplication  # noqa
 from ..VColor import VColor  # noqa
 from ..VPalette import VPalette  # noqa
-from ..VScreen import VScreen  # noqa
 from ..VPainter import VPainter  # noqa
 from ..VWidget import VWidget  # noqa
 from .VFrame import VFrame  # noqa

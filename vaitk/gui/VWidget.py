@@ -4,7 +4,7 @@ from .. import FocusPolicy
 from .VApplication import VApplication
 from .VPalette import VPalette
 from .VPainter import VPainter
-from .VScreen import VScreenArea
+from vaitk.gui import VScreenArea
 from . import events
 
 

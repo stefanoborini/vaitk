@@ -1,18 +1,20 @@
-from . import VColor
-from ..consts import Index
 import curses
+import logging
+import os
 import select
 import sys
-import os
-import logging
 import threading
+
+from . import VColor
+from .AbstractScreen import AbstractScreen
+from ..consts import Index
 
 
 class VException(Exception):
     pass
 
 
-class VScreen(object):
+class VCursesScreen(AbstractScreen):
     def __init__(self):
         # Timeout so that ncurses sends out the pure esc key instead of
         # considering it
@@ -69,21 +71,12 @@ class VScreen(object):
             curses.doupdate()
 
     def rect(self):
-        return self.top_left() + self.size()
+        return (0, 0) + self.size()
 
     def size(self):
         with self._curses_lock:
             h, w = self._curses_screen.getmaxyx()
         return (w, h)
-
-    def top_left(self):
-        return (0, 0)
-
-    def width(self):
-        return self.size()[Index.SIZE_WIDTH]
-
-    def height(self):
-        return self.size()[Index.SIZE_HEIGHT]
 
     def get_key_code(self):
         # Prevent to hold the GIL
@@ -599,111 +592,3 @@ class VGlobalScreenColor(object):
     def all_colors(cls):
         return [c for c in list(cls.__dict__.values())
                 if isinstance(c, VScreenColor)]
-
-
-class VScreenArea(object):
-    def __init__(self, screen, rect):
-        self._screen = screen
-        self._rect = rect
-        self.logger = logging.getLogger(self.__class__.__name__)
-        if hasattr(self, "debug"):
-            self.logger.setLevel(self.debug)
-        else:
-            self.logger.setLevel(logging.CRITICAL+1)
-
-    def write(self, pos, string, fg_color=None, bg_color=None):
-        rel_x, rel_y = pos
-        w, h = self.size()
-
-        if rel_y < 0 or rel_y >= h or rel_x >= w:
-            self.logger.error(
-                ("Out of bound in VScreenArea.write: "
-                 "pos=%s size=%s len=%d '%s'") % (
-                    str(pos), str(self.size()), len(string), string))
-            return
-
-        out_string = string
-        if rel_x < 0:
-            self.logger.error(
-                ("Out of bound in VScreenArea.write: "
-                 "pos=%s size=%s len=%d '%s'") % (
-                    str(pos), str(self.size()), len(string), string))
-            out_string = string[-rel_x:]
-            rel_x = 0
-
-        if len(out_string) == 0:
-            return
-
-        if (rel_x+len(out_string) > w):
-            self.logger.error(
-                ("Out of bound in VScreenArea.write: "
-                 "pos=%s size=%s len=%d '%s'") % (
-                    str(pos), str(self.size()), len(string), string))
-            out_string = out_string[:w-rel_x]
-
-        top_left_x, top_left_y = self.top_left()
-        self._screen.write((rel_x+top_left_x, rel_y+top_left_y),
-                           out_string,
-                           fg_color,
-                           bg_color)
-
-    def set_colors(self, pos, colors):
-        rel_x, rel_y = pos
-        w, h = self.size()
-
-        if rel_y < 0 or rel_y >= h or rel_x >= w:
-            self.logger.error(
-                ("Out of bound in VScreenArea.setColors: "
-                 "pos=%s size=%s len=%d") % (
-                    str(pos), str(self.size()), len(colors)))
-            return
-
-        out_colors = colors
-        if rel_x < 0:
-            self.logger.error(
-                ("Out of bound in VScreenArea.setColors: "
-                 "pos=%s size=%s len=%d") % (
-                    str(pos), str(self.size()), len(colors)))
-            out_colors = colors[-rel_x:]
-            rel_x = 0
-
-        if len(out_colors) == 0:
-            return
-
-        if (rel_x+len(out_colors) > w):
-            self.logger.error(
-                ("Out of bound in VScreenArea.setColors: "
-                 "pos=%s size=%s len=%d") % (
-                    str(pos), str(self.size()), len(colors)))
-            out_colors = out_colors[:w-rel_x]
-
-        top_left_x, top_left_y = self.top_left()
-        self._screen.set_colors(
-            (rel_x+top_left_x, rel_y+top_left_y), out_colors)
-
-    def rect(self):
-        return self._rect
-
-    def size(self):
-        return (self._rect[Index.RECT_WIDTH], self._rect[Index.RECT_HEIGHT])
-
-    def top_left(self):
-        return (self._rect[Index.RECT_X], self._rect[Index.RECT_Y])
-
-    def width(self):
-        return self._rect[Index.RECT_WIDTH]
-
-    def height(self):
-        return self._rect[Index.RECT_HEIGHT]
-
-    def screen(self):
-        return self._screen
-
-    def erase(self):
-        for y in range(self.height()):
-            self.write((0, y), ' '*self.width())
-
-    def out_of_bounds(self, pos):
-        x, y = pos
-        return (x >= self.size()[Index.SIZE_WIDTH] or
-                y >= self.size()[Index.SIZE_HEIGHT] or x < 0 or y < 0)

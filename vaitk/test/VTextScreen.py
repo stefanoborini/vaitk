@@ -1,7 +1,9 @@
 import itertools
 
+from ..gui.AbstractScreen import AbstractScreen
 
-class VTextScreen(object):
+
+class VTextScreen(AbstractScreen):
     """
     Dummy Screen that renders information in an indexed buffer, instead of
     the actual terminal
@@ -31,6 +33,9 @@ class VTextScreen(object):
             self._render_output.append(row)
             for w in range(self._size[0]):
                 row.append('.')
+
+    def reset(self):
+        pass
 
     def deinit(self):
         self._log.append("Deinited screen")
@@ -91,3 +96,6 @@ class VTextScreen(object):
 
     def num_colors(self):
         return 8
+
+    def rect(self):
+        return (0, 0) + self.size()

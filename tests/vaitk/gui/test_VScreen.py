@@ -1,7 +1,7 @@
 import unittest
 from vaitk import test
 
-from vaitk.gui.VScreen import VScreenArea
+from vaitk.gui import VScreenArea
 
 
 class TestVScreenArea(unittest.TestCase):
