@@ -3,7 +3,7 @@ from .. import FocusPolicy
 from .. import core
 from . import events
 from .VPalette import VPalette
-from .VScreen import VScreen
+from .VCursesScreen import VCursesScreen
 from .events import VFocusEvent
 from .VGraphicElements import VGraphicElements
 import threading
