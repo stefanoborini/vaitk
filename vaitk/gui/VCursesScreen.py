@@ -592,5 +592,3 @@ class VGlobalScreenColor(object):
     def all_colors(cls):
         return [c for c in list(cls.__dict__.values())
                 if isinstance(c, VScreenColor)]
-
-

@@ -1,9 +1,9 @@
+from vaitk.gui import VCursesScreen
 from .. import KeyModifier, Key
 from .. import FocusPolicy
 from .. import core
 from . import events
 from .VPalette import VPalette
-from .VCursesScreen import VCursesScreen
 from .events import VFocusEvent
 from .VGraphicElements import VGraphicElements
 import threading
@@ -87,7 +87,7 @@ class VApplication(core.VCoreApplication):
         if screen is not None:
             self._screen = screen
         else:
-            self._screen = VScreen()
+            self._screen = VCursesScreen()
 
         # The root widget is the one representing the whole background screen.
         # It it always rendered last.
