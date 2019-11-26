@@ -1,41 +1,25 @@
-class VPoint(object):
+from traitlets import HasTraits, Int
+
+
+class Point(HasTraits):
+    x = Int()
+    y = Int()
+
     def __init__(self, x, y):
-        self._pos = (x, y)
+        super().__init__(x=x, y=y)
 
-    def __iter__(self):
-        return iter(self._pos)
-
-    @property
-    def x(self):
-        return self._pos[0]
-
-    @property
-    def y(self):
-        return self._pos[1]
+    @classmethod
+    def from_tuple(cls, t):
+        return cls(*t)
 
     def __add__(self, other):
-        return VPoint(*VPoint.tuple.add(self._pos, other._pos))
+        return Point(x=self.x + other.x, y=self.y + other.y)
 
     def __sub__(self, other):
-        return VPoint(*VPoint.tuple.sub(self._pos, other._pos))
+        return Point(x=self.x - other.x, y=self.y - other.y)
 
     def __str__(self):
-        return "VPoint(x=%d, y=%d)" % self._pos
+        return f"{self.__class__.__name__}(x={self.x}, y={self.y})"
 
-    class tuple:
-
-        @staticmethod
-        def x(p1):
-            return p1[0]
-
-        @staticmethod
-        def y(p1):
-            return p1[1]
-
-        @staticmethod
-        def add(p1, p2):
-            return (p1[0]+p2[0], p1[1]+p2[1])
-
-        @staticmethod
-        def sub(p1, p2):
-            return (p1[0]-p2[0], p1[1]-p2[1])
+    def as_tuple(self):
+        return self.x, self.y

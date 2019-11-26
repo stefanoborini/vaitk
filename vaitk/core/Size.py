@@ -1,26 +1,19 @@
-class Size(object):
+from traitlets import HasTraits, Int
+
+
+class Size(HasTraits):
+    width = Int()
+    height = Int()
+
     def __init__(self, width, height):
-        self._size = (width, height)
+        super().__init__(width=width, height=height)
 
-    def __iter__(self):
-        return iter(self._size)
-
-    @property
-    def width(self):
-        return self._size[0]
-
-    @property
-    def height(self):
-        return self._size[1]
+    @classmethod
+    def from_tuple(cls, t):
+        return cls(*t)
 
     def __str__(self):
-        return "VSize(width=%d, height=%d)" % self._size
+        return f"Size(width={self.width}, height={self.height})"
 
-    class tuple:
-        @staticmethod
-        def width(size):
-            return size[0]
-
-        @staticmethod
-        def height(size):
-            return size[1]
+    def as_tuple(self):
+        return self.width, self.height
