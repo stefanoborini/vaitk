@@ -1,11 +1,11 @@
-class VSignal(object):
+class Signal(object):
     def __init__(self, sender):
         self._sender = sender
         self._slots = []
         self._enabled = True
 
     def connect(self, target):
-        if isinstance(target, VSignal):
+        if isinstance(target, Signal):
             slot = target.emit
         else:
             slot = target

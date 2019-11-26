@@ -2,12 +2,12 @@ from ... import FocusPolicy
 from ... import core
 from ...consts import Index
 from ... import Key
-from ..Widget import VWidget
-from ..Painter import VPainter
-from ..Cursor import VCursor
+from ..Widget import Widget
+from ..Painter import Painter
+from ..Cursor import Cursor
 
 
-class VLineEdit(VWidget):
+class LineEdit(Widget):
     def __init__(self, contents="", parent=None):
         super().__init__(parent)
         self._text = contents
@@ -16,11 +16,11 @@ class VLineEdit(VWidget):
         self._max_length = 32767
         self.set_focus_policy(FocusPolicy.StrongFocus)
 
-        self.returnPressed = core.VSignal(self)
-        self.cursorPositionChanged = core.VSignal(self)
-        self.textChanged = core.VSignal(self)
-        self.selectionChanged = core.VSignal(self)
-        self.editingFinished = core.VSignal(self)
+        self.returnPressed = core.Signal(self)
+        self.cursorPositionChanged = core.Signal(self)
+        self.textChanged = core.Signal(self)
+        self.selectionChanged = core.Signal(self)
+        self.editingFinished = core.Signal(self)
 
     def max_length(self):
         return self._max_length
@@ -106,25 +106,25 @@ class VLineEdit(VWidget):
         pass
 
     def minimum_size_hint(self):
-        return core.VSize(len(self._text), 1)
+        return core.Size(len(self._text), 1)
 
     def paint_event(self, event):
         w, h = self.size()
-        painter = VPainter(self)
+        painter = Painter(self)
         painter.draw_text((0, 0), self._text + ' ' * (w - len(self._text)))
         if self.has_focus():
             abs_top_left = self.map_to_global((0, 0))
-            VCursor.set_pos((abs_top_left[Index.X] + self._cursor_position,
-                             abs_top_left[Index.Y]
-                             )
+            Cursor.set_pos((abs_top_left[Index.X] + self._cursor_position,
+                            abs_top_left[Index.Y]
                             )
+                           )
 
     def focus_in_event(self, event):
         abs_top_left = self.map_to_global((0, 0))
-        VCursor.set_pos((abs_top_left[Index.X] + self._cursor_position,
-                         abs_top_left[Index.Y]
-                         )
+        Cursor.set_pos((abs_top_left[Index.X] + self._cursor_position,
+                        abs_top_left[Index.Y]
                         )
+                       )
 
     def key_event(self, event):
         if event.key() == Key.Key_Return:

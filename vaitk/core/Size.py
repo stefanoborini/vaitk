@@ -1,4 +1,4 @@
-class VSize(object):
+class Size(object):
     def __init__(self, width, height):
         self._size = (width, height)
 

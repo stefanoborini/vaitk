@@ -1,11 +1,11 @@
-from ..Widget import VWidget
+from ..Widget import Widget
 from ..Palette import VPalette
-from ..Painter import VPainter
+from ..Painter import Painter
 
 
-class VDialog(VWidget):
+class Dialog(Widget):
     def __init__(self, parent=None):
-        super(VDialog, self).__init__(parent)
+        super(Dialog, self).__init__(parent)
         self._title = None
 
     def paint_event(self, event):
@@ -40,7 +40,7 @@ class VDialog(VWidget):
         else:
             header = '+'+"-"*(w-2)+"+"
 
-        painter = VPainter(self)
+        painter = Painter(self)
         painter.write(0, 0, header, fg, bg)
 
         for i in range(0, h-2):

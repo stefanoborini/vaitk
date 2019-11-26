@@ -5,26 +5,26 @@ import vaitk
 
 class TestVPainter(unittest.TestCase):
     def setUp(self):
-        self.screen = test.VTextScreen((40, 40))
-        self.app = gui.VApplication([], screen=self.screen)
+        self.screen = test.TextScreen((40, 40))
+        self.app = gui.Application([], screen=self.screen)
 
     def tearDown(self):
         del self.screen
         self.app.exit()
-        core.VCoreApplication.vApp = None
+        core.BaseCoreApplication.vApp = None
         del self.app
 
     def testDrawText(self):
-        w = gui.VWidget()
+        w = gui.Widget()
         w.resize((40, 40))
-        painter = gui.VPainter(w)
+        painter = gui.Painter(w)
         painter.draw_text((10, 10), "hello")
         self.assertEqual(self.screen.string_at(10, 10, 5), "hello")
 
     def testDrawTextFormatted(self):
-        w = gui.VWidget()
+        w = gui.Widget()
         w.resize((40, 40))
-        painter = gui.VPainter(w)
+        painter = gui.Painter(w)
         painter.draw_text((10, 11, 11, 3), "hello",
                           align=vaitk.Alignment.AlignLeft)
         print(self.screen)
@@ -53,16 +53,16 @@ class TestVPainter(unittest.TestCase):
         self.assertEqual(self.screen.string_at(10, 13, 11), "hello      ")
 
     def testDrawLineHorizontal(self):
-        w = gui.VWidget()
+        w = gui.Widget()
         w.resize((40, 40))
-        painter = gui.VPainter(w)
+        painter = gui.Painter(w)
         painter.draw_line((10, 10), 5, vaitk.Orientation.Horizontal)
         self.assertEqual(self.screen.string_at(10, 10, 5), "-----")
 
     def testDrawLineVertical(self):
-        w = gui.VWidget()
+        w = gui.Widget()
         w.resize((40, 40))
-        painter = gui.VPainter(w)
+        painter = gui.Painter(w)
         painter.draw_line((10, 10), 5, vaitk.Orientation.Vertical)
         print(self.screen)
         self.assertEqual(self.screen.string_at(10, 10, 1), "|")
@@ -72,9 +72,9 @@ class TestVPainter(unittest.TestCase):
         self.assertEqual(self.screen.string_at(10, 14, 1), "|")
 
     def testFillRect(self):
-        w = gui.VWidget()
+        w = gui.Widget()
         w.resize((40, 40))
-        painter = gui.VPainter(w)
+        painter = gui.Painter(w)
         painter.fill_rect((10, 10, 5, 5))
         self.assertEqual(self.screen.string_at(10, 10, 5), "+---+")
         self.assertEqual(self.screen.string_at(10, 11, 5), "|   |")
@@ -83,9 +83,9 @@ class TestVPainter(unittest.TestCase):
         self.assertEqual(self.screen.string_at(10, 14, 5), "+---+")
 
     def testDrawRect(self):
-        w = gui.VWidget()
+        w = gui.Widget()
         w.resize((40, 40))
-        painter = gui.VPainter(w)
+        painter = gui.Painter(w)
         painter.draw_rect((10, 10, 5, 5))
         self.assertEqual(self.screen.string_at(10, 10, 5), "+---+")
         self.assertEqual(self.screen.string_at(10, 11, 5), "|...|")

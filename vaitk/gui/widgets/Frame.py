@@ -1,11 +1,11 @@
-from ..Widget import VWidget
+from ..Widget import Widget
 from ..Palette import VPalette
-from ..Painter import VPainter
+from ..Painter import Painter
 
 
-class VFrame(VWidget):
+class Frame(Widget):
     def __init__(self, parent=None):
-        super(VFrame, self).__init__(parent)
+        super(Frame, self).__init__(parent)
         self._title = None
 
     def paint_event(self, event):
@@ -19,7 +19,7 @@ class VFrame(VWidget):
 
         fg, bg = self.colors(color_group)
         w, h = self.size()
-        painter = VPainter(self)
+        painter = Painter(self)
         painter.fill_rect((0, 0, w, h))
         if self._title:
             dash_length = 0  # FIXME

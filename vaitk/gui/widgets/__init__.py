@@ -5,15 +5,15 @@ import sys  # noqa
 import os  # noqa
 import copy  # noqa
 import select  # noqa
-from ..Application import VApplication  # noqa
-from ..Color import VColor  # noqa
+from ..Application import Application  # noqa
+from ..Color import Color  # noqa
 from ..Palette import VPalette  # noqa
-from ..Painter import VPainter  # noqa
-from ..Widget import VWidget  # noqa
-from .Frame import VFrame  # noqa
-from .Dialog import VDialog  # noqa
-from .Label import VLabel  # noqa
-from .ToolTip import VToolTip  # noqa
-from .LineEdit import VLineEdit  # noqa
-from .PushButton import VPushButton  # noqa
-from .TabWidget import VTabWidget  # noqa
+from ..Painter import Painter  # noqa
+from ..Widget import Widget  # noqa
+from .Frame import Frame  # noqa
+from .Dialog import Dialog  # noqa
+from .Label import Label  # noqa
+from .ToolTip import ToolTip  # noqa
+from .LineEdit import LineEdit  # noqa
+from .PushButton import PushButton  # noqa
+from .TabWidget import TabWidget  # noqa

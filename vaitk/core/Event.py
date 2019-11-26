@@ -1,4 +1,4 @@
-class VEvent:
+class Event:
     class EventType:
         NoEvent = 0
         Timer = 1

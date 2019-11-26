@@ -5,8 +5,8 @@ import unittest
 class TestVSignal(unittest.TestCase):
     def testVSignal(self):
         arg = []
-        sender = core.VObject()
-        signal = core.VSignal(sender)
+        sender = core.BaseObject()
+        signal = core.Signal(sender)
 
         def slot(x):
             arg.append(x)
@@ -26,8 +26,8 @@ class TestVSignal(unittest.TestCase):
 
     def testDisconnectNotRegistered(self):
         arg = []
-        sender = core.VObject()
-        signal = core.VSignal(sender)
+        sender = core.BaseObject()
+        signal = core.Signal(sender)
 
         def slot(x):
             arg.append(x)

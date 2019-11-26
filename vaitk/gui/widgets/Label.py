@@ -1,15 +1,15 @@
-from ..Widget import VWidget
-from ..Painter import VPainter
+from ..Widget import Widget
+from ..Painter import Painter
 from ..Palette import VPalette
 
 
-class VLabel(VWidget):
+class Label(Widget):
     def __init__(self, label="", parent=None):
         super().__init__(parent)
         self._label = label
 
     def paint_event(self, event):
-        painter = VPainter(self)
+        painter = Painter(self)
         w, h = self.size()
         painter.fg_color = self.palette().color(VPalette.ColorGroup.Active,
                                                 VPalette.ColorRole.WindowText)

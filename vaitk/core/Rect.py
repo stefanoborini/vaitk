@@ -1,5 +1,5 @@
 from .Point import VPoint
-from .Size import VSize
+from .Size import Size
 #  012345678901234567890
 # 0
 # 1
@@ -13,17 +13,17 @@ from .Size import VSize
 # A = (2,2),(5,3) topleft 2,2 bottomright 6,4
 
 
-class VRect(object):
+class Rect(object):
     def __init__(self, top_left, size):
         if isinstance(top_left, VPoint):
             self._top_left = top_left
         else:
             self._top_left = VPoint(x=top_left[0], y=top_left[1])
 
-        if isinstance(size, VSize):
+        if isinstance(size, Size):
             self._size = size
         else:
-            self._size = VSize(width=size[0], height=size[1])
+            self._size = Size(width=size[0], height=size[1])
 
     @property
     def size(self):
@@ -156,7 +156,7 @@ class VRect(object):
 
         @staticmethod
         def intersects(rect, other):
-            return (VRect.tuple.left(rect) <= VRect.tuple.right(other)
-                    and VRect.tuple.right(rect) >= VRect.tuple.left(other)
-                    and VRect.tuple.top(rect) <= VRect.tuple.bottom(other)
-                    and VRect.tuple.bottom(rect) >= VRect.tuple.top(other))
+            return (Rect.tuple.left(rect) <= Rect.tuple.right(other)
+                    and Rect.tuple.right(rect) >= Rect.tuple.left(other)
+                    and Rect.tuple.top(rect) <= Rect.tuple.bottom(other)
+                    and Rect.tuple.bottom(rect) >= Rect.tuple.top(other))

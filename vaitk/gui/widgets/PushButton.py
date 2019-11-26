@@ -1,13 +1,13 @@
-from ..Widget import VWidget
+from ..Widget import Widget
 
 
-class VPushButton(VWidget):
+class PushButton(Widget):
     def __init__(self, label, parent=None):
-        super(VPushButton, self).__init__(parent)
+        super(PushButton, self).__init__(parent)
         self._label = label
 
     def render(self, painter):
-        super(VPushButton, self).render(painter)
+        super(PushButton, self).render(painter)
         # for i in range(0, h/2):
         #     painter.write(0, i, ' '*w)
         # painter.write(0, h/2, "[ "+self._label + " ]" +

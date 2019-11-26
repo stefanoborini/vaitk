@@ -1,6 +1,6 @@
-from .Event import VEvent
+from .Event import Event
 
 
-class VTimerEvent(VEvent):
+class TimerEvent(Event):
     def __init__(self):
-        super().__init__(VEvent.EventType.Timer)
+        super().__init__(Event.EventType.Timer)

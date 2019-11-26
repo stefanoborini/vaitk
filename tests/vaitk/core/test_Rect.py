@@ -4,23 +4,23 @@ from vaitk import core
 
 class TestVRect(unittest.TestCase):
     def testVRect(self):
-        r = core.VRect((2, 3), (4, 5))
-        self.assertIsInstance(r.size, core.VSize)
+        r = core.Rect((2, 3), (4, 5))
+        self.assertIsInstance(r.size, core.Size)
         self.assertIsInstance(r.top_left, core.VPoint)
 
     def testVRectIsNull(self):
-        r = core.VRect((2, 3), (4, 5))
+        r = core.Rect((2, 3), (4, 5))
         self.assertFalse(r.is_null())
 
-        r = core.VRect((2, 3), (0, 0))
+        r = core.Rect((2, 3), (0, 0))
         self.assertTrue(r.is_null())
 
     def testVRectIntersects(self):
-        self.assertTrue(core.VRect((0, 0), (18, 1)).intersects(
-            core.VRect((4, 0), (142, 40))))
+        self.assertTrue(core.Rect((0, 0), (18, 1)).intersects(
+            core.Rect((4, 0), (142, 40))))
 
     def testVRectDimensionality(self):
-        r = core.VRect((2, 3), (4, 5))
+        r = core.Rect((2, 3), (4, 5))
 
         self.assertEqual(r.x, 2)
         self.assertEqual(r.y, 3)
@@ -42,7 +42,7 @@ class TestVRect(unittest.TestCase):
         self.assertEqual(r.bottom, 7)
 
     def testVRectTuple(self):
-        self.assertEqual(core.VRect.tuple.x((2, 3, 4, 5)), 2)
-        self.assertEqual(core.VRect.tuple.y((2, 3, 4, 5)), 3)
-        self.assertEqual(core.VRect.tuple.width((2, 3, 4, 5)), 4)
-        self.assertEqual(core.VRect.tuple.height((2, 3, 4, 5)), 5)
+        self.assertEqual(core.Rect.tuple.x((2, 3, 4, 5)), 2)
+        self.assertEqual(core.Rect.tuple.y((2, 3, 4, 5)), 3)
+        self.assertEqual(core.Rect.tuple.width((2, 3, 4, 5)), 4)
+        self.assertEqual(core.Rect.tuple.height((2, 3, 4, 5)), 5)

@@ -3,7 +3,7 @@ import itertools
 from ..gui.AbstractScreen import AbstractScreen
 
 
-class VTextScreen(AbstractScreen):
+class TextScreen(AbstractScreen):
     """
     Dummy Screen that renders information in an indexed buffer, instead of
     the actual terminal

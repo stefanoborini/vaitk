@@ -1,7 +1,7 @@
-from .CoreApplication import VCoreApplication
-from .BaseObject import VObject
-from .Signal import VSignal
-from . import VTimerEvent
+from .CoreApplication import BaseCoreApplication
+from .BaseObject import BaseObject
+from .Signal import Signal
+from . import TimerEvent
 import time
 import threading
 
@@ -25,14 +25,14 @@ class _TimerThread(threading.Thread):
                 break
 
 
-class VTimer(VObject):
+class Timer(BaseObject):
     def __init__(self):
         super().__init__()
         self._interval = None
         self._single_shot = False
-        self.timeout = VSignal(self)
+        self.timeout = Signal(self)
         self._thread = None
-        VCoreApplication.vApp.addTimer(self)
+        BaseCoreApplication.vApp.addTimer(self)
 
     def start(self):
         if self._thread is not None:
@@ -44,7 +44,7 @@ class VTimer(VObject):
         self._thread.start()
 
     def _timeout(self):
-        VCoreApplication.vApp.post_event(self, VTimerEvent.VTimerEvent())
+        BaseCoreApplication.vApp.post_event(self, TimerEvent.VTimerEvent())
 
     def set_single_shot(self, single_shot):
         self._single_shot = single_shot
@@ -64,12 +64,12 @@ class VTimer(VObject):
         return self._thread is not None
 
     def timer_event(self, event):
-        if isinstance(event, VTimerEvent.VTimerEvent):
+        if isinstance(event, TimerEvent.TimerEvent):
             self.timeout.emit()
 
     @staticmethod
     def single_shot(timeout, callback):
-        timer = VTimer()
+        timer = Timer()
         timer.set_interval(timeout)
         timer.set_single_shot(True)
         timer.timeout.connect(callback)

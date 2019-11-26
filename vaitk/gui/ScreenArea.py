@@ -4,7 +4,7 @@ from vaitk.consts import Index
 from vaitk.gui.AbstractRectangularArea import AbstractRectangularArea
 
 
-class VScreenArea(AbstractRectangularArea):
+class ScreenArea(AbstractRectangularArea):
     def __init__(self, screen, rect):
         self._screen = screen
         self._rect = rect

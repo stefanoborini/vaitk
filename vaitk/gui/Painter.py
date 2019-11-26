@@ -1,9 +1,9 @@
 from .. import Orientation, LineCapStyle, LineStyle, CornerCapStyle, Alignment
-from .Application import VApplication
+from .Application import Application
 from ..consts import Index
 
 
-class VPainter:
+class Painter:
     """
     Class to draw text or "graphics" onto a drawable (a widget).
     """
@@ -16,7 +16,7 @@ class VPainter:
         self._corner_cap_style = CornerCapStyle.Plus
         self._line_cap_style = LineCapStyle.Plus
         self._line_style = LineStyle.Full
-        self._graphic_elements = VApplication.vApp.default_graphic_elements()
+        self._graphic_elements = Application.vApp.default_graphic_elements()
 
     @property
     def fg_color(self):

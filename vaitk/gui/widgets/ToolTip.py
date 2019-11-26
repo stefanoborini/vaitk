@@ -1,9 +1,9 @@
-from .Label import VLabel
-from ..Painter import VPainter
+from .Label import Label
+from ..Painter import Painter
 from ..Palette import VPalette
 
 
-class VToolTip(VLabel):
+class ToolTip(Label):
     _instance = None
     @classmethod
     def show_text(cls, pos, text):
@@ -13,7 +13,7 @@ class VToolTip(VLabel):
         it will be moved and the text changed.
         """
         if cls._instance is None:
-            cls._instance = VToolTip(text, parent=None)
+            cls._instance = ToolTip(text, parent=None)
         cls._instance.set_text(text)
         cls._instance.resize((len(text), 1))
         cls._instance.move(pos)
@@ -23,10 +23,10 @@ class VToolTip(VLabel):
     def hide_text(cls):
         """Hides the tooltip if present"""
         if cls._instance is not None:
-            VLabel.hide(cls._instance)
+            Label.hide(cls._instance)
 
     def paint_event(self, event):
-        painter = VPainter(self)
+        painter = Painter(self)
         w, h = self.size()
         painter.fg_color = self.palette().color(VPalette.ColorGroup.Active,
                                                 VPalette.ColorRole.ToolTipText)

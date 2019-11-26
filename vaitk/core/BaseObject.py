@@ -1,8 +1,8 @@
-from . import VTimerEvent
+from . import TimerEvent
 import logging
 
 
-class VObject:
+class BaseObject:
     """
     Base class for all objects in VaiTk.
     Provides methods for the object hierarchy traversal.
@@ -94,7 +94,7 @@ class VObject:
         return self._event_filters
 
     def event(self, event):
-        if isinstance(event, VTimerEvent.VTimerEvent):
+        if isinstance(event, TimerEvent.VTimerEvent):
             self.timer_event(event)
             return True
         return False

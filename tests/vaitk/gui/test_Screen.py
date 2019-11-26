@@ -1,14 +1,14 @@
 import unittest
 from vaitk import test
 
-from vaitk.gui import VScreenArea
+from vaitk.gui import ScreenArea
 
 
 class TestVScreenArea(unittest.TestCase):
     @unittest.skip
     def testWrite(self):
-        screen = test.VTextScreen((30, 30))
-        area = VScreenArea(screen, (5, 7, 10, 3))
+        screen = test.TextScreen((30, 30))
+        area = ScreenArea(screen, (5, 7, 10, 3))
 
         area.write((0, 0), "0123456789012345")
         area.write((0, 1), "123456789012345")
@@ -23,8 +23,8 @@ class TestVScreenArea(unittest.TestCase):
 
     @unittest.skip
     def testClear(self):
-        screen = test.VTextScreen((30, 30))
-        area = VScreenArea(screen, (5, 7, 10, 3))
+        screen = test.TextScreen((30, 30))
+        area = ScreenArea(screen, (5, 7, 10, 3))
 
         area.erase()
 

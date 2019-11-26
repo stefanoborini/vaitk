@@ -1,7 +1,7 @@
-from ..core.BaseObject import VObject
+from ..core.BaseObject import BaseObject
 
 
-class VSignalSpy(VObject):
+class BaseSignalSpy(BaseObject):
     def __init__(self, signal):
         self._signal_params = []
         self._signal = signal

@@ -1,10 +1,10 @@
-from vaitk.gui import VCursesScreen
+from vaitk.gui import CursesScreen
 from .. import KeyModifier, Key
 from .. import FocusPolicy
 from .. import core
 from . import events
 from .Palette import VPalette
-from .events import VFocusEvent
+from .events import FocusEvent
 from .GraphicElements import VGraphicElements
 import threading
 import queue
@@ -63,7 +63,7 @@ class _KeyEventThread(threading.Thread):
             try:
                 c = self._screen.get_key_code()
 
-                event = events.VKeyEvent.from_native_key_code(c)
+                event = events.KeyEvent.from_native_key_code(c)
                 if event is not None:
                     self._key_event_queue.put(event)
                     self._event_available_flag.set()
@@ -80,14 +80,14 @@ class _KeyEventThread(threading.Thread):
         pass
 
 
-class VApplication(core.VCoreApplication):
+class Application(core.BaseCoreApplication):
     def __init__(self, argv, screen=None):
-        from . import VWidget
+        from . import Widget
         super().__init__(argv)
         if screen is not None:
             self._screen = screen
         else:
-            self._screen = VCursesScreen()
+            self._screen = CursesScreen()
 
         # The root widget is the one representing the whole background screen.
         # It it always rendered last.
@@ -99,7 +99,7 @@ class VApplication(core.VCoreApplication):
         # (the root widget is the only widget
         # having strictly None as parent).
         self._root_widget = None
-        self._root_widget = VWidget()
+        self._root_widget = Widget()
 
         # The widget that currently has the focus (gets key events)
         self._focus_widget = None
@@ -118,8 +118,8 @@ class VApplication(core.VCoreApplication):
         self._exit_flag = False
 
         # Signals.
-        self.lastWindowClosed = core.VSignal(self)
-        self.focusChanged = core.VSignal(self)
+        self.lastWindowClosed = core.Signal(self)
+        self.focusChanged = core.Signal(self)
 
         # Graphic elements contains characters to draw boxes, buttons, icons,
         # and so on.
@@ -202,9 +202,9 @@ class VApplication(core.VCoreApplication):
 
         if self._focus_widget is not None:
             self.logger.info("Focus out on widget %s." % self._focus_widget)
-            VApplication.vApp.post_event(
+            Application.vApp.post_event(
                 self._focus_widget,
-                VFocusEvent(core.VEvent.EventType.FocusOut))
+                FocusEvent(core.Event.EventType.FocusOut))
 
         self._focus_widget = None
         if widget is not None:
@@ -215,8 +215,8 @@ class VApplication(core.VCoreApplication):
                 return
 
             self._focus_widget = widget
-            VApplication.vApp.post_event(
-                self._focus_widget, VFocusEvent(core.VEvent.EventType.FocusIn))
+            Application.vApp.post_event(
+                self._focus_widget, FocusEvent(core.Event.EventType.FocusIn))
 
     def default_palette(self):
         """
@@ -315,7 +315,7 @@ class VApplication(core.VCoreApplication):
             if event is None:
                 return
 
-            if isinstance(event, events.VKeyEvent):
+            if isinstance(event, events.KeyEvent):
                 self._process_single_key_event(event)
             elif isinstance(event, _VExceptionEvent):
                 raise event.exception
@@ -390,13 +390,13 @@ class VApplication(core.VCoreApplication):
         for w in self.root_widget().depthFirstFullTree():
             if w.needs_update():
                 for w2 in w.depth_first_right_tree():
-                    if core.VRect.tuple.intersects(w.absolute_rect(),
-                                                   w2.absolute_rect()):
+                    if core.Rect.tuple.intersects(w.absolute_rect(),
+                                                  w2.absolute_rect()):
                         w2.update()
 
         for w in self.root_widget().depthFirstFullTree():
             if w.needs_update():
-                w.event(events.VPaintEvent())
+                w.event(events.PaintEvent())
 
     def _exit_cleanup(self):
         self._key_event_thread.stop_event.set()

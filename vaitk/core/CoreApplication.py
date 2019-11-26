@@ -1,8 +1,8 @@
-from .BaseObject import VObject
-from .Signal import VSignal
+from .BaseObject import BaseObject
+from .Signal import Signal
 
 
-class VCoreApplication(VObject):
+class BaseCoreApplication(BaseObject):
     """
     Core application class. Only one instance is allowed to exist.
     """
@@ -12,11 +12,11 @@ class VCoreApplication(VObject):
         super().__init__()
         self._timers = []
 
-        if VCoreApplication.vApp is not None:
+        if BaseCoreApplication.vApp is not None:
             raise Exception("Only one application is allowed")
 
-        VCoreApplication.vApp = self
-        self.aboutToQuit = VSignal(self)
+        BaseCoreApplication.vApp = self
+        self.aboutToQuit = Signal(self)
 
     def add_timer(self, timer):
         """
@@ -29,7 +29,7 @@ class VCoreApplication(VObject):
         """
         Exits the application.
         """
-        VCoreApplication.vApp = None
+        BaseCoreApplication.vApp = None
 
     def send_event(self, receiver, event):
         """

@@ -1,11 +1,11 @@
-from .Application import VApplication
+from .Application import Application
 
 
-class VCursor:
+class Cursor:
     @staticmethod
     def set_pos(pos):
-        VApplication.vApp.screen().set_cursor_pos(pos)
+        Application.vApp.screen().set_cursor_pos(pos)
 
     @staticmethod
     def pos():
-        return VApplication.vApp.screen().cursor_pos()
+        return Application.vApp.screen().cursor_pos()
