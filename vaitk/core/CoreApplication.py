@@ -1,5 +1,5 @@
-from .VObject import VObject
-from .VSignal import VSignal
+from .BaseObject import VObject
+from .Signal import VSignal
 
 
 class VCoreApplication(VObject):

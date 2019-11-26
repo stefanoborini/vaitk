@@ -1,4 +1,4 @@
-from ..VWidget import VWidget
+from ..Widget import VWidget
 
 
 class VPushButton(VWidget):

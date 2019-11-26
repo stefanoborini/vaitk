@@ -1,4 +1,4 @@
-from ..core.VObject import VObject
+from ..core.BaseObject import VObject
 
 
 class VSignalSpy(VObject):

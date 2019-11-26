@@ -1,9 +1,9 @@
 from .. import core
 from ..consts import Index
 from .. import FocusPolicy
-from .VApplication import VApplication
-from .VPalette import VPalette
-from .VPainter import VPainter
+from .Application import VApplication
+from .Palette import VPalette
+from .Painter import VPainter
 from vaitk.gui import VScreenArea
 from . import events
 

@@ -1,4 +1,4 @@
-from .VApplication import VApplication
+from .Application import VApplication
 
 
 class VCursor:

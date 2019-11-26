@@ -1,6 +1,6 @@
-from .VCoreApplication import VCoreApplication
-from .VObject import VObject
-from .VSignal import VSignal
+from .CoreApplication import VCoreApplication
+from .BaseObject import VObject
+from .Signal import VSignal
 from . import VTimerEvent
 import time
 import threading

@@ -1,5 +1,5 @@
 from .. import Orientation, LineCapStyle, LineStyle, CornerCapStyle, Alignment
-from .VApplication import VApplication
+from .Application import VApplication
 from ..consts import Index
 
 

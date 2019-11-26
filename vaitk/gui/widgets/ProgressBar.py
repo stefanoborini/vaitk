@@ -1,6 +1,6 @@
-from ..VWidget import VWidget
-from ..VPainter import VPainter
-from ..VPalette import VPalette
+from ..Widget import VWidget
+from ..Painter import VPainter
+from ..Palette import VPalette
 
 
 class VProgressBar(VWidget):

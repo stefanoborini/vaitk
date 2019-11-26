@@ -3,9 +3,9 @@ from .. import KeyModifier, Key
 from .. import FocusPolicy
 from .. import core
 from . import events
-from .VPalette import VPalette
+from .Palette import VPalette
 from .events import VFocusEvent
-from .VGraphicElements import VGraphicElements
+from .GraphicElements import VGraphicElements
 import threading
 import queue
 

@@ -1,6 +1,6 @@
-from ..VWidget import VWidget
-from ..VPalette import VPalette
-from ..VPainter import VPainter
+from ..Widget import VWidget
+from ..Palette import VPalette
+from ..Painter import VPainter
 
 
 class VDialog(VWidget):

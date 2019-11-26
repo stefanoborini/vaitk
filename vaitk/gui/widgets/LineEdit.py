@@ -2,9 +2,9 @@ from ... import FocusPolicy
 from ... import core
 from ...consts import Index
 from ... import Key
-from ..VWidget import VWidget
-from ..VPainter import VPainter
-from ..VCursor import VCursor
+from ..Widget import VWidget
+from ..Painter import VPainter
+from ..Cursor import VCursor
 
 
 class VLineEdit(VWidget):

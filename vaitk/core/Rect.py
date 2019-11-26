@@ -1,5 +1,5 @@
-from .VPoint import VPoint
-from .VSize import VSize
+from .Point import VPoint
+from .Size import VSize
 #  012345678901234567890
 # 0
 # 1

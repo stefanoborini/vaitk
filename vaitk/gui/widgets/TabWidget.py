@@ -1,5 +1,5 @@
-from ..VWidget import VWidget
-from ..VApplication import VApplication
+from ..Widget import VWidget
+from ..Application import VApplication
 import curses
 
 

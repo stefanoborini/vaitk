@@ -1,11 +1,11 @@
-from .VApplication import VApplication  # noqa
-from .VColor import VColor, VGlobalColor  # noqa
-from .VCursor import VCursor  # noqa
-from .VPalette import VPalette  # noqa
-from .VPainter import VPainter  # noqa
-from .VCursesScreen import VCursesScreen  # noqa
-from .VScreenArea import VScreenArea # noqa
-from .VWidget import VWidget  # noqa
+from .Application import VApplication  # noqa
+from .Color import VColor, VGlobalColor  # noqa
+from .Cursor import VCursor  # noqa
+from .Palette import VPalette  # noqa
+from .Painter import VPainter  # noqa
+from .CursesScreen import VCursesScreen  # noqa
+from .ScreenArea import VScreenArea # noqa
+from .Widget import VWidget  # noqa
 from .widgets import VLabel, VDialog, VLineEdit, VToolTip  # noqa
 from .layouts import VHLayout, VVLayout  # noqa
 from .events import VKeyEvent, VPaintEvent  # noqa

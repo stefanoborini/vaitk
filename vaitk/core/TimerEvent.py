@@ -1,4 +1,4 @@
-from .VEvent import VEvent
+from .Event import VEvent
 
 
 class VTimerEvent(VEvent):
