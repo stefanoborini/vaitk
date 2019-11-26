@@ -173,5 +173,5 @@ class Rect(HasTraits):
         return self.x, self.y, self.width, self.height
 
     def __str__(self):
-        return (f"Rect(x={self.x}, y={self.y}, " 
+        return (f"Rect(x={self.x}, y={self.y}, "
                 f"width={self.width}, height={self.height})")
