@@ -7,7 +7,7 @@ import copy  # noqa
 import select  # noqa
 from ..Application import Application  # noqa
 from ..Color import Color  # noqa
-from ..Palette import VPalette  # noqa
+from ..Palette import Palette  # noqa
 from ..Painter import Painter  # noqa
 from ..Widget import Widget  # noqa
 from .Frame import Frame  # noqa

@@ -1,6 +1,6 @@
 from ..Widget import Widget
 from ..Painter import Painter
-from ..Palette import VPalette
+from ..Palette import Palette
 
 
 class ProgressBar(Widget):
@@ -14,10 +14,10 @@ class ProgressBar(Widget):
     def paint_event(self, event):
         painter = Painter(self)
         w, h = self.size()
-        fg_color = self.palette().color(VPalette.ColorGroup.Active,
-                                        VPalette.ColorRole.WindowText)
-        bg_color = self.palette().color(VPalette.ColorGroup.Active,
-                                        VPalette.ColorRole.Window)
+        fg_color = self.palette().color(Palette.ColorGroup.Active,
+                                        Palette.ColorRole.WindowText)
+        bg_color = self.palette().color(Palette.ColorGroup.Active,
+                                        Palette.ColorRole.Window)
 
         final_text = ""
         if len(self._text) > 0:

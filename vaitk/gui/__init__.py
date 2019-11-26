@@ -1,7 +1,7 @@
 from .Application import Application  # noqa
 from .Color import Color, GlobalColor  # noqa
 from .Cursor import Cursor  # noqa
-from .Palette import VPalette  # noqa
+from .Palette import Palette  # noqa
 from .Painter import Painter  # noqa
 from .CursesScreen import CursesScreen  # noqa
 from .ScreenArea import ScreenArea # noqa

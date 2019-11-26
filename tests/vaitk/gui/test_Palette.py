@@ -14,4 +14,4 @@ class TestVPalette(unittest.TestCase):
         del self.app
 
     def testPalette(self):
-        self.assertTrue(isinstance(self.app.palette(), gui.VPalette))
+        self.assertTrue(isinstance(self.app.palette(), gui.Palette))

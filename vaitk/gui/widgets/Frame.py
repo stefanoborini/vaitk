@@ -1,5 +1,5 @@
 from ..Widget import Widget
-from ..Palette import VPalette
+from ..Palette import Palette
 from ..Painter import Painter
 
 
@@ -11,11 +11,11 @@ class Frame(Widget):
     def paint_event(self, event):
         if self.is_enabled():
             if self.is_active():
-                color_group = VPalette.ColorGroup.Active
+                color_group = Palette.ColorGroup.Active
             else:
-                color_group = VPalette.ColorGroup.Inactive
+                color_group = Palette.ColorGroup.Inactive
         else:
-            color_group = VPalette.ColorGroup.Disabled
+            color_group = Palette.ColorGroup.Disabled
 
         fg, bg = self.colors(color_group)
         w, h = self.size()

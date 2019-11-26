@@ -1,6 +1,6 @@
 from ..Widget import Widget
 from ..Painter import Painter
-from ..Palette import VPalette
+from ..Palette import Palette
 
 
 class Label(Widget):
@@ -11,10 +11,10 @@ class Label(Widget):
     def paint_event(self, event):
         painter = Painter(self)
         w, h = self.size()
-        painter.fg_color = self.palette().color(VPalette.ColorGroup.Active,
-                                                VPalette.ColorRole.WindowText)
-        painter.bg_color = self.palette().color(VPalette.ColorGroup.Active,
-                                                VPalette.ColorRole.Window)
+        painter.fg_color = self.palette().color(Palette.ColorGroup.Active,
+                                                Palette.ColorRole.WindowText)
+        painter.bg_color = self.palette().color(Palette.ColorGroup.Active,
+                                                Palette.ColorRole.Window)
         string = ' '*w
         for i in range(0, int(h/2)):
             painter.draw_text((0, i), string)

@@ -1,6 +1,6 @@
 from .Label import Label
 from ..Painter import Painter
-from ..Palette import VPalette
+from ..Palette import Palette
 
 
 class ToolTip(Label):
@@ -28,8 +28,8 @@ class ToolTip(Label):
     def paint_event(self, event):
         painter = Painter(self)
         w, h = self.size()
-        painter.fg_color = self.palette().color(VPalette.ColorGroup.Active,
-                                                VPalette.ColorRole.ToolTipText)
-        painter.bg_color = self.palette().color(VPalette.ColorGroup.Active,
-                                                VPalette.ColorRole.ToolTipBase)
+        painter.fg_color = self.palette().color(Palette.ColorGroup.Active,
+                                                Palette.ColorRole.ToolTipText)
+        painter.bg_color = self.palette().color(Palette.ColorGroup.Active,
+                                                Palette.ColorRole.ToolTipBase)
         painter.draw_text((0, 0), self._label)

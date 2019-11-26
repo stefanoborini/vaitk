@@ -2,7 +2,7 @@ from .. import core
 from ..consts import Index
 from .. import FocusPolicy
 from .Application import Application
-from .Palette import VPalette
+from .Palette import Palette
 from .Painter import Painter
 from vaitk.gui import ScreenArea
 from . import events
@@ -456,25 +456,25 @@ class Widget(core.BaseObject):
         return self._palette
 
     def set_colors(self, fg=None, bg=None):
-        self.palette().set_color(VPalette.ColorGroup.Active,
-                                 VPalette.ColorRole.WindowText, fg)
-        self.palette().set_color(VPalette.ColorGroup.Active,
-                                 VPalette.ColorRole.Window, bg)
+        self.palette().set_color(Palette.ColorGroup.Active,
+                                 Palette.ColorRole.WindowText, fg)
+        self.palette().set_color(Palette.ColorGroup.Active,
+                                 Palette.ColorRole.Window, bg)
 
-    def colors(self, color_group=VPalette.ColorGroup.Active):
-        fg = self.palette().color(color_group, VPalette.ColorRole.WindowText)
-        bg = self.palette().color(color_group, VPalette.ColorRole.Window)
+    def colors(self, color_group=Palette.ColorGroup.Active):
+        fg = self.palette().color(color_group, Palette.ColorRole.WindowText)
+        bg = self.palette().color(color_group, Palette.ColorRole.Window)
 
         return (fg, bg)
 
     def current_colors(self):
         if self.is_active():
-            color_group = VPalette.ColorGroup.Active
+            color_group = Palette.ColorGroup.Active
         else:
             if self.is_enabled(self):
-                color_group = VPalette.ColorGroup.Inactive
+                color_group = Palette.ColorGroup.Inactive
             else:
-                color_group = VPalette.ColorGroup.Disabled
+                color_group = Palette.ColorGroup.Disabled
         return self.colors(color_group)
 
     def background_role(self):

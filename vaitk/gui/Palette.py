@@ -2,7 +2,7 @@ from . import Color
 import copy
 
 
-class VPalette:
+class Palette:
     class ColorGroup:
         Active, Disabled, Inactive = list(range(3))
 
@@ -39,126 +39,126 @@ class VPalette:
 
     def set_defaults(self):
         self._colors = {
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.WindowText):
-                Color.VColor(rgb=(170, 170, 170)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Button):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Light):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Midlight):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Dark):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Mid):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Text):
-            Color.VColor(rgb=(170, 170, 170)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.BrightText):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.ButtonText):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Base):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Window):
+            (Palette.ColorGroup.Active, Palette.ColorRole.WindowText):
+                Color.Color(rgb=(170, 170, 170)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Button):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Light):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Midlight):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Dark):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Mid):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Text):
+            Color.Color(rgb=(170, 170, 170)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.BrightText):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.ButtonText):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Base):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Window):
             None,
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Shadow):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Highlight):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.HighlightedText):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.Link):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.LinkVisited):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.AlternateBase):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.NoRole):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.ToolTipBase):
-            Color.VColor(rgb=(170, 0, 170)),
-            (VPalette.ColorGroup.Active, VPalette.ColorRole.ToolTipText):
-            Color.VColor(rgb=(255, 255, 0)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.WindowText):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Button):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Light):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Midlight):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Dark):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Mid):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Text):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.BrightText):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.ButtonText):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Base):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Window):
+            (Palette.ColorGroup.Active, Palette.ColorRole.Shadow):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Highlight):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.HighlightedText):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.Link):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.LinkVisited):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.AlternateBase):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.NoRole):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.ToolTipBase):
+            Color.Color(rgb=(170, 0, 170)),
+            (Palette.ColorGroup.Active, Palette.ColorRole.ToolTipText):
+            Color.Color(rgb=(255, 255, 0)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.WindowText):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Button):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Light):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Midlight):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Dark):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Mid):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Text):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.BrightText):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.ButtonText):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Base):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Window):
             None,
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Shadow):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Highlight):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.HighlightedText):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.Link):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.LinkVisited):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.AlternateBase):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.NoRole):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.ToolTipBase):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Disabled, VPalette.ColorRole.ToolTipText):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.WindowText):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Button):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Light):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Midlight):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Dark):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Mid):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Text):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.BrightText):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.ButtonText):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Base):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Window):
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Shadow):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Highlight):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.HighlightedText):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.Link):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.LinkVisited):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.AlternateBase):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.NoRole):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.ToolTipBase):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Disabled, Palette.ColorRole.ToolTipText):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.WindowText):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Button):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Light):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Midlight):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Dark):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Mid):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Text):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.BrightText):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.ButtonText):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Base):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Window):
             None,
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Shadow):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Highlight):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.HighlightedText):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.Link):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.LinkVisited):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.AlternateBase):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.NoRole):
-            Color.VColor(rgb=(255, 255, 255)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.ToolTipBase):
-            Color.VColor(rgb=(0, 0, 0)),
-            (VPalette.ColorGroup.Inactive, VPalette.ColorRole.ToolTipText):
-            Color.VColor(rgb=(255, 255, 255))
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Shadow):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Highlight):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.HighlightedText):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.Link):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.LinkVisited):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.AlternateBase):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.NoRole):
+            Color.Color(rgb=(255, 255, 255)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.ToolTipBase):
+            Color.Color(rgb=(0, 0, 0)),
+            (Palette.ColorGroup.Inactive, Palette.ColorRole.ToolTipText):
+            Color.Color(rgb=(255, 255, 255))
         }
 
     def copy(self):

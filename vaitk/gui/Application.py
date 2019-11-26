@@ -3,7 +3,7 @@ from .. import KeyModifier, Key
 from .. import FocusPolicy
 from .. import core
 from . import events
-from .Palette import VPalette
+from .Palette import Palette
 from .events import FocusEvent
 from .GraphicElements import VGraphicElements
 import threading
@@ -223,7 +223,7 @@ class Application(core.BaseCoreApplication):
         Returns:
             the default palette of the application.
         """
-        palette = VPalette()
+        palette = Palette()
         palette.set_defaults()
         return palette
 
