@@ -1,53 +1,81 @@
-from .Point import VPoint
+from traitlets import HasTraits, Instance
+
+from .Point import Point
 from .Size import Size
-#  012345678901234567890
-# 0
-# 1
-# 2  AAAAA
-# 3  AAAAA
-# 4  AAAAA
-# 5       BBB
-# 6       BBB
-# 7       BBB
-# 8
-# A = (2,2),(5,3) topleft 2,2 bottomright 6,4
 
 
-class Rect(object):
+class Rect(HasTraits):
+    """
+    Describes a rectangle in the screen coordinate system.
+    The rectangle is defined by its top left corner (a Point) and
+    its size (a Size), according to the following example
+
+        #  012345678901234567890 -> x
+        # 0
+        # 1
+        # 2  AAAAA
+        # 3  AAAAA
+        # 4  AAAAA
+        # 5       BBB
+        # 6       BBB
+        # 7       BBB
+        # 8
+        #
+        # |
+        # v
+        #
+        # y
+        #
+
+    rectangle A has top_left at (2, 2), and size (5,3). Its bottom right corner
+    is therefore at (6, 4).
+    """
+    top_left = Instance(Point)
+    size = Instance(Size)
+
     def __init__(self, top_left, size):
-        if isinstance(top_left, VPoint):
-            self._top_left = top_left
-        else:
-            self._top_left = VPoint(x=top_left[0], y=top_left[1])
+        """
+        Constructor.
 
-        if isinstance(size, Size):
-            self._size = size
-        else:
-            self._size = Size(width=size[0], height=size[1])
+        Args:
+            top_left: Point or tuple
+                The top left coordinate of the rectangle
+            size: Size or tuple
+                The size of the rectangle
+        """
+        if isinstance(top_left, tuple):
+            top_left = Point.from_tuple(top_left)
 
-    @property
-    def size(self):
-        return self._size
+        if isinstance(size, tuple):
+            size = Size.from_tuple(size)
 
-    @property
-    def height(self):
-        return self._size.height
+        super().__init__(top_left=top_left, size=size)
 
-    @property
-    def width(self):
-        return self._size.width
+    @classmethod
+    def from_x_y_width_height(cls, x, y, width, height):
+        """
+        Alternate constructor: creates the Rect from x y coordinates of
+        the top left corner, and from width and height of the rectangle.
 
-    def is_null(self):
-        return (self.width == 0 and self.height == 0)
+        Args:
+            x: int
+                The x coordinate of the top left corner
+            y: int
+                The y coordinate of the top left corner
+            width: int
+                The width of the rectangle
+            height: int
+                The height of the rectangle
 
-    def move_to(self, top_left):
-        self._top_left = top_left
+        Returns: Rect
+        """
+        top_left = Point(x, y)
+        size = Size(width, height)
+        return cls(top_left, size)
 
-    def intersects(self, other):
-        return (self.left <= other.right
-                and self.right >= other.left
-                and self.top <= other.bottom
-                and self.bottom >= other.top)
+    @classmethod
+    def from_tuple(cls, t):
+        return cls.from_x_y_width_height(*t)
 
     @property
     def x(self):
@@ -58,105 +86,92 @@ class Rect(object):
         return self.top_left.y
 
     @property
+    def width(self):
+        return self.size.width
+
+    @property
+    def height(self):
+        return self.size.height
+
+    @property
     def left(self):
-        return self.x
+        return self.top_left.x
 
     @property
     def right(self):
-        return self.left + self.width - 1
+        return self.top_left.x + self.width - 1
 
     @property
     def top(self):
-        return self.y
+        return self.top_left.y
 
     @property
     def bottom(self):
-        return self.top + self.height - 1
-
-    @property
-    def top_left(self):
-        return self._top_left
+        return self.y + self.height - 1
 
     @property
     def top_right(self):
-        return VPoint(self.right, self.top)
+        return Point(self.right, self.top)
 
     @property
     def bottom_left(self):
-        return VPoint(self.left, self.bottom)
+        return Point(self.left, self.bottom)
 
     @property
     def bottom_right(self):
-        return VPoint(self.right, self.bottom)
+        return Point(self.right, self.bottom)
+
+    def is_null(self):
+        """
+        Check if the Rect is null, defined as being true when
+        it has both width and height equal to zero. Note that
+        an empty Rect is not necessarily null.
+
+        Returns: bool
+            True if width and height are zero, False otherwise
+        """
+        return self.width == 0 and self.height == 0
+
+    def move_to(self, point):
+        """
+        Moves the rect to a different top left corner. Does not change
+        the size.
+
+        Args:
+            point: Point
+                The new top left corner
+
+        Returns: None
+
+        """
+        self.top_left.x = point.x
+        self.top_left.y = point.y
+
+    def intersects(self, other):
+        """
+        Checks if a rect "other" intersects (has overlap) with this Rect.
+
+        Args:
+            other: Rect
+                The other rect
+
+        Returns: bool
+            True if there's an intersection area. False otherwise
+
+        """
+        return (self.left <= other.right
+                and self.right >= other.left
+                and self.top <= other.bottom
+                and self.bottom >= other.top)
+
+    def as_tuple(self):
+        """
+        Returns: tuple
+            A 4-tuple (x, y, width, height)
+
+        """
+        return self.x, self.y, self.width, self.height
 
     def __str__(self):
-        return "VRect(x=%d, y=%d, width=%d, height=%d)" % (
-            self.x, self.y, self.width, self.height)
-
-    class tuple:
-        @staticmethod
-        def x(rect):
-            return rect[0]
-
-        @staticmethod
-        def y(rect):
-            return rect[1]
-
-        @staticmethod
-        def left(rect):
-            return rect[0]
-
-        @staticmethod
-        def right(rect):
-            return rect[0] + rect[2] - 1
-
-        @staticmethod
-        def top(rect):
-            return rect[1]
-
-        @staticmethod
-        def bottom(rect):
-            return rect[1] + rect[3] - 1
-
-        @staticmethod
-        def top_left(rect):
-            return (rect[0], rect[1])
-
-        @staticmethod
-        def top_right(rect):
-            return (rect[0] + rect[2] - 1, rect[1])
-
-        @staticmethod
-        def bottom_left(rect):
-            return (rect[0], rect[1] + rect[3] - 1)
-
-        @staticmethod
-        def bottom_right(rect):
-            return (rect[0] + rect[2] - 1, rect[1] + rect[3] - 1)
-
-        @staticmethod
-        def size(rect):
-            return (rect[2], rect[3])
-
-        @staticmethod
-        def height(rect):
-            return rect[3]
-
-        @staticmethod
-        def width(rect):
-            return rect[2]
-
-        @staticmethod
-        def is_null(rect):
-            return (rect[2] == 0 and rect[3] == 0)
-
-        @staticmethod
-        def move_to(rect, top_left):
-            return (top_left[0], top_left[1], rect[2], rect[3])
-
-        @staticmethod
-        def intersects(rect, other):
-            return (Rect.tuple.left(rect) <= Rect.tuple.right(other)
-                    and Rect.tuple.right(rect) >= Rect.tuple.left(other)
-                    and Rect.tuple.top(rect) <= Rect.tuple.bottom(other)
-                    and Rect.tuple.bottom(rect) >= Rect.tuple.top(other))
+        return (f"Rect(x={self.x}, y={self.y}, "
+                f"width={self.width}, height={self.height})")

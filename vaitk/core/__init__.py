@@ -1,5 +1,5 @@
 from .BaseObject import BaseObject  # noqa
-from .Point import VPoint  # noqa
+from .Point import Point  # noqa
 from .Rect import Rect  # noqa
 from .Size import Size  # noqa
 from .CoreApplication import BaseCoreApplication  # noqa
