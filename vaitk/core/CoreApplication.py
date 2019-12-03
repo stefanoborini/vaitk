@@ -7,7 +7,7 @@ from .Signal import Signal
 logger = logging.getLogger(__name__)
 
 
-class BaseCoreApplication(BaseObject):
+class CoreApplication(BaseObject):
     """
     Core application class. Only one instance is allowed to exist.
     """
@@ -17,10 +17,10 @@ class BaseCoreApplication(BaseObject):
         super().__init__()
         self._timers = []
 
-        if BaseCoreApplication.vApp is not None:
+        if CoreApplication.vApp is not None:
             raise Exception("Only one application is allowed")
 
-        BaseCoreApplication.vApp = self
+        CoreApplication.vApp = self
         self.aboutToQuit = Signal(self)
 
     def add_timer(self, timer):
@@ -34,7 +34,7 @@ class BaseCoreApplication(BaseObject):
         """
         Exits the application.
         """
-        BaseCoreApplication.vApp = None
+        CoreApplication.vApp = None
 
     def send_event(self, receiver, event):
         """

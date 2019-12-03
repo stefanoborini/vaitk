@@ -10,7 +10,7 @@ class TestVPalette(unittest.TestCase):
     def tearDown(self):
         del self.screen
         self.app.exit()
-        core.BaseCoreApplication.vApp = None
+        core.CoreApplication.vApp = None
         del self.app
 
     def testPalette(self):

@@ -12,4 +12,4 @@ class TestVApplication(unittest.TestCase):
         self.assertRaises(
             Exception, lambda: gui.Application([], screen=screen))
         app.exit()
-        core.BaseCoreApplication.vApp = None
+        core.CoreApplication.vApp = None
