@@ -1,6 +1,11 @@
+import logging
+
 from .. import Orientation, LineCapStyle, LineStyle, CornerCapStyle, Alignment
 from .Application import Application
 from ..consts import Index
+
+
+logger = logging.getLogger(__name__)
 
 
 class Painter:

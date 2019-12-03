@@ -4,22 +4,20 @@ from vaitk.consts import Index
 from vaitk.gui.AbstractRectangularArea import AbstractRectangularArea
 
 
+logger = logging.getLogger(__name__)
+
+
 class ScreenArea(AbstractRectangularArea):
     def __init__(self, screen, rect):
         self._screen = screen
         self._rect = rect
-        self.logger = logging.getLogger(self.__class__.__name__)
-        if hasattr(self, "debug"):
-            self.logger.setLevel(self.debug)
-        else:
-            self.logger.setLevel(logging.CRITICAL+1)
 
     def write(self, pos, string, fg_color=None, bg_color=None):
         rel_x, rel_y = pos
         w, h = self.size()
 
         if rel_y < 0 or rel_y >= h or rel_x >= w:
-            self.logger.error(
+            logger.error(
                 ("Out of bound in VScreenArea.write: "
                  "pos=%s size=%s len=%d '%s'") % (
                     str(pos), str(self.size()), len(string), string))
@@ -27,7 +25,7 @@ class ScreenArea(AbstractRectangularArea):
 
         out_string = string
         if rel_x < 0:
-            self.logger.error(
+            logger.error(
                 ("Out of bound in VScreenArea.write: "
                  "pos=%s size=%s len=%d '%s'") % (
                     str(pos), str(self.size()), len(string), string))
@@ -38,7 +36,7 @@ class ScreenArea(AbstractRectangularArea):
             return
 
         if (rel_x+len(out_string) > w):
-            self.logger.error(
+            logger.error(
                 ("Out of bound in VScreenArea.write: "
                  "pos=%s size=%s len=%d '%s'") % (
                     str(pos), str(self.size()), len(string), string))
@@ -55,7 +53,7 @@ class ScreenArea(AbstractRectangularArea):
         w, h = self.size()
 
         if rel_y < 0 or rel_y >= h or rel_x >= w:
-            self.logger.error(
+            logger.error(
                 ("Out of bound in VScreenArea.setColors: "
                  "pos=%s size=%s len=%d") % (
                     str(pos), str(self.size()), len(colors)))
@@ -63,7 +61,7 @@ class ScreenArea(AbstractRectangularArea):
 
         out_colors = colors
         if rel_x < 0:
-            self.logger.error(
+            logger.error(
                 ("Out of bound in VScreenArea.setColors: "
                  "pos=%s size=%s len=%d") % (
                     str(pos), str(self.size()), len(colors)))
@@ -74,7 +72,7 @@ class ScreenArea(AbstractRectangularArea):
             return
 
         if (rel_x+len(out_colors) > w):
-            self.logger.error(
+            logger.error(
                 ("Out of bound in VScreenArea.setColors: "
                  "pos=%s size=%s len=%d") % (
                     str(pos), str(self.size()), len(colors)))

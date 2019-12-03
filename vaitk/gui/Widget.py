@@ -1,3 +1,5 @@
+import logging
+
 from .. import core
 from ..consts import Index
 from .. import FocusPolicy
@@ -6,6 +8,9 @@ from .Palette import Palette
 from .Painter import Painter
 from vaitk.gui import ScreenArea
 from . import events
+
+
+logger = logging.getLogger(__name__)
 
 
 class Widget(core.BaseObject):
@@ -140,7 +145,7 @@ class Widget(core.BaseObject):
             visible: True to set the widget to visible. False to hide it.
 
         """
-        self.logger.info("Setting explicit visibility for %s : %s" %
+        logger.info("Setting explicit visibility for %s : %s" %
                          (str(self), str(visible)))
         visible_before = self.is_visible()
         self._visible_explicit = visible
@@ -155,7 +160,7 @@ class Widget(core.BaseObject):
 
     def set_visible_implicit(self, visible):
         # XXX private?
-        self.logger.info("Setting implicit visibility for %s : %s" %
+        logger.info("Setting implicit visibility for %s : %s" %
                          (str(self), str(visible)))
         self._visible_implicit = visible
 
@@ -307,7 +312,7 @@ class Widget(core.BaseObject):
             event: the event.
         """
 
-        self.logger.info("Event %s. Receiver %s" % (str(event), str(self)))
+        logger.info("Event %s. Receiver %s" % (str(event), str(self)))
 
         if isinstance(event, events.PaintEvent):
             if not self.is_visible():
@@ -329,17 +334,17 @@ class Widget(core.BaseObject):
             self.hide_event(event)
 
             for w in self.depthFirstFullTree():
-                self.logger.info("Widget %s in tree" % str(w))
+                logger.info("Widget %s in tree" % str(w))
                 if not w.is_visible():
                     continue
-                self.logger.info("Repainting widget %s" % str(w))
+                logger.info("Repainting widget %s" % str(w))
                 w.update()
 
         elif isinstance(event, events.ShowEvent):
             self.show_event(event)
 
             for w in self.depthFirstFullTree():
-                self.logger.info("Widget %s in tree" % str(w))
+                logger.info("Widget %s in tree" % str(w))
                 if not w.is_visible():
                     continue
                 w.update()
@@ -351,7 +356,7 @@ class Widget(core.BaseObject):
             self.move_event(event)
 
             for w in self.depthFirstFullTree():
-                self.logger.info("Widget %s in tree" % str(w))
+                logger.info("Widget %s in tree" % str(w))
                 if not w.is_visible():
                     continue
                 w.update()
@@ -363,7 +368,7 @@ class Widget(core.BaseObject):
             self.resize_event(event)
 
             for w in self.depthFirstFullTree():
-                self.logger.info("Widget %s in tree" % str(w))
+                logger.info("Widget %s in tree" % str(w))
                 if not w.is_visible():
                     continue
                 w.update()
@@ -390,22 +395,22 @@ class Widget(core.BaseObject):
             painter.draw_text((0, i), string)
 
     def focus_in_event(self, event):
-        self.logger.info("FocusIn event")
+        logger.info("FocusIn event")
 
     def focus_out_event(self, event):
-        self.logger.info("FocusOut event")
+        logger.info("FocusOut event")
 
     def hide_event(self, event):
-        self.logger.info("Hide event")
+        logger.info("Hide event")
 
     def move_event(self, event):
-        self.logger.info("Move event")
+        logger.info("Move event")
 
     def show_event(self, event):
-        self.logger.info("Show event")
+        logger.info("Show event")
 
     def resize_event(self, event):
-        self.logger.info("Resize event")
+        logger.info("Resize event")
 
     def set_focus_policy(self, policy):
         self._focus_policy = policy
