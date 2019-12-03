@@ -18,17 +18,21 @@ class ScreenArea(AbstractRectangularArea):
 
         if rel_y < 0 or rel_y >= h or rel_x >= w:
             logger.error(
-                ("Out of bound in VScreenArea.write: "
-                 "pos=%s size=%s len=%d '%s'") % (
-                    str(pos), str(self.size()), len(string), string))
+                "Out of bound in ScreenArea.write: pos=%s size=%s len=%d '%s'",
+                str(pos),
+                str(self.size()),
+                len(string),
+                string)
             return
 
         out_string = string
         if rel_x < 0:
             logger.error(
-                ("Out of bound in VScreenArea.write: "
-                 "pos=%s size=%s len=%d '%s'") % (
-                    str(pos), str(self.size()), len(string), string))
+                "Out of bound in ScreenArea.write: pos=%s size=%s len=%d '%s'",
+                str(pos),
+                str(self.size()),
+                len(string),
+                string)
             out_string = string[-rel_x:]
             rel_x = 0
 
@@ -37,9 +41,11 @@ class ScreenArea(AbstractRectangularArea):
 
         if (rel_x+len(out_string) > w):
             logger.error(
-                ("Out of bound in VScreenArea.write: "
-                 "pos=%s size=%s len=%d '%s'") % (
-                    str(pos), str(self.size()), len(string), string))
+                "Out of bound in ScreenArea.write: pos=%s size=%s len=%d '%s'",
+                str(pos),
+                str(self.size()),
+                len(string),
+                string)
             out_string = out_string[:w-rel_x]
 
         top_left_x, top_left_y = self.top_left()
@@ -54,17 +60,15 @@ class ScreenArea(AbstractRectangularArea):
 
         if rel_y < 0 or rel_y >= h or rel_x >= w:
             logger.error(
-                ("Out of bound in VScreenArea.setColors: "
-                 "pos=%s size=%s len=%d") % (
-                    str(pos), str(self.size()), len(colors)))
+                "Out of bound in ScreenArea.setColors: pos=%s size=%s len=%d",
+                str(pos), str(self.size()), len(colors))
             return
 
         out_colors = colors
         if rel_x < 0:
             logger.error(
-                ("Out of bound in VScreenArea.setColors: "
-                 "pos=%s size=%s len=%d") % (
-                    str(pos), str(self.size()), len(colors)))
+                "Out of bound in ScreenArea.setColors: pos=%s size=%s len=%d",
+                str(pos), str(self.size()), len(colors))
             out_colors = colors[-rel_x:]
             rel_x = 0
 
@@ -73,9 +77,8 @@ class ScreenArea(AbstractRectangularArea):
 
         if (rel_x+len(out_colors) > w):
             logger.error(
-                ("Out of bound in VScreenArea.setColors: "
-                 "pos=%s size=%s len=%d") % (
-                    str(pos), str(self.size()), len(colors)))
+                "Out of bound in ScreenArea.setColors: pos=%s size=%s len=%d",
+                str(pos), str(self.size()), len(colors))
             out_colors = out_colors[:w-rel_x]
 
         top_left_x, top_left_y = self.top_left()
