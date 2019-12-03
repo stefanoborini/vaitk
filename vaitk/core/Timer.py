@@ -2,7 +2,7 @@ import time
 import threading
 import logging
 
-from .CoreApplication import BaseCoreApplication
+from .CoreApplication import CoreApplication
 from .BaseObject import BaseObject
 from .Signal import Signal
 from . import TimerEvent
@@ -37,7 +37,7 @@ class Timer(BaseObject):
         self._single_shot = False
         self.timeout = Signal(self)
         self._thread = None
-        BaseCoreApplication.vApp.addTimer(self)
+        CoreApplication.vApp.addTimer(self)
 
     def start(self):
         if self._thread is not None:
@@ -49,7 +49,7 @@ class Timer(BaseObject):
         self._thread.start()
 
     def _timeout(self):
-        BaseCoreApplication.vApp.post_event(self, TimerEvent.VTimerEvent())
+        CoreApplication.vApp.post_event(self, TimerEvent.VTimerEvent())
 
     def set_single_shot(self, single_shot):
         self._single_shot = single_shot

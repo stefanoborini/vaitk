@@ -85,7 +85,7 @@ class _KeyEventThread(threading.Thread):
         pass
 
 
-class Application(core.BaseCoreApplication):
+class Application(core.CoreApplication):
     def __init__(self, argv, screen=None):
         from . import Widget
         super().__init__(argv)

@@ -2,7 +2,7 @@ from .BaseObject import BaseObject  # noqa
 from .Point import Point  # noqa
 from .Rect import Rect  # noqa
 from .Size import Size  # noqa
-from .CoreApplication import BaseCoreApplication  # noqa
+from .CoreApplication import CoreApplication  # noqa
 from .Timer import Timer  # noqa
 from .Signal import Signal  # noqa
 from .Event import Event  # noqa
