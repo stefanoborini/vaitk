@@ -2,6 +2,9 @@ from . import TimerEvent
 import logging
 
 
+logger = logging.getLogger(__name__)
+
+
 class BaseObject:
     """
     Base class for all objects in VaiTk.
@@ -19,24 +22,7 @@ class BaseObject:
         debug = True
         debug_level = logging.INFO
 
-    An instance of VObject will always have a logger in self.logger
     """
-
-    def __new__(cls, *args, **kwargs):
-        instance = object.__new__(cls)
-        instance.logger = logging.getLogger(cls.__name__)
-        if hasattr(cls, "debug"):
-            if hasattr(cls, "debug_level"):
-                level = cls.debug_level
-            else:
-                level = logging.DEBUG
-            instance.logger.setLevel(level)
-            instance.logger.log(
-                level, "Debugging enabled for "+str(cls.__name__))
-        else:
-            instance.logger.setLevel(logging.CRITICAL+1)
-
-        return instance
 
     def __init__(self, parent=None):
         self._parent = parent

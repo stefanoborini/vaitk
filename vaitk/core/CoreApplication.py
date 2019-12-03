@@ -1,5 +1,10 @@
+import logging
+
 from .BaseObject import BaseObject
 from .Signal import Signal
+
+
+logger = logging.getLogger(__name__)
 
 
 class BaseCoreApplication(BaseObject):

@@ -10,6 +10,9 @@ from .AbstractScreen import AbstractScreen
 from ..consts import Index
 
 
+logger = logging.getLogger(__name__)
+
+
 class VException(Exception):
     pass
 
@@ -51,11 +54,7 @@ class CursesScreen(AbstractScreen):
         self._color_pairs = [(-1, -1)]
 
         self._cursor_pos = (0, 0)
-        self.logger = logging.getLogger(self.__class__.__name__)
-        if hasattr(self, "debug"):
-            self.logger.setLevel(self.debug)
-        else:
-            self.logger.setLevel(logging.CRITICAL+1)
+
         VGlobalScreenColor.init(self.num_colors())
 
     def reset(self):
@@ -102,17 +101,23 @@ class CursesScreen(AbstractScreen):
         out_string = string
 
         if y < 0 or y >= h or x >= w:
-            self.logger.error(
-                "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
-                    str(pos), str(self.size()), len(string), string))
+            logger.error(
+                "Out of bound in Screen.write: pos=%s size=%s len=%d '%s'",
+                str(pos),
+                str(self.size()),
+                len(string),
+                string)
             return
 
         out_string = out_string[:w-x]
 
         if x < 0:
-            self.logger.error(
-                "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
-                    str(pos), str(self.size()), len(string), string))
+            logger.error(
+                "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'",
+                str(pos),
+                str(self.size()),
+                len(string),
+                string)
             out_string = string[-x:]
 
         if len(out_string) == 0:
@@ -120,9 +125,12 @@ class CursesScreen(AbstractScreen):
 
         attr = self.get_color_attribute_code(fg_color, bg_color)
         if (x+len(out_string) > w):
-            self.logger.error(
-                "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'" % (
-                    str(pos), str(self.size()), len(string), string))
+            logger.error(
+                "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'",
+                str(pos),
+                str(self.size()),
+                len(string),
+                string)
             out_string = out_string[:w-x]
 
         if (x+len(out_string) == w):
@@ -152,26 +160,32 @@ class CursesScreen(AbstractScreen):
         out_colors = colors
 
         if y < 0 or y >= h or x >= w:
-            self.logger.error(
-                "Out of bound in VScreen.setColors: pos=%s size=%s len=%d" % (
-                    str(pos), str(self.size()), len(colors)))
+            logger.error(
+                "Out of bound in VScreen.setColors: pos=%s size=%s len=%d",
+                str(pos),
+                str(self.size()),
+                len(colors))
             return
 
         out_colors = out_colors[:w-x]
 
         if x < 0:
-            self.logger.error(
-                "Out of bound in VScreen.setColors: pos=%s size=%s len=%d" % (
-                    str(pos), str(self.size()), len(colors)))
+            logger.error(
+                "Out of bound in VScreen.setColors: pos=%s size=%s len=%d",
+                str(pos),
+                str(self.size()),
+                len(colors))
             out_colors = colors[-x:]
 
         if len(out_colors) == 0:
             return
 
         if (x+len(out_colors) > w):
-            self.logger.error(
-                "Out of bound in VScreen.setColors: pos=%s size=%s len=%d" % (
-                    str(pos), str(self.size()), len(colors)))
+            logger.error(
+                "Out of bound in VScreen.setColors: pos=%s size=%s len=%d",
+                str(pos),
+                str(self.size()),
+                len(colors))
             out_colors = out_colors[:w-x]
 
         for num, col in enumerate(out_colors):
@@ -231,8 +245,9 @@ class CursesScreen(AbstractScreen):
 
     def set_cursor_pos(self, pos):
         if self.out_of_bounds(pos):
-            self.logger.error(
-                "out of bound in Screen.setCursorPos: %s" % str(pos))
+            logger.error(
+                "out of bound in Screen.setCursorPos: %s",
+                str(pos))
             return
 
         self._cursor_pos = pos

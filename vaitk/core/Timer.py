@@ -1,9 +1,14 @@
+import time
+import threading
+import logging
+
 from .CoreApplication import BaseCoreApplication
 from .BaseObject import BaseObject
 from .Signal import Signal
 from . import TimerEvent
-import time
-import threading
+
+
+logger = logging.getLogger(__name__)
 
 
 class _TimerThread(threading.Thread):

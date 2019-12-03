@@ -1,3 +1,7 @@
+import threading
+import queue
+import logging
+
 from vaitk.gui import CursesScreen
 from .. import KeyModifier, Key
 from .. import FocusPolicy
@@ -6,8 +10,9 @@ from . import events
 from .Palette import Palette
 from .events import FocusEvent
 from .GraphicElements import VGraphicElements
-import threading
-import queue
+
+
+logger = logging.getLogger(__name__)
 
 
 class _VExceptionEvent:
@@ -138,23 +143,24 @@ class Application(core.BaseCoreApplication):
         self.process_events(True)
         self._key_event_thread.start()
         while self._exit_flag is not True:
-            self.logger.info("Waiting for events")
+            logger.info("Waiting for events")
             self._event_available_flag.wait()
             self._event_available_flag.clear()
-            self.logger.info("Event available")
+            logger.info("Event available")
             self.process_events(True)
             self._key_event_thread.throttle.set()
 
         self._exit_cleanup()
 
     def process_events(self, native=False):
-        self.logger.info("++++---- %s processing events ---+++++" %
-                         ("Native" if native else "Forced"))
+        logger.info(
+            "++++---- %s processing events ---+++++",
+            ("Native" if native else "Forced"))
         self._process_key_events()
         self._process_remaining_events()
         self._send_paint_events()
         self._delete_scheduled()
-        self.logger.info("===================================")
+        logger.info("===================================")
         self._screen.refresh()
 
     def post_event(self, receiver, event):
@@ -166,7 +172,7 @@ class Application(core.BaseCoreApplication):
             receiver: the intended receiver of the event
             event: a VEvent object
         """
-        self.logger.info(" <posted " + str(receiver) + " " + str(event))
+        logger.info(" <posted %s %s", str(receiver), str(event))
         self._event_queue.put((receiver, event))
         self._event_available_flag.set()
 
@@ -177,7 +183,7 @@ class Application(core.BaseCoreApplication):
         self._root_widget.addChild(widget)
 
     def delete_later(self, widget):
-        self.logger.info("Added widget %s to deleteLater queue" % str(widget))
+        logger.info("Added widget %s to deleteLater queue", str(widget))
         self._delete_later_queue.append(widget)
 
     def screen(self):
@@ -198,10 +204,10 @@ class Application(core.BaseCoreApplication):
         if self._focus_widget is widget:
             return
 
-        self.logger.info("Setting focus on widget %s." % widget)
+        logger.info("Setting focus on widget %s.", widget)
 
         if self._focus_widget is not None:
-            self.logger.info("Focus out on widget %s." % self._focus_widget)
+            logger.info("Focus out on widget %s.", self._focus_widget)
             Application.vApp.post_event(
                 self._focus_widget,
                 FocusEvent(core.Event.EventType.FocusOut))
@@ -209,9 +215,9 @@ class Application(core.BaseCoreApplication):
         self._focus_widget = None
         if widget is not None:
             if widget.focus_policy() == FocusPolicy.NoFocus:
-                self.logger.info(
-                    ("Focus not accepted on widget "
-                     "%s due to its focus policy.") % self._focus_widget)
+                logger.info(
+                    "Focus not accepted on widget %s due to its focus policy.",
+                    self._focus_widget)
                 return
 
             self._focus_widget = widget
@@ -291,11 +297,13 @@ class Application(core.BaseCoreApplication):
     # Private
 
     def _hide_scheduled(self):
-        self.logger.info("Widget scheduled for deletion: %s" %
-                         str(self._delete_later_queue))
+        logger.info(
+            "Widget scheduled for deletion: %s",
+            str(self._delete_later_queue))
         for w in self._delete_later_queue:
-            self.logger.info(
-                "Posting hide events for deleted widget %s" % str(w))
+            logger.info(
+                "Posting hide events for deleted widget %s",
+                str(w))
             w.hide()
 
     def _delete_scheduled(self):
@@ -306,7 +314,8 @@ class Application(core.BaseCoreApplication):
 
     def _process_key_events(self):
         while True:
-            self.logger.info("key queue %d" % self._key_event_queue.qsize())
+            logger.info("key queue %d",
+                        self._key_event_queue.qsize())
             try:
                 event = self._key_event_queue.get_nowait()
             except queue.Empty:
@@ -321,32 +330,36 @@ class Application(core.BaseCoreApplication):
                 raise event.exception
 
     def _process_single_key_event(self, key_event):
-        self.logger.info("Key event %d %x" %
-                         (key_event.key(), key_event.modifiers()))
+        logger.info("Key event %d %x",
+                    key_event.key(), key_event.modifiers())
 
         key_event.setAccepted(False)
 
         focus_widget = self.focus_widget()
         if focus_widget:
             for widget in focus_widget.traverse_to_root():
-                self.logger.info(
-                    "KeyEvent attempting delivery to "+str(widget))
+                logger.info(
+                    "KeyEvent attempting delivery to %s",
+                    str(widget))
                 stop_event = False
                 for event_filter in reversed(widget.installed_event_filters()):
                     stop_event = stop_event | event_filter.event_filter(
                         key_event)
                     if key_event.isAccepted():
-                        self.logger.info(
-                            "KeyEvent accepted by filter "+str(event_filter))
+                        logger.info(
+                            "KeyEvent accepted by filter %s",
+                            str(event_filter))
                         return
 
                 if not stop_event:
-                    self.logger.info(
-                        "KeyEvent not stopped. Sending to widget "+str(widget))
+                    logger.info(
+                        "KeyEvent not stopped. Sending to widget %s",
+                        str(widget))
                     widget.key_event(key_event)
 
                     if key_event.isAccepted():
-                        self.logger.info("KeyEvent accepted by "+str(widget))
+                        logger.info("KeyEvent accepted by %s",
+                                    str(widget))
                         return
 
         # If all fails, deliver it to the application itself.
@@ -369,9 +382,11 @@ class Application(core.BaseCoreApplication):
                         receiver == prev_receiver):
                     continue
 
-            self.logger.info("Data queue %d. Processing %s -> %s." %
-                             (self._event_queue.qsize(), str(event),
-                              str(receiver)))
+            logger.info(
+                "Data queue %d. Processing %s -> %s.",
+                self._event_queue.qsize(),
+                str(event),
+                str(receiver))
             receiver.event(event)
             previous_data = (receiver, event)
 
