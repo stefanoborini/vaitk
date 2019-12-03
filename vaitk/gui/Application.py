@@ -153,8 +153,9 @@ class Application(core.BaseCoreApplication):
         self._exit_cleanup()
 
     def process_events(self, native=False):
-        logger.info("++++---- %s processing events ---+++++",
-                    ("Native" if native else "Forced"))
+        logger.info(
+            "++++---- %s processing events ---+++++",
+            ("Native" if native else "Forced"))
         self._process_key_events()
         self._process_remaining_events()
         self._send_paint_events()
@@ -296,8 +297,9 @@ class Application(core.BaseCoreApplication):
     # Private
 
     def _hide_scheduled(self):
-        logger.info("Widget scheduled for deletion: %s",
-                    str(self._delete_later_queue))
+        logger.info(
+            "Widget scheduled for deletion: %s",
+            str(self._delete_later_queue))
         for w in self._delete_later_queue:
             logger.info(
                 "Posting hide events for deleted widget %s",
@@ -380,10 +382,11 @@ class Application(core.BaseCoreApplication):
                         receiver == prev_receiver):
                     continue
 
-            logger.info("Data queue %d. Processing %s -> %s.",
-                        self._event_queue.qsize(),
-                        str(event),
-                        str(receiver))
+            logger.info(
+                "Data queue %d. Processing %s -> %s.",
+                self._event_queue.qsize(),
+                str(event),
+                str(receiver))
             receiver.event(event)
             previous_data = (receiver, event)
 

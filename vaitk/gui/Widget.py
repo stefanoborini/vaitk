@@ -145,8 +145,10 @@ class Widget(core.BaseObject):
             visible: True to set the widget to visible. False to hide it.
 
         """
-        logger.info("Setting explicit visibility for %s : %s" %
-                         (str(self), str(visible)))
+        logger.info(
+            "Setting explicit visibility for %s : %s",
+            str(self),
+            str(visible))
         visible_before = self.is_visible()
         self._visible_explicit = visible
 
@@ -160,8 +162,9 @@ class Widget(core.BaseObject):
 
     def set_visible_implicit(self, visible):
         # XXX private?
-        logger.info("Setting implicit visibility for %s : %s" %
-                         (str(self), str(visible)))
+        logger.info(
+            "Setting implicit visibility for %s : %s",
+            str(self), str(visible))
         self._visible_implicit = visible
 
         if visible:
@@ -312,7 +315,10 @@ class Widget(core.BaseObject):
             event: the event.
         """
 
-        logger.info("Event %s. Receiver %s" % (str(event), str(self)))
+        logger.info(
+            "Event %s. Receiver %s",
+            str(event),
+            str(self))
 
         if isinstance(event, events.PaintEvent):
             if not self.is_visible():
@@ -334,17 +340,17 @@ class Widget(core.BaseObject):
             self.hide_event(event)
 
             for w in self.depthFirstFullTree():
-                logger.info("Widget %s in tree" % str(w))
+                logger.info("Widget %s in tree", str(w))
                 if not w.is_visible():
                     continue
-                logger.info("Repainting widget %s" % str(w))
+                logger.info("Repainting widget %s", str(w))
                 w.update()
 
         elif isinstance(event, events.ShowEvent):
             self.show_event(event)
 
             for w in self.depthFirstFullTree():
-                logger.info("Widget %s in tree" % str(w))
+                logger.info("Widget %s in tree", str(w))
                 if not w.is_visible():
                     continue
                 w.update()
@@ -356,7 +362,7 @@ class Widget(core.BaseObject):
             self.move_event(event)
 
             for w in self.depthFirstFullTree():
-                logger.info("Widget %s in tree" % str(w))
+                logger.info("Widget %s in tree", str(w))
                 if not w.is_visible():
                     continue
                 w.update()
@@ -368,7 +374,7 @@ class Widget(core.BaseObject):
             self.resize_event(event)
 
             for w in self.depthFirstFullTree():
-                logger.info("Widget %s in tree" % str(w))
+                logger.info("Widget %s in tree", str(w))
                 if not w.is_visible():
                     continue
                 w.update()
