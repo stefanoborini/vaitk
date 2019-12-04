@@ -1,6 +1,5 @@
 import pytest
-from vaitk import gui, test, core
-
+from vaitk import gui
 
 
 @pytest.mark.skip

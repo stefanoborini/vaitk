@@ -1,5 +1,4 @@
 import pytest
-from vaitk import test
 from vaitk.gui import ScreenArea
 
 
