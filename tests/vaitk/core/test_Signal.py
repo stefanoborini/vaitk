@@ -1,34 +1,35 @@
 from vaitk import core
-import unittest
 
 
-class TestVSignal(unittest.TestCase):
-    def testVSignal(self):
-        arg = []
-        sender = core.BaseObject()
-        signal = core.Signal(sender)
+def test_signal():
+    arg = []
+    sender = core.BaseObject()
+    signal = core.Signal(sender)
 
-        def slot(x):
-            arg.append(x)
-        signal.connect(slot)
+    def slot(x):
+        arg.append(x)
+    signal.connect(slot)
 
-        signal.emit(3)
+    signal.emit(3)
 
-        self.assertEqual(len(arg), 1)
-        self.assertEqual(arg[0], 3)
+    assert len(arg) == 1
+    assert arg[0] == 3
 
-        signal.disconnect(slot)
+    signal.disconnect(slot)
+    signal.emit(3)
 
-        signal.emit(3)
+    assert len(arg) == 1
+    assert arg[0] == 3
 
-        self.assertEqual(len(arg), 1)
-        self.assertEqual(arg[0], 3)
 
-    def testDisconnectNotRegistered(self):
-        arg = []
-        sender = core.BaseObject()
-        signal = core.Signal(sender)
+def test_disconnect_not_registered():
+    arg = []
+    sender = core.BaseObject()
+    signal = core.Signal(sender)
 
-        def slot(x):
-            arg.append(x)
-        signal.disconnect(slot)
+    def slot(x):
+        arg.append(x)
+    signal.disconnect(slot)
+
+    signal.emit(1)
+    assert len(arg) == 0

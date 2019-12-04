@@ -1,94 +1,96 @@
-import unittest
-from vaitk import gui, test, core
+from vaitk import gui
 import vaitk
 
 
-class TestVPainter(unittest.TestCase):
-    def setUp(self):
-        self.screen = test.TextScreen((40, 40))
-        self.app = gui.Application([], screen=self.screen)
+def test_draw_text(screen_app):
+    screen, app = screen_app
+    w = gui.Widget()
+    w.resize((40, 40))
+    painter = gui.Painter(w)
+    painter.draw_text((10, 10), "hello")
+    assert screen.string_at(10, 10, 5) == "hello"
 
-    def tearDown(self):
-        del self.screen
-        self.app.exit()
-        core.CoreApplication.vApp = None
-        del self.app
 
-    def testDrawText(self):
-        w = gui.Widget()
-        w.resize((40, 40))
-        painter = gui.Painter(w)
-        painter.draw_text((10, 10), "hello")
-        self.assertEqual(self.screen.string_at(10, 10, 5), "hello")
+def test_draw_text_formatted(screen_app):
+    screen, app = screen_app
+    w = gui.Widget()
+    w.resize((40, 40))
+    painter = gui.Painter(w)
+    painter.draw_text((10, 11, 11, 3), "hello",
+                      align=vaitk.Alignment.AlignLeft)
+    assert screen.string_at(10, 11, 11) == "hello      "
+    assert screen.string_at(10, 12, 11) == "           "
+    assert screen.string_at(10, 13, 11) == "           "
 
-    def testDrawTextFormatted(self):
-        w = gui.Widget()
-        w.resize((40, 40))
-        painter = gui.Painter(w)
-        painter.draw_text((10, 11, 11, 3), "hello",
-                          align=vaitk.Alignment.AlignLeft)
-        print(self.screen)
-        self.assertEqual(self.screen.string_at(10, 11, 11), "hello      ")
-        self.assertEqual(self.screen.string_at(10, 12, 11), "           ")
-        self.assertEqual(self.screen.string_at(10, 13, 11), "           ")
-        painter.draw_text((10, 11, 11, 3), "hello",
-                          align=vaitk.Alignment.AlignHCenter)
-        self.assertEqual(self.screen.string_at(10, 11, 11), "   hello   ")
-        self.assertEqual(self.screen.string_at(10, 12, 11), "           ")
-        self.assertEqual(self.screen.string_at(10, 13, 11), "           ")
-        painter.draw_text((10, 11, 11, 3), "hello",
-                          align=vaitk.Alignment.AlignRight)
-        self.assertEqual(self.screen.string_at(10, 11, 11), "      hello")
-        self.assertEqual(self.screen.string_at(10, 12, 11), "           ")
-        self.assertEqual(self.screen.string_at(10, 13, 11), "           ")
-        painter.draw_text((10, 11, 11, 3), "hello",
-                          align=vaitk.Alignment.AlignVCenter)
-        self.assertEqual(self.screen.string_at(10, 11, 11), "           ")
-        self.assertEqual(self.screen.string_at(10, 12, 11), "hello      ")
-        self.assertEqual(self.screen.string_at(10, 13, 11), "           ")
-        painter.draw_text((10, 11, 11, 3), "hello",
-                          align=vaitk.Alignment.AlignBottom)
-        self.assertEqual(self.screen.string_at(10, 11, 11), "           ")
-        self.assertEqual(self.screen.string_at(10, 12, 11), "           ")
-        self.assertEqual(self.screen.string_at(10, 13, 11), "hello      ")
+    painter.draw_text((10, 11, 11, 3), "hello",
+                      align=vaitk.Alignment.AlignHCenter)
+    assert screen.string_at(10, 11, 11) == "   hello   "
+    assert screen.string_at(10, 12, 11) == "           "
+    assert screen.string_at(10, 13, 11) == "           "
 
-    def testDrawLineHorizontal(self):
-        w = gui.Widget()
-        w.resize((40, 40))
-        painter = gui.Painter(w)
-        painter.draw_line((10, 10), 5, vaitk.Orientation.Horizontal)
-        self.assertEqual(self.screen.string_at(10, 10, 5), "-----")
+    painter.draw_text((10, 11, 11, 3), "hello",
+                      align=vaitk.Alignment.AlignRight)
+    assert screen.string_at(10, 11, 11) == "      hello"
+    assert screen.string_at(10, 12, 11) == "           "
+    assert screen.string_at(10, 13, 11) == "           "
+    painter.draw_text((10, 11, 11, 3), "hello",
+                      align=vaitk.Alignment.AlignVCenter)
+    assert screen.string_at(10, 11, 11) == "           "
+    assert screen.string_at(10, 12, 11) == "hello      "
+    assert screen.string_at(10, 13, 11) == "           "
 
-    def testDrawLineVertical(self):
-        w = gui.Widget()
-        w.resize((40, 40))
-        painter = gui.Painter(w)
-        painter.draw_line((10, 10), 5, vaitk.Orientation.Vertical)
-        print(self.screen)
-        self.assertEqual(self.screen.string_at(10, 10, 1), "|")
-        self.assertEqual(self.screen.string_at(10, 11, 1), "|")
-        self.assertEqual(self.screen.string_at(10, 12, 1), "|")
-        self.assertEqual(self.screen.string_at(10, 13, 1), "|")
-        self.assertEqual(self.screen.string_at(10, 14, 1), "|")
+    painter.draw_text((10, 11, 11, 3), "hello",
+                      align=vaitk.Alignment.AlignBottom)
 
-    def testFillRect(self):
-        w = gui.Widget()
-        w.resize((40, 40))
-        painter = gui.Painter(w)
-        painter.fill_rect((10, 10, 5, 5))
-        self.assertEqual(self.screen.string_at(10, 10, 5), "+---+")
-        self.assertEqual(self.screen.string_at(10, 11, 5), "|   |")
-        self.assertEqual(self.screen.string_at(10, 12, 5), "|   |")
-        self.assertEqual(self.screen.string_at(10, 13, 5), "|   |")
-        self.assertEqual(self.screen.string_at(10, 14, 5), "+---+")
+    assert screen.string_at(10, 11, 11) == "           "
+    assert screen.string_at(10, 12, 11) == "           "
+    assert screen.string_at(10, 13, 11) == "hello      "
 
-    def testDrawRect(self):
-        w = gui.Widget()
-        w.resize((40, 40))
-        painter = gui.Painter(w)
-        painter.draw_rect((10, 10, 5, 5))
-        self.assertEqual(self.screen.string_at(10, 10, 5), "+---+")
-        self.assertEqual(self.screen.string_at(10, 11, 5), "|...|")
-        self.assertEqual(self.screen.string_at(10, 12, 5), "|...|")
-        self.assertEqual(self.screen.string_at(10, 13, 5), "|...|")
-        self.assertEqual(self.screen.string_at(10, 14, 5), "+---+")
+
+def test_draw_line_horiz(screen_app):
+    screen, app = screen_app
+    w = gui.Widget()
+    w.resize((40, 40))
+    painter = gui.Painter(w)
+    painter.draw_line((10, 10), 5, vaitk.Orientation.Horizontal)
+    assert screen.string_at(10, 10, 5) == "-----"
+
+
+def test_draw_line_vert(screen_app):
+    screen, app = screen_app
+    w = gui.Widget()
+    w.resize((40, 40))
+    painter = gui.Painter(w)
+    painter.draw_line((10, 10), 5, vaitk.Orientation.Vertical)
+
+    assert screen.string_at(10, 10, 1) == "|"
+    assert screen.string_at(10, 11, 1) == "|"
+    assert screen.string_at(10, 12, 1) == "|"
+    assert screen.string_at(10, 13, 1) == "|"
+    assert screen.string_at(10, 14, 1) == "|"
+
+
+def test_fill_rect(screen_app):
+    screen, app = screen_app
+    w = gui.Widget()
+    w.resize((40, 40))
+    painter = gui.Painter(w)
+    painter.fill_rect((10, 10, 5, 5))
+    assert screen.string_at(10, 10, 5) == "+---+"
+    assert screen.string_at(10, 11, 5) == "|   |"
+    assert screen.string_at(10, 12, 5) == "|   |"
+    assert screen.string_at(10, 13, 5) == "|   |"
+    assert screen.string_at(10, 14, 5) == "+---+"
+
+
+def test_draw_rect(screen_app):
+    screen, app = screen_app
+    w = gui.Widget()
+    w.resize((40, 40))
+    painter = gui.Painter(w)
+    painter.draw_rect((10, 10, 5, 5))
+    assert screen.string_at(10, 10, 5) == "+---+"
+    assert screen.string_at(10, 11, 5) == "|...|"
+    assert screen.string_at(10, 12, 5) == "|...|"
+    assert screen.string_at(10, 13, 5) == "|...|"
+    assert screen.string_at(10, 14, 5) == "+---+"
