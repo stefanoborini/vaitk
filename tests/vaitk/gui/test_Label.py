@@ -1,34 +1,23 @@
-import unittest
-from vaitk import gui, test, core
+import pytest
+from vaitk import gui
 
 
-class TestVLabel(unittest.TestCase):
-    def setUp(self):
-        self.screen = test.TextScreen((40, 40))
-        self.app = gui.Application([], screen=self.screen)
+@pytest.mark.skip
+def test_label(screen_app):
+    screen, app = screen_app
+    label = gui.Label("hello")
+    label.show()
+    app.process_events()
+    assert (screen.string_at(0, int(screen.size()[1]/2), 5) == "hello")
 
-    def tearDown(self):
-        del self.screen
-        self.app.exit()
-        core.CoreApplication.vApp = None
-        del self.app
 
-    @unittest.skip
-    def testVLabel(self):
-        label = gui.Label("hello")
-        label.show()
-        self.app.process_events()
-        self.assertEqual(self.screen.string_at(
-            0, int(self.screen.size()[1]/2), 5), "hello")
-
-    @unittest.skip
-    def testVLabelChangeString(self):
-        label = gui.Label("hello")
-        label.show()
-        self.app.process_events()
-        label.set_text("world")
-        self.assertEqual(self.screen.string_at(
-            0, int(self.screen.size()[1]/2), 5), "hello")
-        self.app.process_events()
-        self.assertEqual(self.screen.string_at(
-            0, int(self.screen.size()[1]/2), 5), "world")
+@pytest.mark.skip
+def test_label_change_string(screen_app):
+    screen, app = screen_app
+    label = gui.Label("hello")
+    label.show()
+    app.process_events()
+    label.set_text("world")
+    assert (screen.string_at(0, int(screen.size()[1]/2), 5) == "hello")
+    app.process_events()
+    assert (screen.string_at(0, int(screen.size()[1]/2), 5) == "world")
