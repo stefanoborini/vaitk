@@ -1,8 +1,6 @@
-import sys
 import logging
-from abc import abstractmethod
 
-from traitlets import Unicode, default
+from traitlets import Unicode
 
 
 from .BaseObject import BaseObject
