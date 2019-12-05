@@ -19,29 +19,5 @@ class Size(HasTraits):
         """
         super().__init__(width=width, height=height)
 
-    @classmethod
-    def from_tuple(cls, t):
-        """
-        Alternate constructor.
-        Creates a Size from a 2-tuple (width, height)
-
-        Args:
-            t: tuple
-                a 2-tuple (width, height)
-
-        Returns: Size
-
-        """
-        return cls(*t)
-
     def __str__(self):
         return f"Size(width={self.width}, height={self.height})"
-
-    def as_tuple(self):
-        """
-
-        Returns: tuple
-            A 2-tuple (width, height)
-
-        """
-        return self.width, self.height
