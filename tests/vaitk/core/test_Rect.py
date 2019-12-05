@@ -1,9 +1,8 @@
-from vaitk import core
-from vaitk.core import Size, Point
+from vaitk.core import Rect, Size, Point
 
 
-def test_initialization():
-    r = core.Rect(Point(2, 3), Size(4, 5))
+def test_initialization_from_point_and_size():
+    r = Rect(Point(2, 3), Size(4, 5))
 
     assert r.x == 2
     assert r.y == 3
@@ -34,40 +33,23 @@ def test_initialization():
     assert r.bottom == 7
 
 
-def test_initialization_from_tuple():
-    r = core.Rect((1, 2), (3, 4))
-    assert r.size.as_tuple() == (3, 4)
-    assert r.top_left.as_tuple() == (1, 2)
-
-
-def test_from_tuple():
-    r = core.Rect.from_tuple((1, 2, 3, 4))
-    assert r.size.as_tuple() == (3, 4)
-    assert r.top_left.as_tuple() == (1, 2)
-
-
 def test_is_null():
-    r = core.Rect.from_x_y_width_height(2, 3, 4, 5)
+    r = Rect(Point(2, 3), Size(4, 5))
     assert not r.is_null()
 
-    r = core.Rect.from_x_y_width_height(2, 3, 0, 0)
+    r = Rect(Point(2, 3), Size(0, 0))
     assert r.is_null()
 
 
 def test_intersects():
-    assert core.Rect.from_x_y_width_height(0, 0, 18, 1).intersects(
-        core.Rect.from_x_y_width_height(4, 0, 142, 40))
-    assert not core.Rect.from_x_y_width_height(0, 0, 3, 3).intersects(
-        core.Rect.from_x_y_width_height(4, 4, 1, 1))
-
-
-def test_as_tuple():
-    r = core.Rect.from_x_y_width_height(2, 3, 4, 5)
-    assert r.as_tuple() == (2, 3, 4, 5)
+    assert Rect(Point(0, 0), Size(18, 1)).intersects(
+        Rect(Point(4, 0), Size(142, 40)))
+    assert not Rect(Point(0, 0), Size(3, 3)).intersects(
+        Rect(Point(4, 4), Size(1, 1)))
 
 
 def test_move_to():
-    r = core.Rect.from_x_y_width_height(2, 3, 4, 5)
+    r = Rect(Point(2, 3), Size(4, 5))
     r.move_to(Point(4, 5))
     assert r.x == 4
     assert r.y == 5
