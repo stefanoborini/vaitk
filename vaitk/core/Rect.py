@@ -38,44 +38,12 @@ class Rect(HasTraits):
         Constructor.
 
         Args:
-            top_left: Point or tuple
+            top_left: Point
                 The top left coordinate of the rectangle
-            size: Size or tuple
+            size: Size
                 The size of the rectangle
         """
-        if isinstance(top_left, tuple):
-            top_left = Point.from_tuple(top_left)
-
-        if isinstance(size, tuple):
-            size = Size.from_tuple(size)
-
         super().__init__(top_left=top_left, size=size)
-
-    @classmethod
-    def from_x_y_width_height(cls, x, y, width, height):
-        """
-        Alternate constructor: creates the Rect from x y coordinates of
-        the top left corner, and from width and height of the rectangle.
-
-        Args:
-            x: int
-                The x coordinate of the top left corner
-            y: int
-                The y coordinate of the top left corner
-            width: int
-                The width of the rectangle
-            height: int
-                The height of the rectangle
-
-        Returns: Rect
-        """
-        top_left = Point(x, y)
-        size = Size(width, height)
-        return cls(top_left, size)
-
-    @classmethod
-    def from_tuple(cls, t):
-        return cls.from_x_y_width_height(*t)
 
     @property
     def x(self):
@@ -163,14 +131,6 @@ class Rect(HasTraits):
                 and self.right >= other.left
                 and self.top <= other.bottom
                 and self.bottom >= other.top)
-
-    def as_tuple(self):
-        """
-        Returns: tuple
-            A 4-tuple (x, y, width, height)
-
-        """
-        return self.x, self.y, self.width, self.height
 
     def __str__(self):
         return (f"Rect(x={self.x}, y={self.y}, "

@@ -16,11 +16,6 @@ class Point(HasTraits):
     def __init__(self, x, y):
         super().__init__(x=x, y=y)
 
-    @classmethod
-    def from_tuple(cls, t):
-        """Creates a Point from a 2-tuple with (x, y) coordinates"""
-        return cls(*t)
-
     def __add__(self, other):
         """
         Adds this point to another point "other".
@@ -38,7 +33,3 @@ class Point(HasTraits):
 
     def __str__(self):
         return f"{self.__class__.__name__}(x={self.x}, y={self.y})"
-
-    def as_tuple(self):
-        """Returns a tuple with the (x, y) coordinates"""
-        return self.x, self.y
