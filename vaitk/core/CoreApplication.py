@@ -24,6 +24,7 @@ class CoreApplication(BaseObject):
 
         self._timers = []
 
+        print(type(CoreApplication.vApp))
         if CoreApplication.vApp is not None:
             raise Exception("Only one application is allowed")
 

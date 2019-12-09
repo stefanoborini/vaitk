@@ -176,8 +176,9 @@ class Application(core.CoreApplication):
         self._event_queue.put((receiver, event))
         self._event_available_flag.set()
 
-    def exit(self):
+    def exit(self, retcode=0):
         self._exit_flag = True
+        super().exit(retcode)
 
     def add_top_level_widget(self, widget):
         self._root_widget.addChild(widget)
