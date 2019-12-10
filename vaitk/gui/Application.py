@@ -9,7 +9,7 @@ from .. import core
 from . import events
 from .Palette import Palette
 from .events import FocusEvent
-from .GraphicElements import VGraphicElements
+from .GraphicElements import GraphicElements
 
 
 logger = logging.getLogger(__name__)
@@ -133,7 +133,7 @@ class Application(core.CoreApplication):
         # rendered correctly. We stay conservative, and allow overriding if
         # the client code is
         # confident of the current ncurses implementation.
-        self._default_graphic_elements = VGraphicElements.ASCII
+        self._default_graphic_elements = GraphicElements.ASCII
 
     def exec_(self):
         """

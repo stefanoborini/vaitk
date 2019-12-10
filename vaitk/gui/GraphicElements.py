@@ -264,7 +264,7 @@ def _unicode_elements():
     }
 
 
-class VGraphicElements:
+class GraphicElements:
     """
     """
 
