@@ -1,5 +1,5 @@
 import pytest
-from vaitk import gui, test, core
+from vaitk import gui, test
 
 
 @pytest.fixture
