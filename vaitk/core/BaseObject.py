@@ -1,3 +1,5 @@
+from traitlets import HasTraits
+
 from . import TimerEvent
 import logging
 
@@ -5,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class BaseObject:
+class BaseObject(HasTraits):
     """
     Base class for all objects in VaiTk.
     Provides methods for the object hierarchy traversal.
@@ -24,7 +26,8 @@ class BaseObject:
 
     """
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, **kwargs):
+        super().__init__(**kwargs)
         self._parent = parent
         self._children = []
         self._event_filters = []
