@@ -1,5 +1,4 @@
-def _ascii_elements():
-    return {
+GRAPHIC_ELEMENTS_ASCII = {
         "BOX DRAWINGS LIGHT HORIZONTAL":      "-",
         "BOX DRAWINGS HEAVY HORIZONTAL":      "-",
         "BOX DRAWINGS LIGHT VERTICAL":      "|",
@@ -130,9 +129,7 @@ def _ascii_elements():
         "BOX DRAWINGS HEAVY UP AND LIGHT DOWN":      "|",
     }
 
-
-def _unicode_elements():
-    return {
+GRAPHIC_ELEMENTS_UNICODE = {
         "BOX DRAWINGS LIGHT HORIZONTAL":      "\u2500",
         "BOX DRAWINGS HEAVY HORIZONTAL":      "\u2501",
         "BOX DRAWINGS LIGHT VERTICAL":      "\u2502",
@@ -262,11 +259,3 @@ def _unicode_elements():
         "BOX DRAWINGS HEAVY LEFT AND LIGHT RIGHT":      "\u257E",
         "BOX DRAWINGS HEAVY UP AND LIGHT DOWN":      "\u257F",
     }
-
-
-class GraphicElements:
-    """
-    """
-
-    UNICODE = _unicode_elements()
-    ASCII = _ascii_elements()

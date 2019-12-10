@@ -1,3 +1,4 @@
+from . import GraphicElements  # noqa
 from .Application import Application  # noqa
 from .Color import Color, GlobalColor  # noqa
 from .Cursor import Cursor  # noqa
