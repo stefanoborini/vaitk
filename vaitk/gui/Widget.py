@@ -2,7 +2,7 @@ import logging
 
 from .. import core
 from ..consts import Index
-from .. import FocusPolicy
+from vaitk.gui.enums import FocusPolicy
 from .Application import Application
 from .Palette import Palette
 from .Painter import Painter

@@ -1,3 +1,4 @@
+import vaitk.gui.enums
 from vaitk import gui
 import vaitk
 
@@ -17,30 +18,30 @@ def test_draw_text_formatted(screen_app):
     w.resize((40, 40))
     painter = gui.Painter(w)
     painter.draw_text((10, 11, 11, 3), "hello",
-                      align=vaitk.Alignment.AlignLeft)
+                      align=vaitk.gui.enums.Alignment.AlignLeft)
     assert screen.string_at(10, 11, 11) == "hello      "
     assert screen.string_at(10, 12, 11) == "           "
     assert screen.string_at(10, 13, 11) == "           "
 
     painter.draw_text((10, 11, 11, 3), "hello",
-                      align=vaitk.Alignment.AlignHCenter)
+                      align=vaitk.gui.enums.Alignment.AlignHCenter)
     assert screen.string_at(10, 11, 11) == "   hello   "
     assert screen.string_at(10, 12, 11) == "           "
     assert screen.string_at(10, 13, 11) == "           "
 
     painter.draw_text((10, 11, 11, 3), "hello",
-                      align=vaitk.Alignment.AlignRight)
+                      align=vaitk.gui.enums.Alignment.AlignRight)
     assert screen.string_at(10, 11, 11) == "      hello"
     assert screen.string_at(10, 12, 11) == "           "
     assert screen.string_at(10, 13, 11) == "           "
     painter.draw_text((10, 11, 11, 3), "hello",
-                      align=vaitk.Alignment.AlignVCenter)
+                      align=vaitk.gui.enums.Alignment.AlignVCenter)
     assert screen.string_at(10, 11, 11) == "           "
     assert screen.string_at(10, 12, 11) == "hello      "
     assert screen.string_at(10, 13, 11) == "           "
 
     painter.draw_text((10, 11, 11, 3), "hello",
-                      align=vaitk.Alignment.AlignBottom)
+                      align=vaitk.gui.enums.Alignment.AlignBottom)
 
     assert screen.string_at(10, 11, 11) == "           "
     assert screen.string_at(10, 12, 11) == "           "
@@ -52,7 +53,7 @@ def test_draw_line_horiz(screen_app):
     w = gui.Widget()
     w.resize((40, 40))
     painter = gui.Painter(w)
-    painter.draw_line((10, 10), 5, vaitk.Orientation.Horizontal)
+    painter.draw_line((10, 10), 5, vaitk.gui.enums.Orientation.Horizontal)
     assert screen.string_at(10, 10, 5) == "-----"
 
 
@@ -61,7 +62,7 @@ def test_draw_line_vert(screen_app):
     w = gui.Widget()
     w.resize((40, 40))
     painter = gui.Painter(w)
-    painter.draw_line((10, 10), 5, vaitk.Orientation.Vertical)
+    painter.draw_line((10, 10), 5, vaitk.gui.enums.Orientation.Vertical)
 
     assert screen.string_at(10, 10, 1) == "|"
     assert screen.string_at(10, 11, 1) == "|"
