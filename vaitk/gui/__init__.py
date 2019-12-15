@@ -1,6 +1,7 @@
 from . import GraphicElements  # noqa
 from .Application import Application  # noqa
-from .Color import Color, GlobalColor  # noqa
+from .Color import Color  # noqa
+from vaitk.gui.GlobalColor import GlobalColor
 from .Cursor import Cursor  # noqa
 from .Palette import Palette  # noqa
 from .Painter import Painter  # noqa
