@@ -3,8 +3,8 @@ import queue
 import logging
 
 from vaitk.gui import CursesScreen
-from .. import KeyModifier, Key
-from .. import FocusPolicy
+from vaitk.gui.enums import FocusPolicy
+from vaitk.keys import Key, KeyModifier
 from .. import core
 from . import events
 from .Palette import Palette
