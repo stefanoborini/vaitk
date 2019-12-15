@@ -4,7 +4,6 @@ python:
 # command to install dependencies
 install: 
 - python3 -m pip install poetry
-- poetry debug:info
 - poetry install
 script: 
 - poetry run flake8
