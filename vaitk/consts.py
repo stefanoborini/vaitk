@@ -13,5 +13,3 @@ class Index:
     MARGIN_TOP = 1
     MARGIN_RIGHT = 2
     MARGIN_BOTTOM = 3
-
-

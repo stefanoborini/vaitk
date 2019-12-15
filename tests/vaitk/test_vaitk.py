@@ -1,7 +1,10 @@
 import vaitk
 from vaitk import keys
-from vaitk.keys import native_to_vai_key_code, isKeyCodePrintable, KeyModifier, \
-    vai_key_code_to_text
+from vaitk.keys import (
+    native_to_vai_key_code,
+    isKeyCodePrintable,
+    KeyModifier,
+    vai_key_code_to_text)
 
 
 def test_native_to_vaitk():

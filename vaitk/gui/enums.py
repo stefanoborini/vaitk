@@ -34,5 +34,3 @@ class Alignment(IntEnum):
     AlignBottom = 0x40
     AlignVCenter = 0x80
     AlignCenter = AlignHCenter | AlignVCenter
-
-

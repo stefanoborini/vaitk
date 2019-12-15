@@ -1,7 +1,11 @@
 import logging
 
-from vaitk.gui.enums import Orientation, LineStyle, CornerCapStyle, LineCapStyle, \
-    Alignment
+from vaitk.gui.enums import (
+    Orientation,
+    LineStyle,
+    CornerCapStyle,
+    LineCapStyle,
+    Alignment)
 from .Application import Application
 from ..consts import Index
 
