@@ -95,7 +95,8 @@ class Application(core.CoreApplication):
             else:
                 self._screen = CursesScreen()
 
-            # The root widget is the one representing the whole background screen.
+            # The root widget is the one representing the whole background
+            # screen.
             # It it always rendered last.
             # This may seem weird, but we need to initialize it first to None,
             # _then_ create the root VWidget.
@@ -115,7 +116,9 @@ class Application(core.CoreApplication):
             self._event_queue = queue.Queue()
             self._key_event_queue = queue.Queue()
             self._key_event_thread = _KeyEventThread(
-                self._screen, self._key_event_queue, self._event_available_flag)
+                self._screen,
+                self._key_event_queue,
+                self._event_available_flag)
 
             # XXX I am not sure we need the delete later anymore.
             self._delete_later_queue = []
@@ -127,16 +130,16 @@ class Application(core.CoreApplication):
             self.lastWindowClosed = core.Signal(self)
             self.focusChanged = core.Signal(self)
 
-            # Graphic elements contains characters to draw boxes, buttons, icons,
-            # and so on.
-            # We choose ascii as default because in basic ncurses implementation
-            # unicode is not
+            # Graphic elements contains characters to draw boxes, buttons,
+            # icons, and so on.
+            # We choose ascii as default because in basic ncurses
+            # implementation unicode is not
             # rendered correctly. We stay conservative, and allow overriding if
             # the client code is
             # confident of the current ncurses implementation.
             self._default_graphic_elements = GRAPHIC_ELEMENTS_ASCII
 
-        except Exception as e:
+        except Exception:
             core.CoreApplication.vApp = None
             raise
 
