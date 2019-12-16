@@ -143,7 +143,6 @@ class Application(core.CoreApplication):
             core.CoreApplication.vApp = None
             raise
 
-
     def exec_(self):
         """
         Starts the event loop.
