@@ -86,53 +86,62 @@ class _KeyEventThread(threading.Thread):
 
 class Application(core.CoreApplication):
     def __init__(self, argv, screen=None):
-        from . import Widget
         super().__init__(argv)
-        if screen is not None:
-            self._screen = screen
-        else:
-            self._screen = CursesScreen()
 
-        # The root widget is the one representing the whole background screen.
-        # It it always rendered last.
-        # This may seem weird, but we need to initialize it first to None,
-        # _then_ create the root VWidget.
-        # The reason is that VWidget asks for the current root widget if
-        # there's no parent, and the
-        # subsequent initialization results in a chicken-egg problem
-        # (the root widget is the only widget
-        # having strictly None as parent).
-        self._root_widget = None
-        self._root_widget = Widget()
+        try:
+            from . import Widget
+            if screen is not None:
+                self._screen = screen
+            else:
+                self._screen = CursesScreen()
 
-        # The widget that currently has the focus (gets key events)
-        self._focus_widget = None
-        self._palette = self.default_palette()
+            # The root widget is the one representing the whole background
+            # screen.
+            # It it always rendered last.
+            # This may seem weird, but we need to initialize it first to None,
+            # _then_ create the root VWidget.
+            # The reason is that VWidget asks for the current root widget if
+            # there's no parent, and the
+            # subsequent initialization results in a chicken-egg problem
+            # (the root widget is the only widget
+            # having strictly None as parent).
+            self._root_widget = None
+            self._root_widget = Widget()
 
-        self._event_available_flag = threading.Event()
-        self._event_queue = queue.Queue()
-        self._key_event_queue = queue.Queue()
-        self._key_event_thread = _KeyEventThread(
-            self._screen, self._key_event_queue, self._event_available_flag)
+            # The widget that currently has the focus (gets key events)
+            self._focus_widget = None
+            self._palette = self.default_palette()
 
-        # XXX I am not sure we need the delete later anymore.
-        self._delete_later_queue = []
+            self._event_available_flag = threading.Event()
+            self._event_queue = queue.Queue()
+            self._key_event_queue = queue.Queue()
+            self._key_event_thread = _KeyEventThread(
+                self._screen,
+                self._key_event_queue,
+                self._event_available_flag)
 
-        # Used to terminate the exec loop
-        self._exit_flag = False
+            # XXX I am not sure we need the delete later anymore.
+            self._delete_later_queue = []
 
-        # Signals.
-        self.lastWindowClosed = core.Signal(self)
-        self.focusChanged = core.Signal(self)
+            # Used to terminate the exec loop
+            self._exit_flag = False
 
-        # Graphic elements contains characters to draw boxes, buttons, icons,
-        # and so on.
-        # We choose ascii as default because in basic ncurses implementation
-        # unicode is not
-        # rendered correctly. We stay conservative, and allow overriding if
-        # the client code is
-        # confident of the current ncurses implementation.
-        self._default_graphic_elements = GRAPHIC_ELEMENTS_ASCII
+            # Signals.
+            self.lastWindowClosed = core.Signal(self)
+            self.focusChanged = core.Signal(self)
+
+            # Graphic elements contains characters to draw boxes, buttons,
+            # icons, and so on.
+            # We choose ascii as default because in basic ncurses
+            # implementation unicode is not
+            # rendered correctly. We stay conservative, and allow overriding if
+            # the client code is
+            # confident of the current ncurses implementation.
+            self._default_graphic_elements = GRAPHIC_ELEMENTS_ASCII
+
+        except Exception:
+            core.CoreApplication.vApp = None
+            raise
 
     def exec_(self):
         """

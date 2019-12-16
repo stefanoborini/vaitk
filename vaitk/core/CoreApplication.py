@@ -23,12 +23,12 @@ class CoreApplication(BaseObject):
         super().__init__(application_name=argv[0])
 
         self._timers = []
+        self.aboutToQuit = Signal(self)
 
         if CoreApplication.vApp is not None:
             raise Exception("Only one application is allowed")
 
         CoreApplication.vApp = self
-        self.aboutToQuit = Signal(self)
 
     @property
     def instance(self):
