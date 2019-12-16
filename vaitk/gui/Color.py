@@ -7,7 +7,7 @@ class Color(HasTraits):
     blue = Int()
 
     def __init__(self, red, green, blue):
-        super().__init__(red=red, green=green, b=blue)
+        super().__init__(red=red, green=green, blue=blue)
 
     def hex_string(self):
         return "{:02X}{:02X}{:02X}".format(self.red, self.green, self.blue)
