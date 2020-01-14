@@ -17,4 +17,4 @@ class Event(HasTraits):
         self.accepted = False
 
     def __str__(self):
-        return (self.__class__.__name__+"(%d)") % self.event_type()
+        return f"{self.__class__.__name__}(event_type={self.event_type})"

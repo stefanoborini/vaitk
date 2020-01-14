@@ -5,10 +5,10 @@ import logging
 from vaitk.gui import CursesScreen
 from vaitk.gui.enums import FocusPolicy
 from vaitk.keys import Key, KeyModifier
+from vaitk.gui.events import FocusInEvent, FocusOutEvent
 from .. import core
 from . import events
 from .Palette import Palette
-from .events import FocusEvent
 from .GraphicElements import GRAPHIC_ELEMENTS_ASCII
 
 logger = logging.getLogger(__name__)
@@ -219,7 +219,7 @@ class Application(core.CoreApplication):
             logger.info("Focus out on widget %s.", self._focus_widget)
             Application.vApp.post_event(
                 self._focus_widget,
-                FocusEvent(core.Event.EventType.FocusOut))
+                FocusOutEvent())
 
         self._focus_widget = None
         if widget is not None:
@@ -231,7 +231,7 @@ class Application(core.CoreApplication):
 
             self._focus_widget = widget
             Application.vApp.post_event(
-                self._focus_widget, FocusEvent(core.Event.EventType.FocusIn))
+                self._focus_widget, FocusInEvent())
 
     def default_palette(self):
         """
@@ -299,8 +299,8 @@ class Application(core.CoreApplication):
             event: the VEvent
 
         """
-        if (event.key() == Key.Key_C and
-                event.modifiers() & KeyModifier.ControlModifier):
+        if (event.key == Key.Key_C and
+                event.modifiers & KeyModifier.ControlModifier):
             self.exit()
 
     # Private
@@ -342,7 +342,7 @@ class Application(core.CoreApplication):
         logger.info("Key event %d %x",
                     key_event.key(), key_event.modifiers())
 
-        key_event.set_accepted(False)
+        key_event.ignore()
 
         focus_widget = self.focus_widget()
         if focus_widget:
@@ -354,7 +354,7 @@ class Application(core.CoreApplication):
                 for event_filter in reversed(widget.installed_event_filters()):
                     stop_event = stop_event | event_filter.event_filter(
                         key_event)
-                    if key_event.is_accepted():
+                    if key_event.accepted:
                         logger.info(
                             "KeyEvent accepted by filter %s",
                             str(event_filter))
@@ -366,7 +366,7 @@ class Application(core.CoreApplication):
                         str(widget))
                     widget.key_event(key_event)
 
-                    if key_event.is_accepted():
+                    if key_event.accepted:
                         logger.info("KeyEvent accepted by %s",
                                     str(widget))
                         return
