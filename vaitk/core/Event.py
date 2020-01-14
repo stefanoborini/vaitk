@@ -1,23 +1,20 @@
-class Event:
+from traitlets import HasTraits, UseEnum, Bool
+
+from vaitk.core.enums import EventType
+
+
+class Event(HasTraits):
+    event_type = UseEnum(EventType)
+    accepted = Bool(False)
 
     def __init__(self, event_type):
-        self._event_type = event_type
-        self._accepted = False
+        super().__init__(event_type=event_type)
 
     def accept(self):
-        self.set_accepted(True)
+        self.accepted = True
 
     def ignore(self):
-        self.set_accepted(False)
-
-    def is_accepted(self):
-        return self._accepted
-
-    def set_accepted(self, accepted):
-        self._accepted = accepted
-
-    def event_type(self):
-        return self._event_type
+        self.accepted = False
 
     def __str__(self):
-        return (self.__class__.__name__+"(%d)") % self.event_type()
+        return f"{self.__class__.__name__}(event_type={self.event_type})"
