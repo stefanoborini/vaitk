@@ -2,10 +2,10 @@ import time
 import threading
 import logging
 
+from vaitk.core import TimerEvent
 from .CoreApplication import CoreApplication
 from .BaseObject import BaseObject
 from .Signal import Signal
-from . import TimerEvent
 
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ class Timer(BaseObject):
         self._single_shot = False
         self.timeout = Signal(self)
         self._thread = None
-        CoreApplication.vApp.addTimer(self)
+        CoreApplication.vApp.add_timer(self)
 
     def start(self):
         if self._thread is not None:
@@ -49,7 +49,7 @@ class Timer(BaseObject):
         self._thread.start()
 
     def _timeout(self):
-        CoreApplication.vApp.post_event(self, TimerEvent.TimerEvent())
+        CoreApplication.vApp.post_event(self, TimerEvent())
 
     def set_single_shot(self, single_shot):
         self._single_shot = single_shot
@@ -69,7 +69,7 @@ class Timer(BaseObject):
         return self._thread is not None
 
     def timer_event(self, event):
-        if isinstance(event, TimerEvent.TimerEvent):
+        if isinstance(event, TimerEvent):
             self.timeout.emit()
 
     @staticmethod
