@@ -83,7 +83,7 @@ class BaseObject(HasTraits):
         return self._event_filters
 
     def event(self, event):
-        if isinstance(event, TimerEvent.VTimerEvent):
+        if isinstance(event, TimerEvent.TimerEvent):
             self.timer_event(event)
             return True
         return False

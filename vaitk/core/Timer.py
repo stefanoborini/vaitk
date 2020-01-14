@@ -49,7 +49,7 @@ class Timer(BaseObject):
         self._thread.start()
 
     def _timeout(self):
-        CoreApplication.vApp.post_event(self, TimerEvent.VTimerEvent())
+        CoreApplication.vApp.post_event(self, TimerEvent.TimerEvent())
 
     def set_single_shot(self, single_shot):
         self._single_shot = single_shot

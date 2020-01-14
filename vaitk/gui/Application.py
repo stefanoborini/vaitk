@@ -189,7 +189,7 @@ class Application(core.CoreApplication):
         super().exit(retcode)
 
     def add_top_level_widget(self, widget):
-        self._root_widget.addChild(widget)
+        self._root_widget.add_child(widget)
 
     def delete_later(self, widget):
         logger.info("Added widget %s to deleteLater queue", str(widget))
@@ -317,7 +317,7 @@ class Application(core.CoreApplication):
 
     def _delete_scheduled(self):
         for w in self._delete_later_queue:
-            w.parent().removeChild(w)
+            w.parent().remove_child(w)
 
         self._delete_later_queue.clear()
 
@@ -342,7 +342,7 @@ class Application(core.CoreApplication):
         logger.info("Key event %d %x",
                     key_event.key(), key_event.modifiers())
 
-        key_event.setAccepted(False)
+        key_event.set_accepted(False)
 
         focus_widget = self.focus_widget()
         if focus_widget:
@@ -354,7 +354,7 @@ class Application(core.CoreApplication):
                 for event_filter in reversed(widget.installed_event_filters()):
                     stop_event = stop_event | event_filter.event_filter(
                         key_event)
-                    if key_event.isAccepted():
+                    if key_event.is_accepted():
                         logger.info(
                             "KeyEvent accepted by filter %s",
                             str(event_filter))
@@ -366,7 +366,7 @@ class Application(core.CoreApplication):
                         str(widget))
                     widget.key_event(key_event)
 
-                    if key_event.isAccepted():
+                    if key_event.is_accepted():
                         logger.info("KeyEvent accepted by %s",
                                     str(widget))
                         return
@@ -411,14 +411,13 @@ class Application(core.CoreApplication):
             # self.renderWidgets()
 
     def _send_paint_events(self):
-        for w in self.root_widget().depthFirstFullTree():
+        for w in self.root_widget().depth_first_full_tree():
             if w.needs_update():
                 for w2 in w.depth_first_right_tree():
-                    if core.Rect.tuple.intersects(w.absolute_rect(),
-                                                  w2.absolute_rect()):
+                    if w.absolute_rect().intersects(w2.absolute_rect()):
                         w2.update()
 
-        for w in self.root_widget().depthFirstFullTree():
+        for w in self.root_widget().depth_first_full_tree():
             if w.needs_update():
                 w.event(events.PaintEvent())
 

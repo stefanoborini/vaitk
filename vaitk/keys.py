@@ -299,12 +299,12 @@ def native_to_vai_key_code(native_key_code):
     return key_mapper.get(native_key_code)
 
 
-def isKeyCodePrintable(key_code):
+def is_key_code_printable(key_code):
     return ((key_code & Key.NonPrintableMask) == 0)
 
 
 def vai_key_code_to_text(key_code):
-    if not isKeyCodePrintable(key_code):
+    if not is_key_code_printable(key_code):
         return ''
 
     key_map = {
