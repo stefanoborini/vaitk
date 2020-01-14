@@ -1,12 +1,12 @@
 import logging
 
-from vaitk.core.enums import EventType
+from vaitk.gui.enums import FocusPolicy, ColorGroup, ColorRole
+from vaitk.gui import ScreenArea
+
 from .. import core
 from ..consts import Index
-from vaitk.gui.enums import FocusPolicy, ColorGroup, ColorRole
 from .Application import Application
 from .Painter import Painter
-from vaitk.gui import ScreenArea
 from . import events
 
 
