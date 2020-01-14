@@ -1,8 +1,8 @@
 from traitlets import HasTraits
 
-from . import TimerEvent
 import logging
 
+from vaitk.core import TimerEvent
 
 logger = logging.getLogger(__name__)
 
@@ -83,7 +83,7 @@ class BaseObject(HasTraits):
         return self._event_filters
 
     def event(self, event):
-        if isinstance(event, TimerEvent.VTimerEvent):
+        if isinstance(event, TimerEvent):
             self.timer_event(event)
             return True
         return False

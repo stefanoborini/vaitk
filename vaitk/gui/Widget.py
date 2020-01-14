@@ -1,5 +1,6 @@
 import logging
 
+from vaitk.core.enums import EventType
 from .. import core
 from ..consts import Index
 from vaitk.gui.enums import FocusPolicy, ColorGroup, ColorRole
@@ -327,10 +328,10 @@ class Widget(core.BaseObject):
 
         elif isinstance(event, events.FocusEvent):
             if self.is_visible():
-                if event.eventType() == core.Event.EventType.FocusIn:
+                if event.event_type() == EventType.FocusIn:
                     self.focus_in_event(event)
             else:
-                if event.eventType() == core.Event.EventType.FocusOut:
+                if event.event_type == EventType.FocusOut:
                     self.focus_out_event(event)
 
             self.update()
@@ -338,7 +339,7 @@ class Widget(core.BaseObject):
         elif isinstance(event, events.HideEvent):
             self.hide_event(event)
 
-            for w in self.depthFirstFullTree():
+            for w in self.depth_first_full_tree():
                 logger.info("Widget %s in tree", str(w))
                 if not w.is_visible():
                     continue
@@ -348,7 +349,7 @@ class Widget(core.BaseObject):
         elif isinstance(event, events.ShowEvent):
             self.show_event(event)
 
-            for w in self.depthFirstFullTree():
+            for w in self.depth_first_full_tree():
                 logger.info("Widget %s in tree", str(w))
                 if not w.is_visible():
                     continue
@@ -360,7 +361,7 @@ class Widget(core.BaseObject):
 
             self.move_event(event)
 
-            for w in self.depthFirstFullTree():
+            for w in self.depth_first_full_tree():
                 logger.info("Widget %s in tree", str(w))
                 if not w.is_visible():
                     continue
@@ -372,7 +373,7 @@ class Widget(core.BaseObject):
 
             self.resize_event(event)
 
-            for w in self.depthFirstFullTree():
+            for w in self.depth_first_full_tree():
                 logger.info("Widget %s in tree", str(w))
                 if not w.is_visible():
                     continue
