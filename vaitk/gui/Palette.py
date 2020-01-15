@@ -1,7 +1,7 @@
 import copy
 
 from vaitk.gui.enums import ColorGroup, ColorRole
-from .Color import Color
+from vaitk.gui.Color import Color
 
 
 class Palette:

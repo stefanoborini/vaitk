@@ -1,4 +1,4 @@
-from ..core.BaseObject import BaseObject
+from vaitk.core.BaseObject import BaseObject
 
 
 class BaseSignalSpy(BaseObject):

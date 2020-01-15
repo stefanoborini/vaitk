@@ -2,7 +2,7 @@ from traitlets import Int
 from vaitk.core.enums import EventType
 from vaitk.keys import Key, KeyModifier, vai_key_code_to_text, \
     native_to_vai_key_code
-from ..core import Event
+from vaitk.core import Event
 
 
 class KeyEvent(Event):

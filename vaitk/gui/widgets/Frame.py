@@ -1,6 +1,6 @@
-from ..Widget import Widget
-from ..Palette import Palette
-from ..Painter import Painter
+from vaitk.gui.Widget import Widget
+from vaitk.gui.Palette import Palette
+from vaitk.gui.Painter import Painter
 
 
 class Frame(Widget):

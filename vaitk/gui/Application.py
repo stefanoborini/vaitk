@@ -6,10 +6,10 @@ from vaitk.gui import CursesScreen
 from vaitk.gui.enums import FocusPolicy
 from vaitk.keys import Key, KeyModifier
 from vaitk.gui.events import FocusInEvent, FocusOutEvent
-from .. import core
-from . import events
-from .Palette import Palette
-from .GraphicElements import GRAPHIC_ELEMENTS_ASCII
+from vaitk import core
+from vaitk.gui import events
+from vaitk.gui.Palette import Palette
+from vaitk.gui.GraphicElements import GRAPHIC_ELEMENTS_ASCII
 
 logger = logging.getLogger(__name__)
 

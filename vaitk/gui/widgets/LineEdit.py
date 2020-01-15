@@ -1,10 +1,10 @@
 from vaitk.gui.enums import FocusPolicy
 from vaitk.keys import Key
-from ... import core
-from ...consts import Index
-from ..Widget import Widget
-from ..Painter import Painter
-from ..Cursor import Cursor
+from vaitk import core
+from vaitk.consts import Index
+from vaitk.gui.Widget import Widget
+from vaitk.gui.Palette import Palette
+from vaitk.gui.Painter import Painter
 
 
 class LineEdit(Widget):

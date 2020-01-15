@@ -1,6 +1,6 @@
 import itertools
 
-from ..gui.AbstractScreen import AbstractScreen
+from vaitk.gui.AbstractScreen import AbstractScreen
 
 
 class TextScreen(AbstractScreen):

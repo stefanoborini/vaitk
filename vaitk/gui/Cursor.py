@@ -1,4 +1,4 @@
-from .Application import Application
+from vaitk.gui.Application import Application
 
 
 class Cursor:

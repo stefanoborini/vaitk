@@ -1,6 +1,6 @@
-from ..Widget import Widget
-from ..Painter import Painter
-from ..Palette import Palette
+from vaitk.gui.Widget import Widget
+from vaitk.gui.Palette import Palette
+from vaitk.gui.Painter import Painter
 
 
 class ProgressBar(Widget):

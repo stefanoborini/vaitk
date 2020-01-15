@@ -6,8 +6,8 @@ from vaitk.gui.enums import (
     CornerCapStyle,
     LineCapStyle,
     Alignment)
-from .Application import Application
-from ..consts import Index
+from vaitk.gui.Application import Application
+from vaitk.consts import Index
 
 
 logger = logging.getLogger(__name__)
