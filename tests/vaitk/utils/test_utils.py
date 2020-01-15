@@ -1,7 +1,7 @@
 from vaitk import utils
 
 
-def test_str_format():
+def test_strformat():
     assert utils.strformat([], 40) == " "*40
     assert (
         utils.strformat([(0, "hello"), (10, "ciao"), (30, "whatever")], 40) ==

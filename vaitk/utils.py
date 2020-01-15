@@ -1,4 +1,3 @@
-
 def strformat(strings_at, length):
     """
     Returns a string of given length, composed by strings at specified
