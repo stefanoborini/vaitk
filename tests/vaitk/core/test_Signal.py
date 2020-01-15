@@ -22,6 +22,20 @@ def test_signal():
     assert arg[0] == 3
 
 
+def test_double_registration():
+    arg = []
+    sender = core.BaseObject()
+    signal = core.Signal(sender)
+
+    def slot(x):
+        arg.append(x)
+
+    signal.connect(slot)
+    signal.connect(slot)
+
+    assert len(signal._slots) == 1
+
+
 def test_disconnect_not_registered():
     arg = []
     sender = core.BaseObject()
