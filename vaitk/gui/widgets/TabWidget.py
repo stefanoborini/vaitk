@@ -1,5 +1,5 @@
-from ..Widget import Widget
-from ..Application import Application
+from vaitk.gui.Widget import Widget
+from vaitk.gui.Application import Application
 import curses
 
 

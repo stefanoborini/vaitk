@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from .AbstractRectangularArea import AbstractRectangularArea
+from vaitk.gui.AbstractRectangularArea import AbstractRectangularArea
 
 
 class AbstractScreen(AbstractRectangularArea):

@@ -5,9 +5,9 @@ import select
 import sys
 import threading
 
-from . import Color
-from .AbstractScreen import AbstractScreen
-from ..consts import Index
+from vaitk.gui.Color import Color
+from vaitk.gui.AbstractScreen import AbstractScreen
+from vaitk.consts import Index
 
 
 logger = logging.getLogger(__name__)

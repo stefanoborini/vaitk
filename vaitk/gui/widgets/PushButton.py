@@ -1,4 +1,4 @@
-from ..Widget import Widget
+from vaitk.gui.Widget import Widget
 
 
 class PushButton(Widget):

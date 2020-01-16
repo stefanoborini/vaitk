@@ -1,6 +1,6 @@
-from .Label import Label
-from ..Painter import Painter
-from ..Palette import Palette
+from vaitk.gui.widgets.Label import Label
+from vaitk.gui.Palette import Palette
+from vaitk.gui.Painter import Painter
 
 
 class ToolTip(Label):

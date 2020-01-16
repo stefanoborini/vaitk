@@ -3,11 +3,11 @@ import logging
 from vaitk.gui.enums import FocusPolicy, ColorGroup, ColorRole
 from vaitk.gui import ScreenArea
 
-from .. import core
-from ..consts import Index
-from .Application import Application
-from .Painter import Painter
-from . import events
+from vaitk import core
+from vaitk.consts import Index
+from vaitk.gui.Application import Application
+from vaitk.gui.Painter import Painter
+from vaitk.gui import events
 
 
 logger = logging.getLogger(__name__)
