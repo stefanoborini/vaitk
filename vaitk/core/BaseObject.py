@@ -1,4 +1,4 @@
-from traitlets import HasTraits
+from traitlets import HasTraits, Instance, This, List, default
 
 import logging
 
@@ -10,68 +10,26 @@ logger = logging.getLogger(__name__)
 class BaseObject(HasTraits):
     """
     Base class for all objects in VaiTk.
-    Provides methods for the object hierarchy traversal.
-
-    A derived class can set the class variable debug to True to enable
-    debugging at the DEBUG level for that specific class.
-
-    Example:
-    class Foo(VObject):
-        debug = True
-
-    The class can also specify the specific logging level
-    class Foo(VObject):
-        debug = True
-        debug_level = logging.INFO
-
     """
+    parent = This(allow_none=True)
+    children = List(Instance(This))
 
     def __init__(self, parent=None, **kwargs):
-        super().__init__(**kwargs)
-        self._parent = parent
-        self._children = []
+        super().__init__(parent=parent, **kwargs)
+        self.children = []
         self._event_filters = []
-        if self._parent is not None:
+        if self.parent is not None:
             parent.add_child(self)
 
-    def parent(self):
-        return self._parent
-
-    def children(self):
-        return self._children
+    @default('children')
+    def children_default(self):
+        return []
 
     def add_child(self, child):
-        self._children.append(child)
+        self.children.append(child)
 
     def remove_child(self, child):
-        self._children.remove(child)
-
-    def depth_first_full_tree(self):
-        return self.root().depth_first_sub_tree()
-
-    def depth_first_sub_tree(self):
-        result = [self]
-        for c in self.children():
-            result.extend(c.depth_first_sub_tree())
-        return result
-
-    def root(self):
-        return self.traverse_to_root()[-1]
-
-    def traverse_to_root(self):
-        result = [self]
-        if self.parent() is None:
-            return result
-        result.extend(self.parent().traverse_to_root())
-        return result
-
-    def depth_first_right_tree(self):
-        depth_first_tree = self.depth_first_full_tree()
-        return depth_first_tree[depth_first_tree.index(self)+1:]
-
-    def depth_first_left_tree(self):
-        depth_first_tree = self.depth_first_full_tree()
-        return depth_first_tree[:depth_first_tree.index(self)]
+        self.children.remove(child)
 
     def install_event_filter(self, event_filter):
         self._event_filters.append(event_filter)
@@ -91,5 +49,38 @@ class BaseObject(HasTraits):
     def timer_event(self, event):
         return True
 
-    def __str__(self):
-        return self.__class__.__name__
+
+# Traversal routines
+
+def depth_first_full_tree(obj):
+    return depth_first_sub_tree(root(obj))
+
+
+def depth_first_sub_tree(obj):
+    result = [obj]
+    for c in obj.children:
+        result.extend(depth_first_sub_tree(c))
+    return result
+
+
+def root(obj):
+    return traverse_to_root(obj)[-1]
+
+
+def traverse_to_root(obj):
+    result = [obj]
+    if obj.parent is None:
+        return result
+    result.extend(traverse_to_root(obj.parent))
+    return result
+
+
+def depth_first_right_tree(obj):
+    depth_first_tree = depth_first_full_tree(obj)
+    return depth_first_tree[depth_first_tree.index(obj)+1:]
+
+
+def depth_first_left_tree(obj):
+    depth_first_tree = depth_first_full_tree(obj)
+    return depth_first_tree[:depth_first_tree.index(obj)]
+

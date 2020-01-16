@@ -317,7 +317,7 @@ class Application(core.CoreApplication):
 
     def _delete_scheduled(self):
         for w in self._delete_later_queue:
-            w.parent().remove_child(w)
+            w.parent.remove_child(w)
 
         self._delete_later_queue.clear()
 

@@ -20,10 +20,10 @@ class Widget(core.BaseObject):
 
         super().__init__(parent)
 
-        if self.parent() is None:
+        if self.parent is None:
             self._geometry = (0, 0) + Application.vApp.screen().size()
         else:
-            self._geometry = self.parent().contents_rect()
+            self._geometry = self.parent.contents_rect()
 
         self._layout = None
         self._visible_implicit = False
@@ -157,7 +157,7 @@ class Widget(core.BaseObject):
         elif not visible and visible_before:
             Application.vApp.post_event(self, events.HideEvent())
 
-        for w in self.children():
+        for w in self.children:
             w.set_visible_implicit(visible)
 
     def set_visible_implicit(self, visible):
@@ -172,7 +172,7 @@ class Widget(core.BaseObject):
         else:
             Application.vApp.post_event(self, events.HideEvent())
 
-        for w in self.children():
+        for w in self.children:
             w.set_visible_implicit(visible)
 
     # Query methods
@@ -289,11 +289,11 @@ class Widget(core.BaseObject):
             a 2-tuple (x,y) with the absolute coordinates
         """
         top_left = self.pos()
-        if self.parent() is None:
+        if self.parent is None:
             return (pos[Index.X]+top_left[Index.X],
                     pos[Index.Y]+top_left[Index.Y])
 
-        parent_corner = self.parent().map_to_global((0, 0))
+        parent_corner = self.parent.map_to_global((0, 0))
         return (parent_corner[Index.X] + top_left[Index.X] + pos[Index.X],
                 parent_corner[Index.Y] + top_left[Index.Y] + pos[Index.Y]
                 )
