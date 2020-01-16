@@ -1,9 +1,9 @@
+from vaitk.gui import Cursor
 from vaitk.gui.enums import FocusPolicy
 from vaitk.keys import Key
 from vaitk import core
 from vaitk.consts import Index
 from vaitk.gui.Widget import Widget
-from vaitk.gui.Palette import Palette
 from vaitk.gui.Painter import Painter
 
 
