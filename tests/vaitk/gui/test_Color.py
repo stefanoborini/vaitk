@@ -15,4 +15,6 @@ def test_distance():
     color2 = gui.Color(0, 255, 255)
 
     assert gui.Color.distance(color, color) == 0
-    pytest.approx(gui.Color.distance(color, color2), 360.62445840513923744443)
+    assert (
+        gui.Color.distance(color, color2) ==
+        pytest.approx(360.62445840513923744443))
