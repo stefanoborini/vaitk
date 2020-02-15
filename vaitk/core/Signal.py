@@ -1,9 +1,48 @@
-class Signal(object):
+class SignalDispatcher:
+    def __init__(self, signal, obj, obj_class):
+        self._signal = signal
+        self._obj = obj
+        self._obj_class = obj_class
+        self._connected_slots = []
+
+    def emit(self, *args, **kwargs):
+        kwargs["sender"] = self._obj
+
+        for slot in self._connected_slots:
+            slot(*args, **kwargs)
+
+    def connect(self, target):
+        if isinstance(target, SignalDispatcher):
+            target = target.emit
+
+        if target not in self._connected_slots:
+            self._connected_slots.append(target)
+
+    def disconnect(self, target):
+        try:
+            self._connected_slots.remove(target)
+        except ValueError:
+            pass
+
+class Signal:
     """
     Dispatches a message to a set of listeners, by encapsulating a listener
     pattern.
     """
-    def __init__(self, sender):
+
+    def __init__(self):
+        self._dispatchers = {}
+
+    def __get__(self, instance, owner):
+        dispatcher = self._dispatchers.get(instance)
+        if dispatcher is None:
+            dispatcher = SignalDispatcher(self, instance, owner)
+            self._dispatchers[instance] = dispatcher
+
+        return dispatcher
+
+    '''
+    def __init__(self):
         """
         Instantiate the Signal. The passed sender is the entity
         that will be communicated as the sender to the receiver.
@@ -13,7 +52,6 @@ class Signal(object):
                 The object that will be communicated to the listeners
                 as the sender of the notification.
         """
-        self._sender = sender
         self._slots = []
 
     def connect(self, target):
@@ -76,3 +114,4 @@ class Signal(object):
         kwargs["sender"] = self._sender
         for slot in self._slots:
             slot(*args, **kwargs)
+    '''
