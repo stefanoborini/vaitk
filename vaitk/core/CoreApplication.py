@@ -2,10 +2,7 @@ import logging
 
 from traitlets import Unicode
 
-
-from .BaseObject import BaseObject
-from .Signal import Signal
-
+from vaitk.core import BaseObject, Signal
 
 logger = logging.getLogger(__name__)
 
@@ -18,12 +15,12 @@ class CoreApplication(BaseObject):
 
     application_name = Unicode()
     application_version = Unicode()
+    about_to_quit = Signal()
 
     def __init__(self, argv):
         super().__init__(application_name=argv[0])
 
         self._timers = []
-        self.aboutToQuit = Signal(self)
 
         if CoreApplication.vApp is not None:
             raise Exception("Only one application is allowed")
