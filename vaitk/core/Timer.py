@@ -2,10 +2,9 @@ import time
 import threading
 import logging
 
-from vaitk.core import TimerEvent
+from vaitk.core import TimerEvent, Signal
 from .CoreApplication import CoreApplication
 from .BaseObject import BaseObject
-from .Signal import Signal
 
 
 logger = logging.getLogger(__name__)

@@ -2,6 +2,7 @@ import threading
 import queue
 import logging
 
+from vaitk.core import Signal
 from vaitk.gui import CursesScreen
 from vaitk.gui.enums import FocusPolicy
 from vaitk.keys import Key, KeyModifier
@@ -85,6 +86,10 @@ class _KeyEventThread(threading.Thread):
 
 
 class Application(core.CoreApplication):
+
+    last_window_closed = Signal()
+    focus_changed = Signal()
+
     def __init__(self, argv, screen=None):
         super().__init__(argv)
 
@@ -125,10 +130,6 @@ class Application(core.CoreApplication):
 
             # Used to terminate the exec loop
             self._exit_flag = False
-
-            # Signals.
-            self.lastWindowClosed = core.Signal(self)
-            self.focusChanged = core.Signal(self)
 
             # Graphic elements contains characters to draw boxes, buttons,
             # icons, and so on.

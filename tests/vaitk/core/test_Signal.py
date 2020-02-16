@@ -1,75 +1,123 @@
-import pytest
 from vaitk import core
 
 
-def test_signal():
-    arg = []
-    sender = core.BaseObject()
-    signal = core.Signal(sender)
+class MyClass(core.BaseObject):
+    signal1 = core.Signal()
+    signal2 = core.Signal()
 
-    def slot(x, *args, **kwargs):
-        arg.append(x)
-    signal.connect(slot)
 
-    signal.emit(3)
+class MyClass2(core.BaseObject):
+    signal1 = core.Signal()
 
-    assert len(arg) == 1
-    assert arg[0] == 3
 
-    signal.disconnect(slot)
-    signal.emit(3)
+def test_basic_usage():
+    c = MyClass()
 
-    assert len(arg) == 1
-    assert arg[0] == 3
+    def slot(arg1, arg2, sender):
+        assert arg1 == "hello"
+        assert arg2 == 123
+        assert sender == c
+
+    c.signal1.connect(slot)
+    c.signal1.emit("hello", 123)
 
 
 def test_double_registration():
     arg = []
-    sender = core.BaseObject()
-    signal = core.Signal(sender)
+    sender = MyClass()
 
     def slot(x, *args, **kwargs):
         arg.append(x)
 
-    signal.connect(slot)
-    signal.connect(slot)
+    sender.signal1.connect(slot)
+    sender.signal1.connect(slot)
 
-    assert len(signal._slots) == 1
+    sender.signal1.emit(1)
+
+    assert len(arg) == 1
+
+
+def test_no_object_crosstalk():
+    c1 = MyClass()
+    c2 = MyClass()
+
+    def slot(arg1, arg2, sender):
+        assert arg1 == "hello"
+        assert arg2 == 123
+        assert sender == c1
+
+    c1.signal1.connect(slot)
+    c2.signal1.connect(slot)
+    c1.signal1.emit("hello", 123)
+
+
+def test_connect_to_signal():
+    c1 = MyClass()
+    c2 = MyClass()
+
+    def slot(arg1, arg2, sender):
+        assert arg1 == "hello"
+        assert arg2 == 123
+        assert sender == c2
+
+    c1.signal1.connect(c2.signal1)
+    c2.signal1.connect(slot)
+    c1.signal1.emit("hello", 123)
+
+
+def test_disconnect():
+    arg = []
+    sender = MyClass()
+
+    def slot(x, *args, **kwargs):
+        arg.append(x)
+
+    sender.signal1.connect(slot)
+    sender.signal1.emit(1)
+    sender.signal1.disconnect(slot)
+    sender.signal1.emit(1)
+
+    assert len(arg) == 1
 
 
 def test_disconnect_not_registered():
     arg = []
-    sender = core.BaseObject()
-    signal = core.Signal(sender)
+    sender = MyClass()
 
     def slot(x, *args, **kwargs):
         arg.append(x)
-    signal.disconnect(slot)
 
-    signal.emit(1)
+    sender.signal1.disconnect(slot)
+
+    sender.signal1.emit(1)
     assert len(arg) == 0
 
 
-def test_sender():
-    sender_list = []
-    sender = core.BaseObject()
-    signal = core.Signal(sender)
+def test_sender_argument_ignored():
+    c = MyClass()
 
-    def slot(x, sender, *args, **kwargs):
-        sender_list.append(sender)
+    def slot(x, sender):
+        assert sender == c
 
-    signal.connect(slot)
-    signal.emit(3)
-
-    assert sender_list[0] == sender
+    c.signal1.connect(slot)
+    c.signal1.emit(3, sender="whatever")
 
 
-def test_sender_invalid_argument():
-    sender = core.BaseObject()
-    signal = core.Signal(sender)
+def test_slot_sender_required():
+    c = MyClass()
 
-    def slot(x, *args, **kwargs):
-        pass
+    def slot1(x, sender):
+        assert x == 3
+        assert sender == c
 
-    with pytest.raises(ValueError):
-        signal.emit(3, sender="whatever")
+    def slot2(x):
+        assert x == 3
+
+    def slot3(*args, **kwargs):
+        assert args[0] == 3
+        assert "sender" not in kwargs
+
+    c.signal1.connect(slot1)
+    c.signal1.connect(slot2)
+    c.signal1.connect(slot3)
+    c.signal1.emit(3)
