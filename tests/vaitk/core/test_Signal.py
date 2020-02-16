@@ -100,4 +100,25 @@ def test_sender_argument_ignored():
     def slot(x, sender):
         assert sender == c
 
+    c.signal1.connect(slot)
     c.signal1.emit(3, sender="whatever")
+
+
+def test_slot_sender_required():
+    c = MyClass()
+
+    def slot1(x, sender):
+        assert x == 3
+        assert sender == c
+
+    def slot2(x):
+        assert x == 3
+
+    def slot3(*args, **kwargs):
+        assert args[0] == 3
+        assert "sender" not in kwargs
+
+    c.signal1.connect(slot1)
+    c.signal1.connect(slot2)
+    c.signal1.connect(slot3)
+    c.signal1.emit(3)
