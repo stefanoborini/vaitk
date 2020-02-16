@@ -3,6 +3,9 @@ import inspect
 
 class SignalDispatcher:
     def __init__(self, signal, obj, obj_class):
+        """
+        Initialises the Signal Dispatcher. Signal calls this.
+        """
         self._signal = signal
         self._obj = obj
         self._obj_class = obj_class
