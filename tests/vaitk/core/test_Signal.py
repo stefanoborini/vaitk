@@ -1,4 +1,3 @@
-import pytest
 from vaitk import core
 
 
