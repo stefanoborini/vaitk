@@ -1,7 +1,10 @@
+from vaitk.core.Event import Event
 from vaitk.core.enums import EventType
-from .Event import Event
 
 
 class TimerEvent(Event):
+    """
+    Event representing the expiration of a timer
+    """
     def __init__(self):
         super().__init__(EventType.Timer)
