@@ -6,5 +6,5 @@ from .Size import Size  # noqa
 from .CoreApplication import CoreApplication  # noqa
 from .Timer import Timer  # noqa
 from .Event import Event  # noqa
-from .TimerEvent import TimerEvent  # noqa
+from .timer_event import TimerEvent  # noqa
 from ..consts import Index  # noqa
