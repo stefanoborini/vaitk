@@ -124,4 +124,3 @@ class Timer(BaseObject):
         """Helper internal method. Dispatches the event from the secondary
         thread to the main thread via the event loop."""
         CoreApplication.vApp.post_event(self, TimerEvent())
-

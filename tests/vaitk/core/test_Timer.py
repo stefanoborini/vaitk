@@ -7,4 +7,3 @@ def test_instantiation(coreapp):
     assert t.interval is None
     assert not t.single_shot
     assert not t.is_running()
-
