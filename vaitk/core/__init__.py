@@ -1,10 +1,10 @@
 from .signal import Signal  # noqa
-from .BaseObject import BaseObject  # noqa
-from .Point import Point  # noqa
-from .Rect import Rect  # noqa
-from .Size import Size  # noqa
-from .CoreApplication import CoreApplication  # noqa
-from .Timer import Timer  # noqa
-from .Event import Event  # noqa
+from .base_object import BaseObject  # noqa
+from .point import Point  # noqa
+from .rect import Rect  # noqa
+from .size import Size  # noqa
+from .core_application import CoreApplication  # noqa
+from .timer import Timer  # noqa
+from .event import Event  # noqa
 from .timer_event import TimerEvent  # noqa
 from ..consts import Index  # noqa

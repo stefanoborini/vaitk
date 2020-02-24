@@ -6,8 +6,8 @@ from traitlets import Bool, Integer
 
 from vaitk.core.timer_event import TimerEvent
 from vaitk.core.signal import Signal
-from vaitk.core.CoreApplication import CoreApplication
-from vaitk.core.BaseObject import BaseObject
+from vaitk.core.core_application import CoreApplication
+from vaitk.core.base_object import BaseObject
 
 
 logger = logging.getLogger(__name__)

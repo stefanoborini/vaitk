@@ -1,7 +1,7 @@
 from traitlets import HasTraits, Instance
 
-from vaitk.core.Point import Point
-from vaitk.core.Size import Size
+from vaitk.core.point import Point
+from vaitk.core.size import Size
 
 
 class Rect(HasTraits):
