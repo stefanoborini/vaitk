@@ -1,5 +1,5 @@
 from vaitk import core
-from vaitk.core.BaseObject import (
+from vaitk.core.base_object import (
     depth_first_full_tree,
     depth_first_sub_tree,
     traverse_to_root,
