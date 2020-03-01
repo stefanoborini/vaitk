@@ -1,8 +1,10 @@
 import logging
 
-from traitlets import Unicode
+from traitlets import Unicode, Instance, default
 
-from vaitk.core import BaseObject, Signal
+from vaitk.core import BaseObject, Signal, Size
+from vaitk.core.drivers.abc.abc_driver import ABCDriver
+from vaitk.core.drivers.text_screen_driver import TextScreenDriver
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +17,10 @@ class CoreApplication(BaseObject):
 
     application_name = Unicode()
     application_version = Unicode()
+
     about_to_quit = Signal()
+
+    _driver = Instance(ABCDriver)
 
     def __init__(self, argv):
         super().__init__(application_name=argv[0])
@@ -30,6 +35,10 @@ class CoreApplication(BaseObject):
     @property
     def instance(self):
         return self.vApp
+
+    @default("_driver")
+    def _driver_default(self):
+        return TextScreenDriver(Size(40, 30))
 
     def add_timer(self, timer):
         """

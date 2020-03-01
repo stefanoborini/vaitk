@@ -5,7 +5,6 @@ from vaitk.gui.GlobalColor import GlobalColor  # noqa
 from .Cursor import Cursor  # noqa
 from .Palette import Palette  # noqa
 from .Painter import Painter  # noqa
-from .CursesScreen import CursesScreen  # noqa
 from .ScreenArea import ScreenArea  # noqa
 from .Widget import Widget  # noqa
 from .widgets import Label, Dialog, LineEdit, ToolTip  # noqa

@@ -5,8 +5,9 @@ import select
 import sys
 import threading
 
+from vaitk.core import Size
+from vaitk.core.drivers.abc.abc_driver import ABCDriver
 from vaitk.gui.Color import Color
-from vaitk.gui.AbstractScreen import AbstractScreen
 from vaitk.consts import Index
 
 
@@ -17,8 +18,28 @@ class VException(Exception):
     pass
 
 
-class CursesScreen(AbstractScreen):
+class CursesScreen(ABCDriver):
     def __init__(self):
+        # The screen
+        self._curses_screen = None
+
+        # ncurses is not thread safe, we need a lock to prevent writing
+        # collide with reading
+        self._curses_lock = threading.Lock()
+
+        # Resolves the rgb color to the screen color
+        self._color_lookup_cache = {}
+
+        # Resolves fg, bg native index to the associated color pair index
+        self._attr_lookup_cache = {}
+
+        # The first color pair is always defined with index 0 and contains
+        # the default fg and bg colors
+        self._color_pairs = [(-1, -1)]
+
+        self._cursor_pos = (0, 0)
+
+    def init(self):
         # Timeout so that ncurses sends out the pure esc key instead of
         # considering it
         # the start of a escape command. We need this to exit insert mode in
@@ -39,43 +60,34 @@ class CursesScreen(AbstractScreen):
         self._curses_screen.leaveok(True)
         self._curses_screen.notimeout(True)
 
-        # ncurses is not thread safe, we need a lock to prevent writing
-        # collide with reading
-        self._curses_lock = threading.Lock()
+    def deinit(self):
+        self.reset()
 
-        # Resolves the rgb color to the screen color
-        self._color_lookup_cache = {}
+    @property
+    def num_colors(self):
+        return curses.COLORS
 
-        # Resolves fg, bg native index to the associated color pair index
-        self._attr_lookup_cache = {}
+    @property
+    def cursor_pos(self):
+        pass
 
-        # The first color pair is always defined with index 0 and contains
-        # the default fg and bg colors
-        self._color_pairs = [(-1, -1)]
+    @cursor_pos.setter
+    def cursor_pos(self):
+        pass
 
-        self._cursor_pos = (0, 0)
-
-        VGlobalScreenColor.init(self.num_colors())
-
-    def reset(self):
-        self._curses_screen.keypad(0)
-        curses.echo()
-        curses.nocbreak()
-        curses.endwin()
-
-    def refresh(self):
-        with self._curses_lock:
-            self._curses_screen.noutrefresh()
-            curses.setsyx(self._cursor_pos[Index.Y], self._cursor_pos[Index.X])
-            curses.doupdate()
-
-    def rect(self):
-        return (0, 0) + self.size()
-
+    @property
     def size(self):
         with self._curses_lock:
             h, w = self._curses_screen.getmaxyx()
-        return (w, h)
+        return Size(w, h)
+
+    def reset(self):
+        with self._curses_lock:
+            self._curses_screen.keypad(0)
+            self._curses_screen = None
+            curses.echo()
+            curses.nocbreak()
+            curses.endwin()
 
     def get_key_code(self):
         # Prevent to hold the GIL
@@ -95,29 +107,24 @@ class CursesScreen(AbstractScreen):
         return c
 
     def write(self, pos, string, fg_color=None, bg_color=None):
-        x, y = pos
-        w, h = self.size()
+        x, y = pos.x, pos.y
+        size = self.size
+        w, h = size.width, size.height
 
         out_string = string
 
         if y < 0 or y >= h or x >= w:
             logger.error(
-                "Out of bound in Screen.write: pos=%s size=%s len=%d '%s'",
-                str(pos),
-                str(self.size()),
-                len(string),
-                string)
+                f"Out of bound in Screen.write: "
+                f"pos={str(pos)} size={str(size)} len={len(string)} '{string}'")
             return
 
         out_string = out_string[:w-x]
 
         if x < 0:
             logger.error(
-                "Out of bound in VScreen.write: pos=%s size=%s len=%d '%s'",
-                str(pos),
-                str(self.size()),
-                len(string),
-                string)
+                f"Out of bound in Screen.write: "
+                f"pos={str(pos)} size={str(size)} len={len(string)} '{string}'")
             out_string = string[-x:]
 
         if len(out_string) == 0:
@@ -145,6 +152,14 @@ class CursesScreen(AbstractScreen):
             with self._curses_lock:
                 self._curses_screen.addstr(y, x, out_string, attr)
                 self._curses_screen.noutrefresh()
+
+
+    def refresh(self):
+        with self._curses_lock:
+            self._curses_screen.noutrefresh()
+            curses.setsyx(self._cursor_pos[Index.Y], self._cursor_pos[Index.X])
+            curses.doupdate()
+
 
     def set_colors(self, pos, colors):
         """
@@ -202,9 +217,6 @@ class CursesScreen(AbstractScreen):
             attr = self.get_color_attribute_code(fg_color, bg_color)
             with self._curses_lock:
                 self._curses_screen.chgat(y, x+num, 1, attr)
-
-    def num_colors(self):
-        return curses.COLORS
 
     def get_color_attribute_code(self, fg=None, bg=None):
         """Given fg and bg colors, find and return the correct attribute code
