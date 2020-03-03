@@ -17,14 +17,22 @@ class Color(HasTraits):
         """Returns the color as a hexadecimal string"""
         return "{:02X}{:02X}{:02X}".format(self.red, self.green, self.blue)
 
+    @property
+    def rgb(self):
+        return self.red, self.green, self.blue
+
     @staticmethod
     def distance(color1, color2):
         """
         Returns the distance between two colors as calculated by
         the sum of the squared differences between each channel.
         """
-        return math.sqrt(
-                (color1.red - color2.red)**2 +
-                (color1.green - color2.green)**2 +
-                (color1.blue - color2.blue)**2
-        )
+        return rgb_distance(color1.rgb, color2.rgb)
+
+
+def rgb_distance(rgb1, rgb2):
+    return math.sqrt(
+        (rgb1[0] - rgb2[0])**2 +
+        (rgb1[1] - rgb2[1])**2 +
+        (rgb1[2] - rgb2[2])**2
+    )
