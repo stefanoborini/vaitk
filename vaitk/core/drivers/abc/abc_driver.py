@@ -48,6 +48,6 @@ class ABCDriver(metaclass=ABCMeta):
         """
 
     @abstractmethod
-    def get_key_code(self):
-        """Gets the keycode from a device. This method must be blocking."""
+    def get_event(self):
+        """Gets an event from a device. This method must be blocking."""
 

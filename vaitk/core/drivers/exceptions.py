@@ -1,0 +1,2 @@
+class DriverException(Exception):
+    pass

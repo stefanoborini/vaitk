@@ -4,7 +4,7 @@ from traitlets import Unicode, Instance, default
 
 from vaitk.core import BaseObject, Signal, Size
 from vaitk.core.drivers.abc.abc_driver import ABCDriver
-from vaitk.core.drivers.text_screen_driver import TextScreenDriver
+from vaitk.core.drivers.text.text_screen_driver import TextScreenDriver
 
 logger = logging.getLogger(__name__)
 
