@@ -1,3 +1,4 @@
+'''
 from vaitk.core.base_object import BaseObject
 
 
@@ -18,3 +19,4 @@ class BaseSignalSpy(BaseObject):
 
     def signal_params(self):
         return self._signal_params
+'''

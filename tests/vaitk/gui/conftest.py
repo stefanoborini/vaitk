@@ -1,10 +1,13 @@
+'''
 import pytest
-from vaitk import gui, test
+
+from vaitk import gui
+from vaitk.core.drivers.text.text_screen_driver import TextScreenDriver
 
 
 @pytest.fixture
 def screen_app():
-    screen = test.TextScreen((40, 40))
+    screen = TextScreenDriver((40, 40))
     app = None
     try:
         app = gui.Application(["test"], screen=screen)
@@ -14,3 +17,4 @@ def screen_app():
         if app:
             app.exit()
         del app
+'''

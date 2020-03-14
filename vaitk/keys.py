@@ -1,3 +1,4 @@
+'''
 import curses
 
 
@@ -407,3 +408,4 @@ def vai_key_code_to_text(key_code):
     }
 
     return key_map.get(key_code, '')
+'''

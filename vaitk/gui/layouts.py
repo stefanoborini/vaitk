@@ -1,3 +1,4 @@
+'''
 class VHLayout(object):
     def __init__(self):
         self._widgets = []
@@ -48,3 +49,4 @@ class VVLayout(object):
 
     def parent(self):
         return self._parent
+'''

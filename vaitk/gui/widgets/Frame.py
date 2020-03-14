@@ -1,3 +1,4 @@
+'''
 from vaitk.gui.Widget import Widget
 from vaitk.gui.Palette import Palette
 from vaitk.gui.Painter import Painter
@@ -37,3 +38,4 @@ class Frame(Widget):
 
     def contents_margins(self):
         return (1, 1, 1, 1)
+'''

@@ -1,3 +1,4 @@
+'''
 from . import GraphicElements  # noqa
 from .Application import Application  # noqa
 from vaitk.gui.GlobalColor import GlobalColor  # noqa
@@ -9,3 +10,4 @@ from .Widget import Widget  # noqa
 from .widgets import Label, Dialog, LineEdit, ToolTip  # noqa
 from .layouts import VHLayout, VVLayout  # noqa
 from .events import KeyEvent, PaintEvent  # noqa
+'''

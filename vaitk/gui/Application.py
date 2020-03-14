@@ -1,3 +1,5 @@
+'''
+
 import threading
 import queue
 import logging
@@ -426,3 +428,4 @@ class Application(core.CoreApplication):
         self._key_event_thread.stop_event.set()
         self._screen.reset()
         super().exit()
+'''

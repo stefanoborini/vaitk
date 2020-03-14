@@ -1,3 +1,4 @@
+'''
 import logging
 
 from vaitk.consts import Index
@@ -99,3 +100,6 @@ class ScreenArea(AbstractRectangularArea):
         x, y = pos
         return (x >= self.size()[Index.SIZE_WIDTH] or
                 y >= self.size()[Index.SIZE_HEIGHT] or x < 0 or y < 0)
+
+
+'''

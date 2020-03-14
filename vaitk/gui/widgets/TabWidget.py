@@ -1,3 +1,4 @@
+'''
 from vaitk.gui.Widget import Widget
 from vaitk.gui.Application import Application
 import curses
@@ -26,3 +27,4 @@ class TabWidget(Widget):
                                 1 if index == self._selected_tab_idx else 0))
             widget = self._tabs[self._selected_tab_idx][0]
             widget.render(screen)
+'''

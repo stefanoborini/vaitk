@@ -1,3 +1,4 @@
+'''
 from traitlets import Int
 from vaitk.core.enums import EventType
 from vaitk.keys import Key, KeyModifier, vai_key_code_to_text, \
@@ -65,3 +66,4 @@ class MoveEvent(Event):
 class ResizeEvent(Event):
     def __init__(self):
         super().__init__(EventType.Resize)
+'''

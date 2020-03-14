@@ -2,6 +2,7 @@ import logging
 import itertools
 from queue import Queue
 
+from vaitk.core import Size
 from vaitk.core.point import Point
 from vaitk.core.drivers.abc.abc_driver import ABCDriver
 
@@ -16,7 +17,7 @@ class TextScreenDriver(ABCDriver):
     """
 
     def __init__(self, size):
-        self._size = size
+        self._size = Size(size[0], size[1])
 
         self._cursor_pos = Point(0, 0)
         self._render_output = []

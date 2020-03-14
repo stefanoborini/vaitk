@@ -1,3 +1,4 @@
+'''
 import pytest
 from vaitk import gui
 
@@ -21,3 +22,4 @@ def test_label_change_string(screen_app):
     assert (screen.string_at(0, int(screen.size()[1]/2), 5) == "hello")
     app.process_events()
     assert (screen.string_at(0, int(screen.size()[1]/2), 5) == "world")
+'''

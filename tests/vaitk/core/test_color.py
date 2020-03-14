@@ -4,7 +4,7 @@ from vaitk.core.color import Color, rgb_distance
 
 def test_color():
     color = Color(255, 25, 127)
-    assert color.hex_string() == "FF197F"
+    assert color.hex_string == "FF197F"
     assert color.red == 255
     assert color.green == 25
     assert color.blue == 127
