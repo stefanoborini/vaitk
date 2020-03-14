@@ -1,5 +1,6 @@
 import logging
 import itertools
+from queue import Queue
 
 from vaitk.core.point import Point
 from vaitk.core.drivers.abc.abc_driver import ABCDriver
@@ -18,9 +19,8 @@ class TextScreenDriver(ABCDriver):
         self._size = size
 
         self._cursor_pos = Point(0, 0)
-        self._text = ""
         self._render_output = []
-
+        self._queue = Queue()
         self.erase()
 
     def init(self):
@@ -41,6 +41,10 @@ class TextScreenDriver(ABCDriver):
     def cursor_pos(self, pos):
         self._cursor_pos = pos
 
+    @property
+    def size(self):
+        return self._size
+
     def reset(self):
         self.erase()
 
@@ -49,17 +53,17 @@ class TextScreenDriver(ABCDriver):
             try:
                 self._render_output[pos.y][pos.x+pos_x] = string[pos_x]
             except IndexError:
-                print("Invalid write position : ", str(pos), string)
+                logger.warning("Invalid write position : ", str(pos), string)
 
-    def get_key_code(self):
-        return None
+    def get_event(self):
+        data = self._queue.get()
+        return data
 
-    @property
-    def size(self):
-        return self._size
+    def type_string(self, string):
+        self._queue.put(list(string))
 
     def dump(self):
-        ret = []
+        ret = list()
         ret.append(" "+"".join(list(itertools.islice(itertools.cycle(
             list(map(str, list(range(10))))), self._size[0]+1))))
         # print "+"*(self._size[0]+2)

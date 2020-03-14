@@ -1,4 +1,4 @@
-from vaitk.gui import Color
+from vaitk.core.color import Color
 
 
 class GlobalColor:

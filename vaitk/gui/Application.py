@@ -3,7 +3,7 @@ import queue
 import logging
 
 from vaitk.core import Signal
-from vaitk.gui import CursesScreen
+from vaitk.core.drivers.curses.curses_screen_driver import CursesScreenDriver
 from vaitk.gui.enums import FocusPolicy
 from vaitk.keys import Key, KeyModifier
 from vaitk.gui.events import FocusInEvent, FocusOutEvent
@@ -98,7 +98,7 @@ class Application(core.CoreApplication):
             if screen is not None:
                 self._screen = screen
             else:
-                self._screen = CursesScreen()
+                self._screen = CursesScreenDriver()
 
             # The root widget is the one representing the whole background
             # screen.

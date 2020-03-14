@@ -13,6 +13,7 @@ class Color(HasTraits):
     def __init__(self, red, green, blue):
         super().__init__(red=red, green=green, blue=blue)
 
+    @property
     def hex_string(self):
         """Returns the color as a hexadecimal string"""
         return "{:02X}{:02X}{:02X}".format(self.red, self.green, self.blue)

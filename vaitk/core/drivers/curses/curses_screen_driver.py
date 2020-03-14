@@ -13,7 +13,7 @@ from vaitk.core.drivers.exceptions import DriverException
 logger = logging.getLogger(__name__)
 
 
-class CursesScreen(ABCDriver):
+class CursesScreenDriver(ABCDriver):
     def __init__(self):
         # The screen
         self._curses_screen = None
