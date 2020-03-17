@@ -2,4 +2,6 @@ import abc
 
 
 class ABCNativePalette(metaclass=abc.ABCMeta):
-    pass
+    """
+    Abstract class for a native palette of colors
+    """

@@ -1,13 +1,11 @@
 from vaitk.core.drivers.abc.abc_native_color import ABCNativeColor
 
 
-class CursesNativeColor(ABCNativeColor):
+class TextNativeColor(ABCNativeColor):
     """
-    Representation of a curses native color.
+    Representation of a text native color.
     """
-    def __init__(self, color_idx, attr, rgb):
-        self._color_idx = color_idx
-        self._attr = attr
+    def __init__(self, rgb):
         self._rgb = rgb
 
     @property
@@ -25,11 +23,3 @@ class CursesNativeColor(ABCNativeColor):
     @property
     def blue(self):
         return self._rgb[2]
-
-    @property
-    def attr(self):
-        return self._attr
-
-    @property
-    def color_idx(self):
-        return self._color_idx

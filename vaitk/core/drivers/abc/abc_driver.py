@@ -16,9 +16,22 @@ class ABCDriver(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def num_colors(self):
+    def num_nominal_colors(self):
         """
-        Returns the supported number of colors
+        Returns the nominal number of colors.
+        This is the driver nominal number. For example curses
+        can nominally render 8 colors in 8 color mode, but it
+        can represent up to 16 because you can combine the
+        bold attribute with a color to produce another color.
+        """
+
+    @property
+    @abstractmethod
+    def num_representable_colors(self):
+        """
+        Returns the number of colors that can be represented.
+        This always matches the total number of representable colors
+        in the native palette.
         """
 
     @property
