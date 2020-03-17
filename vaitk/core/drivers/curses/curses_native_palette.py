@@ -357,5 +357,3 @@ class CursesNativePalette(ABCNativePalette):
         self._color_lookup_cache[color.rgb] = closest
 
         return closest
-
-

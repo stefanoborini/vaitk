@@ -109,7 +109,8 @@ class CursesScreenDriver(ABCDriver):
         if y < 0 or y >= h or x >= w:
             logger.error(
                 f"Out of bound in Screen.write: "
-                f"pos={str(pos)} size={str(size)} len={len(string)} '{string}'")
+                f"pos={str(pos)} size={str(size)} len={len(string)} "
+                f"'{string}'")
             return
 
         out_string = out_string[:w-x]
@@ -117,7 +118,8 @@ class CursesScreenDriver(ABCDriver):
         if x < 0:
             logger.error(
                 f"Out of bound in Screen.write: "
-                f"pos={str(pos)} size={str(size)} len={len(string)} '{string}'")
+                f"pos={str(pos)} size={str(size)} len={len(string)} "
+                f"'{string}'")
             out_string = string[-x:]
 
         if len(out_string) == 0:

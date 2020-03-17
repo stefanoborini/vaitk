@@ -1,2 +1,4 @@
 class DriverException(Exception):
-    pass
+    """
+    Generic Exception that is thrown by a screen driver.
+    """
