@@ -1,7 +1,7 @@
 from traitlets import Unicode, Int
 
 from vaitk.core.enums import EventType
-from vaitk.core.event import Event
+from vaitk.core.events.event import Event
 
 
 class KeyEvent(Event):

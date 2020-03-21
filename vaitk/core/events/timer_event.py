@@ -1,4 +1,4 @@
-from vaitk.core.event import Event
+from vaitk.core.events.event import Event
 from vaitk.core.enums import EventType
 
 

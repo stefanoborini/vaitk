@@ -4,7 +4,7 @@ import logging
 
 from traitlets import Bool, Integer
 
-from vaitk.core.timer_event import TimerEvent
+from vaitk.core.events.timer_event import TimerEvent
 from vaitk.core.signal import Signal
 from vaitk.core.core_application import CoreApplication
 from vaitk.core.base_object import BaseObject
