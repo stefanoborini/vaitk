@@ -7,8 +7,8 @@ class Event(HasTraits):
     event_type = UseEnum(EventType)
     accepted = Bool(False)
 
-    def __init__(self, event_type):
-        super().__init__(event_type=event_type)
+    def __init__(self, event_type, *args, **kwargs):
+        super().__init__(event_type=event_type, *args, **kwargs)
 
     def accept(self):
         self.accepted = True

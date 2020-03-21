@@ -3,6 +3,7 @@ import itertools
 from queue import Queue
 
 from vaitk.core import Size
+from vaitk.core.events.key_event import KeyEvent
 from vaitk.core.point import Point
 from vaitk.core.drivers.abc.abc_driver import ABCDriver
 
@@ -118,7 +119,8 @@ class TextScreenDriver(ABCDriver):
         Returns: None
 
         """
-        self._queue.put(list(string))
+        for char in string:
+            self._queue.put(KeyEvent(char))
 
     def dump(self):
         """
