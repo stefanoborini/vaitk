@@ -1,6 +1,6 @@
 from traitlets import Unicode, Int
 
-from vaitk.core.enums import EventType
+from vaitk.core.events.event_type import EventType
 from vaitk.core.events.event import Event
 
 

@@ -1,6 +1,6 @@
 from traitlets import HasTraits, UseEnum, Bool
 
-from vaitk.core.enums import EventType
+from vaitk.core.events.event_type import EventType
 
 
 class Event(HasTraits):

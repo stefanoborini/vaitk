@@ -1,5 +1,5 @@
 from vaitk.core import Event
-from vaitk.core.enums import EventType
+from vaitk.core.events.event_type import EventType
 
 
 def test_event_initialisation():
