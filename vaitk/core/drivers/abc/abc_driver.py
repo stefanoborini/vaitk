@@ -63,4 +63,3 @@ class ABCDriver(metaclass=ABCMeta):
     @abstractmethod
     def get_event(self):
         """Gets an event from a device. This method must be blocking."""
-

@@ -6,6 +6,7 @@ class KeyModifier:
     MetaModifier = 0x10000000
     KeypadModifier = 0x20000000
 
+
 '''
 import curses
 

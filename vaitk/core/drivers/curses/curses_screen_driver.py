@@ -148,13 +148,11 @@ class CursesScreenDriver(ABCDriver):
                 self._curses_screen.addstr(y, x, out_string, attr)
                 self._curses_screen.noutrefresh()
 
-
     def refresh(self):
         with self._curses_lock:
             self._curses_screen.noutrefresh()
             curses.setsyx(self._cursor_pos[Index.Y], self._cursor_pos[Index.X])
             curses.doupdate()
-
 
     def set_colors(self, pos, colors):
         """
@@ -220,5 +218,3 @@ class CursesScreenDriver(ABCDriver):
             pos.x < 0 or
             pos.y < 0
         )
-
-
