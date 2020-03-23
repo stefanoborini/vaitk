@@ -1,7 +1,3 @@
-'''
-import curses
-
-
 class KeyModifier:
     NoModifier = 0x00000000
     ShiftModifier = 0x02000000
@@ -9,6 +5,10 @@ class KeyModifier:
     AltModifier = 0x08000000
     MetaModifier = 0x10000000
     KeypadModifier = 0x20000000
+
+'''
+import curses
+
 
     Mask = 0x3F000000
 

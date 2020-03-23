@@ -33,6 +33,7 @@ class TextScreenDriver(ABCDriver):
         self._cursor_pos = Point(0, 0)
         self._render_output = []
         self._queue = Queue()
+        self.erase()
 
     def init(self):
         """
