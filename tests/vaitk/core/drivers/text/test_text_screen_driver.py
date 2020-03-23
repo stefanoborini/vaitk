@@ -1,5 +1,6 @@
 from vaitk.core import Size, Point
 from vaitk.core.drivers.text.text_screen_driver import TextScreenDriver
+from vaitk.keys import KeyModifier
 
 
 def test_instantiation():
@@ -32,4 +33,6 @@ def test_get_event():
 
     driver.type_string("Hello")
 
-    print(driver.get_event())
+    ev = driver.get_event()
+    assert ev.modifier == KeyModifier.NoModifier
+    assert ev.char == "H"
