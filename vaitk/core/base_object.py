@@ -2,7 +2,7 @@ from traitlets import HasTraits, Instance, This, List, default
 
 import logging
 
-from vaitk.core.timer_event import TimerEvent
+from vaitk.core.events.timer_event import TimerEvent
 
 logger = logging.getLogger(__name__)
 

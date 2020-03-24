@@ -1,9 +1,11 @@
+'''
 import pytest
-from vaitk import gui, test
+from vaitk import gui
+from vaitk.core.drivers.text.text_screen_driver import TextScreenDriver
 
 
 def test_init():
-    screen = test.TextScreen((40, 40))
+    screen = TextScreenDriver((40, 40))
     assert gui.Application.vApp is None
 
     app = None
@@ -16,3 +18,4 @@ def test_init():
         if app:
             app.exit()
     assert gui.Application.vApp is None
+'''

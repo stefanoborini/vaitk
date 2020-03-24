@@ -1,7 +1,9 @@
+'''
+
 import copy
 
 from vaitk.gui.enums import ColorGroup, ColorRole
-from vaitk.gui.Color import Color
+from vaitk.core.color import Color
 
 
 class Palette:
@@ -80,3 +82,4 @@ class Palette:
 
     def copy(self):
         return copy.deepcopy(self)
+'''

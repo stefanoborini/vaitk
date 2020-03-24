@@ -1,3 +1,4 @@
+'''
 from vaitk.gui import Cursor
 from vaitk.gui.enums import FocusPolicy
 from vaitk.keys import Key
@@ -153,3 +154,4 @@ class LineEdit(Widget):
 
     def selected_text(self):
         pass
+'''

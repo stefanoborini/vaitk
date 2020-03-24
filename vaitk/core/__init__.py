@@ -5,6 +5,5 @@ from .rect import Rect  # noqa
 from .size import Size  # noqa
 from .core_application import CoreApplication  # noqa
 from .timer import Timer  # noqa
-from .event import Event  # noqa
-from .timer_event import TimerEvent  # noqa
-from ..consts import Index  # noqa
+from vaitk.core.events.event import Event  # noqa
+from vaitk.core.events.timer_event import TimerEvent  # noqa

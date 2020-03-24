@@ -1,3 +1,4 @@
+'''
 from vaitk.gui.Widget import Widget
 from vaitk.gui.Palette import Palette
 from vaitk.gui.Painter import Painter
@@ -30,3 +31,4 @@ class Label(Widget):
         if text != self._label:
             self._label = text
             self.update()
+'''

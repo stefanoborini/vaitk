@@ -1,3 +1,4 @@
+'''
 from vaitk.gui.Widget import Widget
 from vaitk.gui.Palette import Palette
 from vaitk.gui.Painter import Painter
@@ -112,3 +113,4 @@ class ProgressBar(Widget):
 
     def value(self):
         return self._value
+'''

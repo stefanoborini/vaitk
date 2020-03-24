@@ -1,3 +1,4 @@
+'''
 import logging
 
 from vaitk.gui.enums import FocusPolicy, ColorGroup, ColorRole
@@ -21,7 +22,9 @@ class Widget(core.BaseObject):
         super().__init__(parent)
 
         if self.parent is None:
-            self._geometry = (0, 0) + Application.vApp.screen().size()
+            self._geometry = (0, 0,
+                              Application.vApp.screen().size.width,
+                              Application.vApp.screen().size.height)
         else:
             self._geometry = self.parent.contents_rect()
 
@@ -593,3 +596,4 @@ class Widget(core.BaseObject):
 
     def font_info(self):
         pass
+'''

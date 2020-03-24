@@ -1,3 +1,4 @@
+'''
 from vaitk.gui.Widget import Widget
 
 
@@ -14,3 +15,4 @@ class PushButton(Widget):
         #               ' '*(w-len(self._label)-4))
         # for i in range(1+h/2, h):
         #     painter.write(0, i, ' '*w)
+'''

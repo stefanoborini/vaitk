@@ -1,3 +1,4 @@
+'''
 import pytest
 
 from vaitk.gui import KeyEvent
@@ -14,3 +15,4 @@ def test_key_event():
 def test_raises_for_unknown_key():
     with pytest.raises(ValueError):
         KeyEvent.from_native_key_code(-2)
+'''

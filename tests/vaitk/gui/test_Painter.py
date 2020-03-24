@@ -1,3 +1,4 @@
+'''
 import vaitk.gui.enums
 from vaitk import gui
 import vaitk
@@ -95,3 +96,4 @@ def test_draw_rect(screen_app):
     assert screen.string_at(10, 12, 5) == "|...|"
     assert screen.string_at(10, 13, 5) == "|...|"
     assert screen.string_at(10, 14, 5) == "+---+"
+'''

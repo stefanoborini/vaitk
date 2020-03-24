@@ -1,3 +1,5 @@
+'''
+
 from abc import ABC, abstractmethod
 
 from vaitk.consts import Index
@@ -35,3 +37,4 @@ class AbstractRectangularArea(ABC):
     def height(self):
         """Returns the height of the area"""
         return self.size()[Index.SIZE_HEIGHT]
+'''

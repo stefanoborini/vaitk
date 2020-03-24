@@ -1,3 +1,4 @@
+'''
 import pytest
 from vaitk.gui import ScreenArea
 
@@ -31,3 +32,4 @@ def test_clear(screen_app):
     assert screen.string_at(4, 8, 12) == '.          .'
     assert screen.string_at(4, 9, 12) == '.          .'
     assert screen.string_at(4, 10, 12) == '............'
+'''

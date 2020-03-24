@@ -1,3 +1,5 @@
+'''
+
 from vaitk.gui.widgets.Label import Label
 from vaitk.gui.Palette import Palette
 from vaitk.gui.Painter import Painter
@@ -33,3 +35,5 @@ class ToolTip(Label):
         painter.bg_color = self.palette().color(Palette.ColorGroup.Active,
                                                 Palette.ColorRole.ToolTipBase)
         painter.draw_text((0, 0), self._label)
+
+'''

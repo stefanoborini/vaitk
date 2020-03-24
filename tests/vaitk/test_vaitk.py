@@ -1,3 +1,5 @@
+'''
+
 import vaitk
 from vaitk import keys
 from vaitk.keys import (
@@ -26,3 +28,4 @@ def test_is_keycode_printable():
 def test_vai_key_code_to_text():
     assert vai_key_code_to_text(vaitk.keys.Key.Key_A) == 'a'
     assert vai_key_code_to_text(vaitk.keys.Key.Key_Escape) == ''
+'''

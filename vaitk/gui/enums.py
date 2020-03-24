@@ -1,3 +1,5 @@
+'''
+
 from enum import IntEnum
 
 
@@ -63,3 +65,4 @@ class ColorRole(IntEnum):
     NoRole = 17
     ToolTipBase = 18
     ToolTipText = 19
+'''

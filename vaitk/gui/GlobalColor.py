@@ -1,4 +1,5 @@
-from vaitk.gui import Color
+'''
+from vaitk.core.color import Color
 
 
 class GlobalColor:
@@ -548,3 +549,4 @@ class GlobalColor:
         """Perform lookup of the color by string. Returns None if the
         lookup fails."""
         return GlobalColor.__dict__.get(name)
+'''

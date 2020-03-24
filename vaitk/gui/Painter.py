@@ -192,16 +192,15 @@ class Painter:
             direction: either Orientation.Horizontal or Orientation.Vertical
         """
         screen_area = self._widget.screen_area()
-        x, y = pos
         fg, bg = self.fg_color, self.bg_color
         h_line = self._graphic_elements["BOX DRAWINGS LIGHT HORIZONTAL"]
         v_line = self._graphic_elements["BOX DRAWINGS LIGHT VERTICAL"]
 
         if direction == Orientation.Horizontal:
-            screen_area.write((x, y), h_line * length, fg, bg)
+            screen_area.write(pos, h_line * length, fg, bg)
         elif direction == Orientation.Vertical:
             for i in range(0, length):
-                screen_area.write((x, y+i), v_line, fg, bg)
+                screen_area.write(pos + (0, i), v_line, fg, bg)
 
     def erase_rect(self, rect):
         """

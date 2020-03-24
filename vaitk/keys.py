@@ -1,6 +1,3 @@
-import curses
-
-
 class KeyModifier:
     NoModifier = 0x00000000
     ShiftModifier = 0x02000000
@@ -8,6 +5,11 @@ class KeyModifier:
     AltModifier = 0x08000000
     MetaModifier = 0x10000000
     KeypadModifier = 0x20000000
+
+
+'''
+import curses
+
 
     Mask = 0x3F000000
 
@@ -407,3 +409,21 @@ def vai_key_code_to_text(key_code):
     }
 
     return key_map.get(key_code, '')
+'''
+'''
+
+
+    @property
+    def text(self):
+        return vai_key_code_to_text(self.key_code)
+
+    @classmethod
+    def from_native_key_code(cls, native_key_code):
+        key_code = native_to_vai_key_code(native_key_code)
+        if key_code is None:
+            raise ValueError(f"Unknown native key code {native_key_code}")
+        return cls(key_code)
+
+
+
+'''
