@@ -67,6 +67,8 @@ class CoreApplication(BaseObject):
             self._loop.run_forever()
         finally:
             asyncio.set_event_loop(None)
+            if self._exit_requested and self._owns_loop and not self._loop.is_closed():
+                self._loop.close()
 
     def post_event(self, receiver, event):
         """Schedule event delivery on the application loop.
